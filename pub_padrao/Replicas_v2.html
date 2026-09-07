@@ -1,0 +1,1295 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>Biblioteca de modelos — Trend Science</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter+Tight:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gray-placeholder: #d9d9d9;
+    --gray-stripe: #cfcfcf;
+    --page-bg: #f4f4f2;
+    --ink: #1a1a1a;
+    --ink-soft: #2a2a2a;
+    --caption: #6b6b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--page-bg);color:var(--ink);font-family:'Inter Tight',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{padding:64px 48px 96px}
+  .page-header{max-width:1200px;margin:0 auto 56px}
+  .page-header h1{font-family:'Inter Tight',sans-serif;font-weight:400;font-size:36px;letter-spacing:-0.02em}
+  .page-header p{margin-top:10px;color:var(--caption);font-size:14px;max-width:640px;line-height:1.5}
+  .section-heading{
+    max-width:1400px;margin:64px auto 24px;
+    font-family:'Inter Tight',sans-serif;
+    font-size:12px;font-weight:500;color:var(--ink-soft);
+    letter-spacing:0.28em;text-transform:uppercase;
+    padding-bottom:12px;border-bottom:1px solid rgba(0,0,0,0.1);
+  }
+  .section-heading small{font-family:'Inter Tight';font-weight:300;color:var(--caption);letter-spacing:0.02em;text-transform:none;font-size:12px;margin-left:12px}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(420px,1fr));
+    gap:48px 40px;
+    max-width:1400px;margin:0 auto;
+  }
+
+  /* ---------- Post canvas (1080x1080 escalado) ---------- */
+  .post-wrap{display:flex;flex-direction:column;gap:14px}
+  .post{
+    width:100%;
+    aspect-ratio:1/1;
+    background:var(--gray-placeholder);
+    background-image:
+      repeating-linear-gradient(135deg, transparent 0 22px, rgba(0,0,0,0.035) 22px 23px);
+    position:relative;
+    overflow:hidden;
+    border-radius:2px;
+    box-shadow:0 2px 0 rgba(0,0,0,0.04), 0 30px 60px -30px rgba(0,0,0,0.18);
+    container-type:inline-size;
+  }
+  .post::before{
+    /* leve gradiente pra dar profundidade ao placeholder */
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(ellipse at 50% 40%, rgba(255,255,255,0.35), transparent 60%);
+    pointer-events:none;
+  }
+  /* imagem de fundo + overlay preto */
+  .post .bg-img{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;z-index:0;
+  }
+  .post .bg-overlay{
+    position:absolute;inset:0;background:rgba(0,0,0,0.42);z-index:0;
+  }
+  .post.has-bg::before{display:none}
+  .post.white-bg{background:#fff;background-image:none}
+  .post.white-bg::before{display:none}
+
+  /* Legenda fora da área exportável (título curto) */
+  .post-caption{
+    display:flex;justify-content:space-between;align-items:baseline;
+    font-size:12px;color:var(--caption);
+    font-family:'Inter Tight',sans-serif;
+  }
+  .post-caption .label{font-weight:500;color:var(--ink-soft);letter-spacing:0.12em}
+  .post-caption .tag{font-family:'Inter Tight',sans-serif;font-weight:300}
+
+  /* Ficha técnica fora da área exportável */
+  .spec{
+    font-family:'Inter Tight',sans-serif;
+    font-size:11.5px;line-height:1.5;color:var(--ink-soft);
+    background:#fff;
+    border:1px solid rgba(0,0,0,0.08);
+    border-radius:4px;
+    padding:14px 16px;
+    display:grid;grid-template-columns:110px 1fr;gap:6px 12px;
+  }
+  .spec dt{font-weight:500;color:var(--ink);letter-spacing:0.02em}
+  .spec dd{font-weight:300;color:#3c3c3c}
+  .spec dd em{font-style:normal;color:#8a5a1a;font-weight:400}
+
+  /* Guia de carrosséis + lacunas */
+  .doc-block{
+    max-width:1400px;margin:0 auto 40px;
+    background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:4px;
+    padding:32px 40px;
+    font-family:'Inter Tight',sans-serif;color:var(--ink-soft);
+    font-size:14px;line-height:1.55;font-weight:300;
+  }
+  .doc-block h2{font-size:22px;font-weight:400;color:var(--ink);margin-bottom:6px;letter-spacing:-0.01em}
+  .doc-block h3{font-size:14px;font-weight:500;color:var(--ink);margin-top:24px;margin-bottom:6px;letter-spacing:0.02em}
+  .doc-block p{margin-bottom:8px;max-width:900px}
+  .doc-block .lead{color:var(--caption);margin-bottom:16px;max-width:900px}
+  .doc-block ul{margin:8px 0 8px 20px}
+  .doc-block li{margin-bottom:4px}
+  .doc-block code{font-family:'Inter Tight';font-weight:500;background:#f2f2f0;padding:1px 6px;border-radius:3px;font-size:12.5px;color:var(--ink)}
+  .doc-block .flow{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;margin-bottom:14px}
+  .doc-block .flow span{background:#f2f2f0;border:1px solid rgba(0,0,0,0.06);padding:4px 10px;border-radius:99px;font-size:12px;font-weight:400}
+  .doc-block .flow span.gap{background:#fff5e6;border-color:#e5c288;color:#8a5a1a}
+  .doc-block table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+  .doc-block th,.doc-block td{text-align:left;padding:8px 10px;border-bottom:1px solid rgba(0,0,0,0.08);vertical-align:top}
+  .doc-block th{font-weight:500;color:var(--ink);font-size:12px;letter-spacing:0.06em;text-transform:uppercase;background:#faf9f6}
+
+  /* ---------- Sistema tipográfico dos posts ---------- */
+  .p-inner{
+    position:relative;z-index:1;
+    width:100%;height:100%;
+    padding:9cqi;
+    display:flex;flex-direction:column;
+    color:#fff;
+  }
+  .p-inner.dark{color:#111}
+
+  .p-brand{
+    font-family:'Inter Tight',sans-serif;
+    font-size:2.3cqi;
+    letter-spacing:0.32em;
+    font-weight:400;
+    text-transform:uppercase;
+    text-align:center;
+    opacity:0.95;
+  }
+  .p-brand.split{display:flex;justify-content:space-between;width:100%}
+
+  .p-body{
+    flex:1;display:flex;flex-direction:column;justify-content:center;
+    align-items:center;text-align:center;gap:2.5cqi;
+  }
+  .p-body.left{align-items:flex-start;text-align:left}
+
+  .p-headline{
+    font-family:'Fraunces',serif;
+    font-weight:400;
+    font-size:8.5cqi;
+    line-height:1.05;
+    letter-spacing:-0.02em;
+    text-wrap:balance;
+  }
+  .p-headline.sans{font-family:'Inter Tight',sans-serif;font-weight:400;letter-spacing:-0.02em}
+  .p-headline em{font-style:italic;font-weight:400}
+
+  .p-sub{
+    font-family:'Inter Tight',sans-serif;
+    font-weight:300;
+    font-size:3.4cqi;
+    line-height:1.35;
+    max-width:80%;
+    opacity:0.95;
+    text-wrap:balance;
+  }
+  .p-sub.serif{font-family:'Fraunces',serif;font-weight:300}
+  .p-sub strong{font-weight:500}
+
+  .p-eyebrow{
+    display:inline-block;
+    font-family:'Inter Tight',sans-serif;
+    font-size:2.4cqi;
+    font-weight:400;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    padding:1.2cqi 2.6cqi;
+    background:rgba(255,255,255,0.15);
+    border:1px solid rgba(255,255,255,0.35);
+    border-radius:99px;
+    backdrop-filter:blur(6px);
+  }
+  .p-inner.dark .p-eyebrow{background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.15)}
+
+  .p-footer{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'Inter Tight',sans-serif;font-size:2.2cqi;
+    letter-spacing:0.28em;text-transform:uppercase;font-weight:300;
+  }
+  .p-footer.center{justify-content:center;gap:3cqi}
+  .p-arrow{
+    width:9cqi;height:9cqi;border-radius:50%;
+    border:1.2px solid currentColor;
+    display:grid;place-items:center;
+    font-size:3.5cqi;font-family:'Inter Tight';font-weight:300;
+  }
+
+  /* pills */
+  .pills{display:flex;flex-wrap:wrap;gap:2cqi;justify-content:center;max-width:85%}
+  .pill{
+    font-family:'Inter Tight',sans-serif;font-weight:400;
+    font-size:2.6cqi;
+    padding:1.2cqi 2.4cqi;
+    border-radius:99px;
+    background:#ffffff;color:#1a1a1a;
+    border:1px solid rgba(0,0,0,0.08);
+  }
+
+  /* rows (listas visuais) */
+  .rows{width:92%;display:flex;flex-direction:column;gap:1.6cqi;margin:0 auto;text-align:left}
+  .row{
+    display:grid;grid-template-columns:9cqi 1fr auto 1.5fr;
+    gap:2cqi;align-items:center;
+    padding-bottom:1.4cqi;border-bottom:1px solid rgba(0,0,0,0.08);
+    text-align:left;
+  }
+  .row:last-child{border-bottom:0}
+  .row .thumb{
+    width:9cqi;height:9cqi;border-radius:50%;
+    background:var(--gray-placeholder);
+    background-image:repeating-linear-gradient(135deg, transparent 0 6px, rgba(0,0,0,0.05) 6px 7px);
+  }
+  .row .name{font-family:'Inter Tight';font-weight:400;font-size:2.3cqi;line-height:1.15}
+  .row .name small{display:block;font-weight:300;font-size:1.8cqi;color:#555;margin-top:0.3cqi}
+  .row .arrow{font-size:2.4cqi;color:#c96a2b}
+  .row .desc{font-family:'Inter Tight';font-weight:300;font-size:2cqi;line-height:1.35;color:#333}
+
+  /* switch card */
+  .switch-card{
+    margin-top:auto;
+    background:rgba(255,255,255,0.9);color:#111;
+    border-radius:2cqi;padding:3.5cqi 4cqi;
+    font-family:'Inter Tight';font-weight:300;font-size:2.7cqi;line-height:1.4;
+    border:1px solid rgba(0,0,0,0.05);
+  }
+  .switch-card b{display:block;font-weight:400;color:#0d3b8a;font-size:2.5cqi;margin-bottom:1cqi;letter-spacing:0.02em}
+
+  /* 3-image stack */
+  .stack{position:absolute;inset:0;display:grid;grid-template-rows:1fr 1fr 1fr}
+  .stack > div{
+    position:relative;display:grid;place-items:center;color:#fff;
+    background:var(--gray-placeholder);
+    background-image:repeating-linear-gradient(135deg, transparent 0 22px, rgba(0,0,0,0.05) 22px 23px);
+  }
+  .stack > div + div{border-top:2px solid var(--page-bg)}
+  .stack .word{
+    font-family:'Inter Tight';font-weight:400;font-size:9cqi;letter-spacing:0.02em;color:#fff;
+  }
+
+  /* utility positioners */
+  .top{margin-top:0}
+  .push-bottom{margin-top:auto}
+  .gap-lg{gap:5cqi}
+  .w-90{max-width:90%}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Biblioteca de modelos · Trend Science</h1>
+  <p>16 composições organizadas em Capas, Miolos e Transições. Cada quadro é uma peça 1:1 exportável (1080 × 1080). Códigos, fichas técnicas e limites de diagramação estão fora da área exportável. Os textos exibidos são exemplos institucionais adequados à função de cada layout; a assinatura oficial só entra no fechamento, quando o modelo comporta.</p>
+</div>
+
+<!-- ================== CAPAS ================== -->
+<div class="section-heading">Capas <small>· abertura de carrossel</small></div>
+
+<div class="grid">
+
+  <!-- C01·A — Capa fotográfica com apoio (identificador original 01) -->
+  <div class="post-wrap">
+    <div class="post has-bg">
+      <img class="bg-img" src="assets/bg-cromossomos.jpg" alt="">
+      <div class="bg-overlay"></div>
+      <div class="p-inner">
+        <div class="p-brand">&nbsp;</div>
+        <div class="p-body">
+          <div class="p-headline sans">Prescrever é decisão<br>clínica</div>
+          <div class="p-sub">O resto é trabalho da Trend Science.</div>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">C01 · A</span><span class="tag">Capa fotográfica com apoio · id. original 01</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Abertura de carrossel com pergunta ou afirmação curta sobre imagem cheia.</dd>
+      <dt>Uso 2º</dt><dd>Card único quando a foto sustenta o assunto sem lista de apoio.</dd>
+      <dt>Fixo</dt><dd>Foto com overlay preto · seta circular centralizada no rodapé · sem brand no topo.</dd>
+      <dt>Headline</dt><dd>2 linhas · 8.5cqi · ≈ 92 px @1080 · máx. <em>32 caracteres/linha</em>.</dd>
+      <dt>Sub</dt><dd>1 linha · 3.4cqi · ≈ 37 px · máx. <em>52 caracteres</em>.</dd>
+      <dt>Imagem</dt><dd>Objeto/textura em foco central, densidade média, tolera overlay 42%.</dd>
+      <dt>Quando não usar</dt><dd>Se a chamada tiver mais de 2 linhas, ir para C05.</dd>
+    </dl>
+  </div>
+
+  <!-- C01·B — variante (identificador original 02) -->
+  <div class="post-wrap">
+    <div class="post has-bg">
+      <img class="bg-img" src="assets/bg-petri.jpg" alt="">
+      <div class="bg-overlay"></div>
+      <div class="p-inner">
+        <div class="p-brand">&nbsp;</div>
+        <div class="p-body">
+          <div class="p-headline sans">Um Representante,<br>do pedido à continuidade</div>
+          <div class="p-sub">Seis passos que o médico<br>não precisa carregar.</div>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">C01 · B</span><span class="tag">Capa fotográfica com apoio · id. original 02</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Mesmo que C01·A, com sub-headline em duas linhas.</dd>
+      <dt>Uso 2º</dt><dd>Abertura de sequência de etapas (indica quantidade no sub).</dd>
+      <dt>Fixo</dt><dd>Foto com overlay · seta circular centralizada.</dd>
+      <dt>Headline</dt><dd>2 linhas · 8.5cqi · máx. <em>32 caracteres/linha</em>.</dd>
+      <dt>Sub</dt><dd>1–2 linhas · 3.4cqi · máx. <em>52 caracteres/linha</em>.</dd>
+      <dt>Imagem</dt><dd>Textura ou objeto de laboratório, foco lateral, tolera overlay 42%.</dd>
+      <dt>Quando não usar</dt><dd>Se a chamada exigir eyebrow (usar M02).</dd>
+    </dl>
+  </div>
+
+  <!-- C02 — Capa editorial tipográfica (id. original 05) -->
+  <div class="post-wrap">
+    <div class="post white-bg">
+      <div class="p-inner dark">
+        <div class="p-brand split" style="color:#333">
+          <span>&nbsp;</span><span>&nbsp;</span>
+        </div>
+        <div class="p-body left" style="justify-content:space-between;color:#111;padding:4cqi 0;align-items:stretch">
+          <div style="width:100%">
+            <div class="p-headline sans" style="font-size:7cqi;color:#111;line-height:1.05;max-width:100%">
+              A régua não é<br>o primeiro pedido.<br><b style="font-weight:400">É o mês seguinte.</b>
+            </div>
+          </div>
+          <div class="p-headline sans" style="font-size:5cqi;color:#111;font-weight:400;max-width:100%">
+            Continuidade do tratamento,<br>como compromisso.
+          </div>
+        </div>
+        <div class="p-footer split" style="justify-content:space-between;color:#333">
+          <span>&nbsp;</span>
+          <span>&nbsp;</span>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">C02</span><span class="tag">Capa editorial tipográfica · id. original 05</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Capa sem imagem, hierarquia editorial. Afirmação forte em bloco vertical.</dd>
+      <dt>Uso 2º</dt><dd>Capa de material institucional sobre um dos pilares.</dd>
+      <dt>Fixo</dt><dd>Fundo branco · brand dividido no topo (Trend + Science) · rodapé com palavra partida + seta.</dd>
+      <dt>Headline</dt><dd>5–6 linhas · 9cqi · máx. <em>10 caracteres/linha</em>. Alinhada à esquerda.</dd>
+      <dt>Sub</dt><dd>1–2 linhas · 5cqi · máx. <em>28 caracteres/linha</em>.</dd>
+      <dt>Rodapé</dt><dd>Palavra do território cortada em duas metades, seta no meio.</dd>
+      <dt>Quando não usar</dt><dd>Se houver imagem obrigatória (usar C01 ou C03).</dd>
+    </dl>
+  </div>
+
+  <!-- C03 — Capa fotográfica de duas escalas (id. original 08) -->
+  <div class="post-wrap">
+    <div class="post has-bg">
+      <img class="bg-img" src="assets/bg-petri.jpg" alt="">
+      <div class="bg-overlay"></div>
+      <div class="p-inner">
+        <div class="p-brand">TREND SCIENCE</div>
+        <div class="p-body" style="gap:4cqi">
+          <div class="p-headline sans" style="font-size:6.8cqi">Do primeiro pedido<br>à continuidade</div>
+          <div class="p-sub" style="font-size:3.8cqi;max-width:75%">o médico fala com<br>uma pessoa só.</div>
+        </div>
+        <div class="p-footer center" style="gap:4cqi;align-items:center">
+          <span>[ ARRASTE ]</span>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">C03</span><span class="tag">Capa fotográfica de duas escalas · id. original 08</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Capa com brand no topo, headline média e sub em escala menor. Convite explícito ao arraste.</dd>
+      <dt>Uso 2º</dt><dd>Miolo de transição quando a próxima tela é longa.</dd>
+      <dt>Fixo</dt><dd>Brand caps espaçado no topo · rodapé com <code>[ ARRASTE ]</code> + seta.</dd>
+      <dt>Headline</dt><dd>2 linhas · 6.8cqi · máx. <em>26 caracteres/linha</em>.</dd>
+      <dt>Sub</dt><dd>2 linhas · 3.8cqi · máx. <em>40 caracteres/linha</em>.</dd>
+      <dt>Imagem</dt><dd>Baixa densidade central para não competir com o brand no topo.</dd>
+      <dt>Quando não usar</dt><dd>Se o assunto não continuar em uma segunda tela (o rodapé perde sentido).</dd>
+    </dl>
+  </div>
+
+  <!-- C04 — Capa com chamada superior (id. original 10) -->
+  <div class="post-wrap">
+    <div class="post has-bg">
+      <img class="bg-img" src="assets/bg-cromossomos.jpg" alt="">
+      <div class="bg-overlay"></div>
+      <div class="p-inner">
+        <div class="p-body" style="justify-content:space-between;gap:3cqi;padding:2cqi 0">
+          <div class="p-headline sans" style="font-size:6.8cqi;color:#fff;text-align:center;line-height:1.15">
+            Lote fora de especificação<br>não sai <span style="color:#f5b8b8">da farmácia.</span>
+          </div>
+          <div style="flex:1"></div>
+          <div class="p-footer" style="justify-content:flex-start;color:#fff;font-size:2.6cqi;letter-spacing:0.05em;text-transform:none">
+            <span style="font-family:'Inter Tight';font-weight:300;font-size:3cqi">O fornecimento segue<br>por outro parceiro credenciado.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">C04</span><span class="tag">Capa com chamada superior · id. original 10</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Chamada afirmativa em cima, contexto e seta em baixo. Dá peso à afirmação e mostra o desdobramento.</dd>
+      <dt>Uso 2º</dt><dd>Ponte entre problema e resposta em carrossel curto.</dd>
+      <dt>Fixo</dt><dd>Headline centralizado no topo · destaque colorido em 2–3 palavras · rodapé com legenda pequena + seta.</dd>
+      <dt>Headline</dt><dd>2 linhas · 6.8cqi · máx. <em>28 caracteres/linha</em>.</dd>
+      <dt>Legenda</dt><dd>2 linhas · 3cqi · máx. <em>36 caracteres/linha</em>.</dd>
+      <dt>Destaque</dt><dd>2–3 palavras coloridas, sem trocar hierarquia. Sobre foto: <code>#f5b8b8</code>. Sobre branco: <code>#8a1a1a</code>.</dd>
+      <dt>Quando não usar</dt><dd>Se a chamada não tem consequência prática, C01 serve melhor.</dd>
+    </dl>
+  </div>
+
+  <!-- C05 — Capa de título extenso (id. original 11) -->
+  <div class="post-wrap">
+    <div class="post has-bg">
+      <img class="bg-img" src="assets/bg-petri.jpg" alt="">
+      <div class="bg-overlay"></div>
+      <div class="p-inner">
+        <div class="p-brand">TREND SCIENCE</div>
+        <div class="p-body">
+          <div class="p-headline sans" style="font-size:7cqi">
+            Quatro compromissos<br>que o cliente<br>pode cobrar<br>da Trend Science
+          </div>
+        </div>
+        <div class="p-footer" style="justify-content:flex-start">
+          <span>[ ARRASTE ]</span>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">C05</span><span class="tag">Capa de título extenso · id. original 11</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Abertura de carrossel-lista. Antecipa a contagem e o assunto.</dd>
+      <dt>Uso 2º</dt><dd>Capa de estudo, dossiê ou compilado técnico.</dd>
+      <dt>Fixo</dt><dd>Brand no topo · headline em 3–4 linhas cheias · rodapé com <code>[ ARRASTE ]</code> à esquerda e seta à direita.</dd>
+      <dt>Headline</dt><dd>3–4 linhas · 7cqi · máx. <em>26 caracteres/linha</em>.</dd>
+      <dt>Imagem</dt><dd>Baixa densidade, textura de fundo. Não usar rosto humano em close.</dd>
+      <dt>Quando não usar</dt><dd>Se o título fica com 1–2 linhas, usar C01.</dd>
+    </dl>
+  </div>
+
+</div>
+
+<!-- ================== MIOLOS ================== -->
+<div class="section-heading">Miolos <small>· desenvolvimento e explicação</small></div>
+
+<div class="grid">
+
+  <!-- M01 — Lista visual detalhada (id. original 03) -->
+  <div class="post-wrap">
+    <div class="post white-bg">
+      <div class="p-inner dark">
+        <div class="p-brand" style="color:#8a8a8a">TREND SCIENCE</div>
+        <div class="p-body" style="gap:2.8cqi">
+          <div class="p-headline sans" style="font-size:4.8cqi;color:#111">Cinco compromissos<br>que sustentam o fornecimento</div>
+          <div class="rows">
+            <div class="row">
+              <div class="thumb"></div>
+              <div class="name">Disponibilidade<br><small>alternativa dentro do portfólio</small></div>
+              <div></div>
+              <div class="desc">Se um lote não passa, o fornecimento segue sem intervalo.</div>
+            </div>
+            <div class="row">
+              <div class="thumb"></div>
+              <div class="name">Resposta<br><small>Representante Credenciado</small></div>
+              <div></div>
+              <div class="desc">Uma pessoa responde por cada pedido até a entrega.</div>
+            </div>
+            <div class="row">
+              <div class="thumb"></div>
+              <div class="name">Rigor<br><small>verificação documental dupla</small></div>
+              <div></div>
+              <div class="desc">Farmácia confere e o time farmacêutico da Trend Science confere de novo.</div>
+            </div>
+            <div class="row">
+              <div class="thumb"></div>
+              <div class="name">Continuidade<br><small>do primeiro pedido ao seguinte</small></div>
+              <div></div>
+              <div class="desc">A operação é montada para que a conduta se cumpra até o fim.</div>
+            </div>
+            <div class="row">
+              <div class="thumb"></div>
+              <div class="name">Rastreabilidade<br><small>laudo lote a lote</small></div>
+              <div></div>
+              <div class="desc">O documento fica registrado e disponível ao médico que pedir.</div>
+            </div>
+          </div>
+        </div>
+        <div class="p-footer center" style="color:#8a8a8a">[ COMPROMISSOS ]</div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">M01</span><span class="tag">Lista visual detalhada · id. original 03</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Lista de 4–5 itens com nome, qualificador e explicação curta.</dd>
+      <dt>Uso 2º</dt><dd>Sumário de compromissos, categorias, etapas nomeadas.</dd>
+      <dt>Fixo</dt><dd>Fundo branco · brand no topo · footer tag em caps · placeholders circulares à esquerda.</dd>
+      <dt>Itens</dt><dd><em>4 a 5</em> linhas. Não usar 3 (usar M05) nem 6 (dividir em dois quadros).</dd>
+      <dt>Headline</dt><dd>2 linhas · 4.8cqi · máx. <em>34 caracteres/linha</em>.</dd>
+      <dt>Nome/dosagem</dt><dd>Nome 2.3cqi · qualificador 1.8cqi (máx. 30 caracteres).</dd>
+      <dt>Descrição</dt><dd>1–2 linhas · 2cqi · máx. <em>42 caracteres/linha</em>.</dd>
+      <dt>Imagem</dt><dd>Thumbnails circulares. Se não houver foto, manter cinza listrado.</dd>
+      <dt>Quando não usar</dt><dd>Se algum item exigir mais de 2 linhas de descrição, quebrar em duas telas.</dd>
+    </dl>
+  </div>
+
+  <!-- M02 — Explicação com nota complementar (id. original 06) -->
+  <div class="post-wrap">
+    <div class="post has-bg">
+      <img class="bg-img" src="assets/bg-cromossomos.jpg" alt="">
+      <div class="bg-overlay"></div>
+      <div class="p-inner">
+        <div class="p-body left" style="justify-content:flex-start;gap:3cqi;margin-top:2cqi">
+          <div class="p-eyebrow" style="background:transparent;border:0;padding:0;color:#fff">PILAR 01 · RELACIONAMENTO</div>
+          <div class="p-headline sans" style="font-size:6.2cqi;text-align:left">O Representante conhece<br>a rotina da clínica.</div>
+          <div class="p-sub" style="text-align:left;max-width:95%;font-size:3cqi;line-height:1.45">
+            Acompanha o pedido enquanto ele anda,<br>
+            responde por ele até a entrega e<br>
+            resolve o que aparece no caminho.
+          </div>
+        </div>
+        <div class="switch-card" style="background:transparent;border:0;padding:0;color:#fff">
+          <b style="color:#fff">Como se traduz:</b>
+          <span><strong>O médico fala com uma pessoa só</strong>, do primeiro pedido à continuidade do tratamento.</span>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">M02</span><span class="tag">Explicação com nota complementar · id. original 06</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Explicação com eyebrow (rótulo), título, parágrafo e nota complementar no rodapé.</dd>
+      <dt>Uso 2º</dt><dd>Miolo de pilar, princípio ou compromisso nomeado.</dd>
+      <dt>Fixo</dt><dd>Coluna alinhada à esquerda · eyebrow, título, parágrafo e nota — todos sem borda, sobre foto com overlay.</dd>
+      <dt>Eyebrow</dt><dd>1 linha · 2.4cqi · máx. <em>36 caracteres</em>. Sem borda, sem fundo.</dd>
+      <dt>Headline</dt><dd>2 linhas · 6.2cqi · máx. <em>28 caracteres/linha</em>.</dd>
+      <dt>Parágrafo</dt><dd>3 linhas · 3cqi · máx. <em>42 caracteres/linha</em>.</dd>
+      <dt>Nota</dt><dd>1 título curto (b) + 1–2 linhas de texto (máx. 120 caracteres no total).</dd>
+      <dt>Quando não usar</dt><dd>Se não houver informação de dois níveis, ir para M03/M04.</dd>
+    </dl>
+  </div>
+
+  <!-- M03 — Explicação inferior (id. original 06b) -->
+  <div class="post-wrap">
+    <div class="post has-bg">
+      <img class="bg-img" src="assets/bg-petri.jpg" alt="">
+      <div class="bg-overlay"></div>
+      <div class="p-inner">
+        <div style="flex:1"></div>
+        <div class="p-body left" style="flex:none;justify-content:flex-end;gap:3cqi;margin-bottom:1cqi">
+          <div class="p-headline sans" style="font-size:6.2cqi;text-align:left">Segurança que sustenta<br>a prescrição.</div>
+          <div class="p-sub" style="text-align:left;max-width:95%;font-size:3cqi;line-height:1.45">
+            Licença sanitária conferida,<br>
+            documentação de cada lote,<br>
+            rastreabilidade em toda a cadeia.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">M03</span><span class="tag">Explicação inferior · id. original 06b</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Bloco de título e parágrafo ancorado no rodapé, imagem respira em cima.</dd>
+      <dt>Uso 2º</dt><dd>Miolo em que a fotografia é a informação, o texto é a legenda longa.</dd>
+      <dt>Fixo</dt><dd>Alinhamento à esquerda · 1/3 inferior do quadro reservado ao texto.</dd>
+      <dt>Headline</dt><dd>2 linhas · 6.2cqi · máx. <em>28 caracteres/linha</em>.</dd>
+      <dt>Parágrafo</dt><dd>3 linhas · 3cqi · máx. <em>42 caracteres/linha</em>.</dd>
+      <dt>Imagem</dt><dd>Densidade central ou superior; o rodapé precisa de área para o texto.</dd>
+      <dt>Quando não usar</dt><dd>Se o texto passar de 3 linhas, ir para M04 ou dividir em dois quadros.</dd>
+    </dl>
+  </div>
+
+  <!-- M04 — Explicação superior (id. original 06c) -->
+  <div class="post-wrap">
+    <div class="post has-bg">
+      <img class="bg-img" src="assets/bg-cromossomos.jpg" alt="">
+      <div class="bg-overlay"></div>
+      <div class="p-inner">
+        <div class="p-body left" style="justify-content:flex-start;gap:3cqi;margin-top:2cqi;align-items:flex-start">
+          <div class="p-headline sans" style="font-size:6.2cqi;text-align:left;margin-left:0">A conduta do médico<br>se cumpre até o fim.</div>
+          <div class="p-sub" style="text-align:left;max-width:95%;font-size:3cqi;line-height:1.45;margin-left:0">
+            Continuidade do tratamento é<br>
+            uso continuado. Produto, documento<br>
+            e logística resolvidos por nós.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">M04</span><span class="tag">Explicação superior · id. original 06c</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Título e parágrafo alinhados à esquerda no topo, imagem respira embaixo.</dd>
+      <dt>Uso 2º</dt><dd>Miolo curto quando o desdobramento vem em outra tela.</dd>
+      <dt>Fixo</dt><dd>Sem eyebrow · sem nota complementar · sem rodapé.</dd>
+      <dt>Headline</dt><dd>2 linhas · 6.2cqi · máx. <em>28 caracteres/linha</em>.</dd>
+      <dt>Parágrafo</dt><dd>3 linhas · 3cqi · máx. <em>42 caracteres/linha</em>.</dd>
+      <dt>Imagem</dt><dd>Densidade inferior; o topo é do texto.</dd>
+      <dt>Quando não usar</dt><dd>Se precisar de rótulo (eyebrow) ou nota, usar M02.</dd>
+    </dl>
+  </div>
+
+  <!-- M05 — Lista visual curta (id. original 07) -->
+  <div class="post-wrap">
+    <div class="post white-bg">
+      <div class="p-inner dark">
+        <div class="p-brand" style="color:#8a8a8a">TREND SCIENCE</div>
+        <div class="p-body" style="gap:4cqi">
+          <div class="p-headline sans" style="font-size:5.4cqi;color:#111">
+            Três leitores,<br>cada um por uma porta.
+          </div>
+          <div class="rows" style="width:88%">
+            <div class="row">
+              <div class="thumb"></div>
+              <div class="name">Médico</div>
+              <div></div>
+              <div class="desc">Prescreve. A Trend Science garante<br>que o tratamento aconteça.</div>
+            </div>
+            <div class="row">
+              <div class="thumb"></div>
+              <div class="name">Clínica</div>
+              <div></div>
+              <div class="desc">Um só fornecedor,<br>previsibilidade para planejar o mês.</div>
+            </div>
+            <div class="row">
+              <div class="thumb"></div>
+              <div class="name">Paciente</div>
+              <div></div>
+              <div class="desc">Destino do cuidado,<br>nunca alvo de oferta.</div>
+            </div>
+          </div>
+        </div>
+        <div class="p-footer center" style="color:#8a8a8a">[ PARA QUEM ]</div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">M05</span><span class="tag">Lista visual curta · id. original 07</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Lista comparativa de 3 itens, nome curto e descrição em 2 linhas.</dd>
+      <dt>Uso 2º</dt><dd>Público, papel, origem, etapa.</dd>
+      <dt>Fixo</dt><dd>Fundo branco · sem coluna de seta · thumbnails cinza.</dd>
+      <dt>Itens</dt><dd><em>Exatamente 3</em>. Menos: usar M06. Mais: usar M01.</dd>
+      <dt>Headline</dt><dd>2 linhas · 5.4cqi · máx. <em>30 caracteres/linha</em>.</dd>
+      <dt>Nome</dt><dd>1–2 linhas · 2.3cqi · máx. <em>16 caracteres/linha</em>.</dd>
+      <dt>Descrição</dt><dd>2 linhas · 2cqi · máx. <em>40 caracteres/linha</em>.</dd>
+      <dt>Quando não usar</dt><dd>Se algum item precisar de dosagem/qualificador, usar M01.</dd>
+    </dl>
+  </div>
+
+  <!-- M06 — Afirmação com contexto (id. original 09) -->
+  <div class="post-wrap">
+    <div class="post has-bg">
+      <img class="bg-img" src="assets/bg-cromossomos.jpg" alt="">
+      <div class="bg-overlay"></div>
+      <div class="p-inner">
+        <div class="p-brand">TREND SCIENCE</div>
+        <div class="p-body" style="gap:3cqi">
+          <div class="p-headline sans" style="font-size:5.2cqi;line-height:1.2">
+            Credenciar é a parte<br>mais exigente do<br>nosso trabalho.
+          </div>
+          <div class="p-sub" style="font-size:3.4cqi;max-width:75%">
+            Validação documental e licença<br>sanitária verificada antes do primeiro pedido.
+          </div>
+        </div>
+        <div class="p-footer center">[ SEGURANÇA REGULATÓRIA ]</div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">M06</span><span class="tag">Afirmação com contexto · id. original 09</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Afirmação de 3 linhas, contexto de 2 linhas, tag institucional no rodapé.</dd>
+      <dt>Uso 2º</dt><dd>Fecho de uma explicação começada em M03/M04.</dd>
+      <dt>Fixo</dt><dd>Brand no topo · headline centralizado · rodapé com tag entre colchetes.</dd>
+      <dt>Headline</dt><dd>3 linhas · 5.2cqi · máx. <em>30 caracteres/linha</em>.</dd>
+      <dt>Sub</dt><dd>2 linhas · 3.4cqi · máx. <em>40 caracteres/linha</em>.</dd>
+      <dt>Tag</dt><dd>1 termo institucional, caps, entre colchetes. Máx. <em>28 caracteres</em>.</dd>
+      <dt>Quando não usar</dt><dd>Se a afirmação exigir uma segunda afirmação para ficar em pé, usar T01.</dd>
+    </dl>
+  </div>
+
+  <!-- M07 — Conjunto de termos (id. original 14) -->
+  <div class="post-wrap">
+    <div class="post white-bg">
+      <div class="p-inner dark">
+        <div class="p-brand" style="color:#8a8a8a">TREND SCIENCE</div>
+        <div class="p-body" style="gap:4cqi">
+          <div class="p-headline sans" style="font-size:5.4cqi;color:#111">Portfólio organizado<br>como o médico pensa:</div>
+          <div class="pills">
+            <span class="pill">Longevidade</span>
+            <span class="pill">Metabolismo</span>
+            <span class="pill">Performance</span>
+            <span class="pill">Hormonal</span>
+            <span class="pill">Cognição</span>
+            <span class="pill">Recuperação</span>
+            <span class="pill">Estética</span>
+            <span class="pill">Imunidade</span>
+            <span class="pill">Insumos</span>
+          </div>
+        </div>
+        <div class="p-footer center" style="color:#8a8a8a">[ NOVE CATEGORIAS ]</div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">M07</span><span class="tag">Conjunto de termos · id. original 14</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Conjunto de termos, categorias ou etapas em pills.</dd>
+      <dt>Uso 2º</dt><dd>Miolo de sumário: princípios, compromissos, categorias, blocos.</dd>
+      <dt>Fixo</dt><dd>Fundo branco · pills brancas com borda cinza · tag institucional no rodapé.</dd>
+      <dt>Headline</dt><dd>2 linhas · 5.4cqi · máx. <em>30 caracteres/linha</em>.</dd>
+      <dt>Pills</dt><dd><em>6 a 10</em> itens · 2.6cqi · máx. <em>16 caracteres/pill</em>. Uma palavra por pill.</dd>
+      <dt>Quando não usar</dt><dd>Se cada termo precisar de descrição, usar M01 ou M05.</dd>
+    </dl>
+  </div>
+
+</div>
+
+<!-- ================== TRANSIÇÕES E SÍNTESES ================== -->
+<div class="section-heading">Transições e sínteses <small>· ponte, fecho e assinatura</small></div>
+
+<div class="grid">
+
+  <!-- T01·A — Duas afirmações (id. original 04) -->
+  <div class="post-wrap">
+    <div class="post has-bg">
+      <img class="bg-img" src="assets/bg-petri.jpg" alt="">
+      <div class="bg-overlay"></div>
+      <div class="p-inner">
+        <div class="p-brand">TREND SCIENCE</div>
+        <div class="p-body" style="gap:4cqi">
+          <div class="p-headline sans" style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:6.5cqi;line-height:1.15">
+            O médico cuida<br>do paciente.
+          </div>
+          <div class="p-headline sans" style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:5.4cqi;line-height:1.2">
+            A Trend Science cuida <em>de que</em><br>nada falte para ele cuidar.
+          </div>
+        </div>
+        <div class="p-footer center">[ PROPÓSITO ]</div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">T01 · A</span><span class="tag">Duas afirmações · id. original 04</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Duas afirmações em escala igual: uma abre, a outra fecha o raciocínio.</dd>
+      <dt>Uso 2º</dt><dd>Fechamento com assinatura oficial na segunda linha (uso institucional).</dd>
+      <dt>Fixo</dt><dd>Brand no topo · duas afirmações centralizadas · rodapé com tag entre colchetes.</dd>
+      <dt>Afirmações</dt><dd>2 blocos · cada um 6.5cqi · 2 linhas · máx. <em>26 caracteres/linha</em>.</dd>
+      <dt>Ênfase</dt><dd>Itálico em 1–3 palavras (opcional), sem trocar peso.</dd>
+      <dt>Tag</dt><dd>1 termo institucional, caps, entre colchetes.</dd>
+      <dt>Quando não usar</dt><dd>Se as duas afirmações forem redundantes, usar M06.</dd>
+    </dl>
+  </div>
+
+  <!-- T01·B — variante (id. original 12) -->
+  <div class="post-wrap">
+    <div class="post has-bg">
+      <img class="bg-img" src="assets/bg-cromossomos.jpg" alt="">
+      <div class="bg-overlay"></div>
+      <div class="p-inner" style="padding:5cqi">
+        <div class="p-body" style="gap:5cqi;width:100%;max-width:100%">
+          <div class="p-headline sans" style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:5.4cqi;line-height:1.3;width:100%;max-width:100%;text-wrap:nowrap">
+            Talvez o trabalho de cuidar<br>fique mais leve quando<br>alguém cuida do resto.
+          </div>
+          <div class="p-headline sans" style="font-size:5.2cqi;font-weight:400;width:100%;max-width:100%;text-wrap:nowrap">
+            A ciência de facilitar<br>o trabalho<br>de quem cuida.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">T01 · B</span><span class="tag">Duas afirmações · fechamento com assinatura · id. original 12</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Reflexão em cima, assinatura oficial em baixo. Fecho de material institucional.</dd>
+      <dt>Uso 2º</dt><dd>Fecho de série, transição entre capítulos.</dd>
+      <dt>Fixo</dt><dd>Sem brand · sem rodapé · duas afirmações em escalas próximas (5.4 e 5.2cqi).</dd>
+      <dt>Bloco 1</dt><dd>4 linhas · 5.4cqi · máx. <em>28 caracteres/linha</em>.</dd>
+      <dt>Bloco 2</dt><dd>3 linhas · 5.2cqi · máx. <em>26 caracteres/linha</em>.</dd>
+      <dt>Assinatura</dt><dd>Aqui é onde a frase oficial cabe: <em>“A ciência de facilitar o trabalho de quem cuida.”</em></dd>
+      <dt>Quando não usar</dt><dd>Se for miolo educativo, usar M06.</dd>
+    </dl>
+  </div>
+
+  <!-- T02 — Três faixas visuais (id. original 13) -->
+  <div class="post-wrap">
+    <div class="post" style="background:none">
+      <div class="stack">
+        <div>
+          <img class="bg-img" src="assets/bg-cromossomos.jpg" alt="">
+          <div class="bg-overlay"></div>
+          <span class="word" style="position:relative;z-index:1;font-size:6.5cqi">APOIAMOS</span>
+        </div>
+        <div>
+          <img class="bg-img" src="assets/bg-petri.jpg" alt="">
+          <div class="bg-overlay"></div>
+          <span class="word" style="position:relative;z-index:1;font-size:6.5cqi">ACOMPANHAMOS</span>
+        </div>
+        <div>
+          <img class="bg-img" src="assets/bg-cromossomos.jpg" alt="">
+          <div class="bg-overlay"></div>
+          <span class="word" style="position:relative;z-index:1;font-size:6.5cqi">CONTINUAMOS</span>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">T02</span><span class="tag">Três faixas visuais · id. original 13</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Três palavras, três imagens. Marca cadência de três tempos.</dd>
+      <dt>Uso 2º</dt><dd>Abertura de material institucional (capa, três tempos).</dd>
+      <dt>Fixo</dt><dd>Grid vertical 1:1:1 · overlay preto em cada faixa · palavra centralizada em caps.</dd>
+      <dt>Palavras</dt><dd>3 termos · 9cqi · máx. <em>13 caracteres/palavra</em>. Sempre em caps.</dd>
+      <dt>Imagens</dt><dd>3 fotos distintas ou 3 recortes de uma sequência. Alta contraste ou textura densa.</dd>
+      <dt>Quando não usar</dt><dd>Se as três palavras não formarem cadência (verbo → verbo → verbo, ou substantivo × 3).</dd>
+    </dl>
+  </div>
+
+</div>
+
+<!-- ================== FECHAMENTOS ================== -->
+<div class="section-heading">Fechamentos <small>· última tela de um carrossel</small></div>
+
+<div class="grid">
+
+  <!-- F01 · A — Fechamento institucional sem convite -->
+  <div class="post-wrap">
+    <div class="post white-bg">
+      <div class="p-inner dark" style="padding:8cqi">
+        <div class="p-body" style="gap:6cqi;width:100%;max-width:100%;justify-content:space-between;align-items:flex-start;text-align:left">
+          <div class="p-headline sans" style="font-size:4.4cqi;color:#333;font-weight:300;line-height:1.35;max-width:80%">
+            Do primeiro pedido<br>à continuidade,<br>o médico fala com<br>uma pessoa só.
+          </div>
+          <div style="width:100%">
+            <div class="p-headline sans" style="font-size:5.6cqi;color:#111;font-weight:400;line-height:1.2;max-width:100%">
+              A ciência de<br>facilitar o trabalho<br>de quem cuida.
+            </div>
+            <div style="margin-top:5cqi;font-family:'Inter Tight';font-size:2.2cqi;letter-spacing:0.32em;text-transform:uppercase;font-weight:400;color:#333">
+              TREND SCIENCE
+            </div>
+            <div style="margin-top:0.8cqi;font-family:'Inter Tight';font-size:1.9cqi;font-weight:300;color:#8a8a8a;letter-spacing:0.02em">
+              Grupo de representação médica
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">F01 · A</span><span class="tag">Fechamento institucional · sem convite</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Encerrar carrossel com a assinatura oficial e a identificação da marca. Última tela.</dd>
+      <dt>Base</dt><dd>T01 · B (duas afirmações + assinatura), reorganizado para caber identificação institucional.</dd>
+      <dt>Obrigatórios</dt><dd>Assinatura oficial íntegra · identificação “Trend Science” · descritor curto de categoria.</dd>
+      <dt>Opcionais</dt><dd>Síntese de 3–4 linhas no topo (não repete a assinatura).</dd>
+      <dt>Fixo</dt><dd>Fundo branco · sem seta · sem convite · assinatura ocupa a maior escala tipográfica da tela.</dd>
+      <dt>Síntese</dt><dd>Padrão 4 linhas · 4.4cqi (≈ 48 px @1080) · máx. <em>32 caracteres/linha</em> · mín. omitir campo.</dd>
+      <dt>Assinatura</dt><dd>3 linhas · 5.6cqi (≈ 60 px) · fixa · não editar.</dd>
+      <dt>Identificação</dt><dd>Rótulo caps 2.2cqi · descritor 1.9cqi · máx. 40 caracteres no descritor.</dd>
+      <dt>Ausência</dt><dd>Se não houver síntese, o bloco superior é omitido e o inferior sobe para o centro. Sem espaço residual.</dd>
+      <dt>Testado</dt><dd>Conteúdo curto e no limite (32/28/26 caracteres). Não testado com síntese maior que 4 linhas.</dd>
+      <dt>Não usar</dt><dd>Como miolo · em carrossel científico que ainda precisa de referências (usar M08 antes).</dd>
+    </dl>
+  </div>
+
+  <!-- F01 · B — Fechamento institucional com convite -->
+  <div class="post-wrap">
+    <div class="post white-bg">
+      <div class="p-inner dark" style="padding:8cqi">
+        <div class="p-body" style="gap:5cqi;width:100%;max-width:100%;justify-content:space-between;align-items:flex-start;text-align:left">
+          <div class="p-headline sans" style="font-size:5.6cqi;color:#111;font-weight:400;line-height:1.2;max-width:100%">
+            A ciência de<br>facilitar o trabalho<br>de quem cuida.
+          </div>
+          <div style="width:100%">
+            <div style="padding-top:4cqi;border-top:1px solid rgba(0,0,0,0.12);font-family:'Inter Tight';font-size:3cqi;line-height:1.35;font-weight:300;color:#333">
+              Converse com um<br>Representante Credenciado.
+            </div>
+            <div style="margin-top:5cqi;font-family:'Inter Tight';font-size:2.2cqi;letter-spacing:0.32em;text-transform:uppercase;font-weight:400;color:#333">
+              TREND SCIENCE
+            </div>
+            <div style="margin-top:0.8cqi;font-family:'Inter Tight';font-size:1.9cqi;font-weight:300;color:#8a8a8a;letter-spacing:0.02em">
+              trendscience.com.br
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">F01 · B</span><span class="tag">Fechamento institucional · com convite</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Fecho com convite explícito para conversa com Representante Credenciado.</dd>
+      <dt>Base</dt><dd>F01 · A, mesma estrutura, com convite discreto no lugar da síntese.</dd>
+      <dt>Obrigatórios</dt><dd>Assinatura oficial · convite · identificação · endereço institucional.</dd>
+      <dt>Fixo</dt><dd>Convite abaixo da assinatura (nunca acima) · sem ícone-botão · sem seta · sem urgência.</dd>
+      <dt>Convite</dt><dd>2 linhas · 3cqi (≈ 32 px) · máx. <em>30 caracteres/linha</em>. Texto padrão: “Converse com um Representante Credenciado.”</dd>
+      <dt>Assinatura</dt><dd>3 linhas · 5.6cqi · escala dominante da tela. Não pode ser competida pelo convite.</dd>
+      <dt>Endereço</dt><dd>Sem <code>https://</code>, sem <code>www</code>. Só domínio ou perfil.</dd>
+      <dt>Testado</dt><dd>Convite curto e no texto padrão. Não testado com convite mais longo.</dd>
+      <dt>Não usar</dt><dd>Quando o público for exclusivamente científico ou regulatório · para material sem seguimento comercial (usar F01 · A).</dd>
+    </dl>
+  </div>
+
+</div>
+
+<!-- ================== MIOLOS CIENTÍFICOS ================== -->
+<div class="section-heading">Miolos científicos <small>· educação médica com rigor de fonte</small></div>
+
+<div class="grid">
+
+  <!-- M08 — Ficha de estudo científico -->
+  <div class="post-wrap">
+    <div class="post white-bg">
+      <div class="p-inner dark" style="padding:7cqi">
+        <div class="p-brand" style="color:#8a8a8a;text-align:left">FICHA DE ESTUDO · EXEMPLO ESTRUTURAL</div>
+        <div class="p-body left" style="gap:3cqi;width:100%;max-width:100%;justify-content:flex-start;margin-top:3cqi">
+          <div class="p-headline sans" style="font-size:4.4cqi;color:#111;text-align:left;line-height:1.2;max-width:100%">
+            [Pergunta investigada]<br>substituir por pergunta<br>do estudo em uma frase.
+          </div>
+          <div style="width:100%;display:grid;grid-template-columns:32% 1fr;gap:1.4cqi 2.6cqi;font-family:'Inter Tight';font-size:2.2cqi;line-height:1.35;color:#333;margin-top:1cqi">
+            <div style="font-weight:400;color:#111;letter-spacing:0.06em;text-transform:uppercase;font-size:1.9cqi">Desenho</div>
+            <div style="font-weight:300">[Ensaio · coorte · revisão · meta-análise]</div>
+            <div style="font-weight:400;color:#111;letter-spacing:0.06em;text-transform:uppercase;font-size:1.9cqi">População</div>
+            <div style="font-weight:300">[Descrição · n = número de participantes]</div>
+            <div style="font-weight:400;color:#111;letter-spacing:0.06em;text-transform:uppercase;font-size:1.9cqi">Intervenção</div>
+            <div style="font-weight:300">[O que foi feito] <span style="color:#8a8a8a">vs.</span> [comparador]</div>
+            <div style="font-weight:400;color:#111;letter-spacing:0.06em;text-transform:uppercase;font-size:1.9cqi">Duração</div>
+            <div style="font-weight:300">[Período de acompanhamento]</div>
+          </div>
+        </div>
+        <div style="margin-top:auto;padding-top:3cqi;border-top:1px solid rgba(0,0,0,0.1);font-family:'Inter Tight';font-size:1.9cqi;font-weight:300;color:#555;line-height:1.4">
+          <strong style="font-weight:400;color:#111">Referência ·</strong> [Autor et al.]<br>[Periódico], [ano]. [DOI ou link direto]
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">M08</span><span class="tag">Ficha de estudo · estrutura demonstrativa</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Apresentar o contexto de uma pesquisa antes do resultado. Nunca resultado + recomendação.</dd>
+      <dt>Bases</dt><dd>Lista do M01 (estrutura de linhas) + organização do M04 (título superior).</dd>
+      <dt>Obrigatórios</dt><dd>Rótulo “Ficha de estudo” · pergunta · desenho · população · referência (autor, periódico, ano).</dd>
+      <dt>Opcionais</dt><dd>Intervenção/comparador · duração. Se ausente, omitir a linha inteira sem deixar espaço residual.</dd>
+      <dt>Fixo</dt><dd>Fundo branco · sem imagem decorativa · grid de metadados 32% / restante · referência separada por régua superior.</dd>
+      <dt>Pergunta</dt><dd>3 linhas · 4.4cqi (≈ 48 px) · máx. <em>32 caracteres/linha</em>.</dd>
+      <dt>Rótulo do campo</dt><dd>1 linha · 1.9cqi caps · máx. <em>14 caracteres</em>.</dd>
+      <dt>Conteúdo do campo</dt><dd>1 linha · 2.2cqi · máx. <em>50 caracteres/linha</em>.</dd>
+      <dt>Referência</dt><dd>2 linhas · 1.9cqi · autor + periódico + ano + DOI/link.</dd>
+      <dt>Validação</dt><dd><em>Estrutura demonstrativa</em>. Fonte primária não verificada nesta etapa: nenhum estudo real citado. Antes de publicar, preencher com fonte acessível e verificada; se um campo não se aplicar ao estudo, omitir.</dd>
+      <dt>Divisão</dt><dd>Se qualquer campo exigir 2+ linhas, dividir em duas fichas ou usar M09 na sequência.</dd>
+      <dt>Testado</dt><dd>Placeholders no limite. Textos reais devem ser validados com quebras.</dd>
+      <dt>Não usar</dt><dd>Para dar recomendação clínica · para classificar “força de evidência” sem método explicitado · como capa (a capa de carrossel científico é C05).</dd>
+    </dl>
+  </div>
+
+  <!-- M09 · A — Resultado principal (dado) -->
+  <div class="post-wrap">
+    <div class="post white-bg">
+      <div class="p-inner dark" style="padding:7cqi">
+        <div class="p-brand" style="color:#8a8a8a;text-align:left">RESULTADO · EXEMPLO ESTRUTURAL</div>
+        <div class="p-body left" style="gap:2.4cqi;width:100%;max-width:100%;justify-content:flex-start;margin-top:2cqi">
+          <div class="p-headline sans" style="font-size:3.4cqi;color:#333;text-align:left;line-height:1.3;max-width:100%;font-weight:300">
+            [Descrição do desfecho medido]<br>no grupo estudado.
+          </div>
+          <div style="font-family:'Inter Tight';font-weight:400;font-size:16cqi;line-height:1;color:#111;letter-spacing:-0.04em;margin-top:1cqi">
+            [dado]<span style="font-size:6cqi;font-weight:300;color:#555;margin-left:0.6cqi">[unidade]</span>
+          </div>
+          <div style="font-family:'Inter Tight';font-size:2.2cqi;line-height:1.35;color:#555;font-weight:300;margin-top:1cqi">
+            [Variação absoluta ou relativa · vs. comparador]
+          </div>
+        </div>
+        <div style="margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:2cqi 3cqi;padding-top:2.4cqi;border-top:1px solid rgba(0,0,0,0.1);font-family:'Inter Tight';font-size:1.9cqi;color:#555;font-weight:300;line-height:1.4">
+          <div><strong style="font-weight:400;color:#111">Período ·</strong> [Duração]</div>
+          <div><strong style="font-weight:400;color:#111">Grupos ·</strong> [Comparação]</div>
+          <div style="grid-column:1 / -1"><strong style="font-weight:400;color:#111">Limitação ·</strong> [Restrição relevante à interpretação]</div>
+          <div style="grid-column:1 / -1"><strong style="font-weight:400;color:#111">Fonte ·</strong> [Autor et al., periódico, ano]</div>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">M09 · A</span><span class="tag">Resultado em contexto · dado principal</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Mostrar um dado principal com contexto suficiente para não ser lido isoladamente.</dd>
+      <dt>Base</dt><dd>C04 (destaque com chamada e contexto), reduzido a miolo.</dd>
+      <dt>Obrigatórios</dt><dd>Rótulo · desfecho · dado com unidade · período · grupos · limitação · fonte.</dd>
+      <dt>Fixo</dt><dd>Fundo branco · dado ocupa a maior escala (~172 px @1080) · unidade em escala reduzida ao lado · rodapé com metadados em 2 colunas.</dd>
+      <dt>Desfecho</dt><dd>2 linhas · 3.4cqi (≈ 37 px) · descreve o que foi medido, sem interpretação.</dd>
+      <dt>Dado</dt><dd>16cqi (≈ 173 px) · sempre com unidade adjacente em 6cqi. Se percentual, indicar “absoluto” ou “relativo”.</dd>
+      <dt>Variação</dt><dd>1 linha · 2.2cqi · compara com valor de referência declarado.</dd>
+      <dt>Metadados</dt><dd>Período · Grupos · Limitação · Fonte. Cada um em 1 linha (Limitação e Fonte podem ocupar 2).</dd>
+      <dt>Validação</dt><dd><em>Estrutura demonstrativa</em>. O dado real deve vir da mesma fonte usada em M08 e ser conferido antes da publicação.</dd>
+      <dt>Testado</dt><dd>Placeholders. Números com mais de 5 dígitos precisam de teste (podem quebrar a escala).</dd>
+      <dt>Não usar</dt><dd>Sem fonte identificada · para transferir automaticamente a leitura ao produto Trend Science (o resultado se refere ao que foi estudado).</dd>
+    </dl>
+  </div>
+
+  <!-- M09 · B — Resultado com gráfico simples -->
+  <div class="post-wrap">
+    <div class="post white-bg">
+      <div class="p-inner dark" style="padding:7cqi">
+        <div class="p-brand" style="color:#8a8a8a;text-align:left">RESULTADO · EXEMPLO ESTRUTURAL</div>
+        <div class="p-body left" style="gap:2.4cqi;width:100%;max-width:100%;justify-content:flex-start;margin-top:2cqi">
+          <div class="p-headline sans" style="font-size:3.4cqi;color:#333;text-align:left;line-height:1.3;max-width:100%;font-weight:300">
+            [Descrição do desfecho comparado<br>entre dois grupos].
+          </div>
+          <!-- Gráfico de barras simples · sem 3D, sem decoração -->
+          <div style="width:100%;margin-top:2cqi;font-family:'Inter Tight';font-weight:300">
+            <div style="display:grid;grid-template-columns:22% 1fr auto;gap:2cqi;align-items:center;margin-bottom:2cqi;font-size:2.1cqi">
+              <div style="color:#111;font-weight:400">Grupo A</div>
+              <div style="position:relative;height:4cqi;background:#f2f2f0;border:1px solid rgba(0,0,0,0.08)">
+                <div style="position:absolute;inset:0 40% 0 0;background:#1a1a1a" aria-label="Grupo A: 60% da escala"></div>
+              </div>
+              <div style="color:#111;font-weight:400;font-size:2.4cqi">[valor A]</div>
+            </div>
+            <div style="display:grid;grid-template-columns:22% 1fr auto;gap:2cqi;align-items:center;font-size:2.1cqi">
+              <div style="color:#111;font-weight:400">Grupo B</div>
+              <div style="position:relative;height:4cqi;background:#f2f2f0;border:1px solid rgba(0,0,0,0.08)">
+                <div style="position:absolute;inset:0 75% 0 0;background:#8a8a8a" aria-label="Grupo B: 25% da escala"></div>
+              </div>
+              <div style="color:#111;font-weight:400;font-size:2.4cqi">[valor B]</div>
+            </div>
+            <div style="margin-top:1.6cqi;font-size:1.7cqi;color:#8a8a8a">Escala 0–[unidade máxima] · escala não truncada</div>
+          </div>
+        </div>
+        <div style="margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:2cqi 3cqi;padding-top:2.4cqi;border-top:1px solid rgba(0,0,0,0.1);font-family:'Inter Tight';font-size:1.9cqi;color:#555;font-weight:300;line-height:1.4">
+          <div><strong style="font-weight:400;color:#111">Período ·</strong> [Duração]</div>
+          <div><strong style="font-weight:400;color:#111">Unidade ·</strong> [Unidade da medida]</div>
+          <div style="grid-column:1 / -1"><strong style="font-weight:400;color:#111">Limitação ·</strong> [Restrição relevante · intervalo de confiança se disponível]</div>
+          <div style="grid-column:1 / -1"><strong style="font-weight:400;color:#111">Fonte ·</strong> [Autor et al., periódico, ano]</div>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">M09 · B</span><span class="tag">Resultado em contexto · gráfico simples</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Comparar 2–3 grupos em um único gráfico de barras horizontais.</dd>
+      <dt>Base</dt><dd>M09 · A, com o slot do dado grande substituído por um gráfico.</dd>
+      <dt>Obrigatórios</dt><dd>Nome do grupo · barra · valor numérico ao final da barra · unidade · limitação · fonte.</dd>
+      <dt>Fixo</dt><dd>Barras horizontais · escala 0 até valor máximo declarado · sem 3D · sem gradiente · dois tons de cinza contrastando (preto e cinza médio) para não depender só de cor.</dd>
+      <dt>Grupos</dt><dd><em>2 ou 3</em>. Mais que isso, dividir em outra tela.</dd>
+      <dt>Rótulo do grupo</dt><dd>1 linha · 2.1cqi · máx. <em>14 caracteres</em>.</dd>
+      <dt>Valor</dt><dd>1 linha · 2.4cqi · com unidade explícita quando ambígua.</dd>
+      <dt>Legenda de escala</dt><dd>“Escala 0–X · escala não truncada” · fixa · confirma que o eixo não foi cortado.</dd>
+      <dt>Validação</dt><dd><em>Estrutura demonstrativa</em>. Dado real deve vir da mesma fonte usada em M08.</dd>
+      <dt>Testado</dt><dd>2 grupos. Não testado com 3. Diferenças menores que ~5% ficam pouco visíveis; usar M09 · A.</dd>
+      <dt>Não usar</dt><dd>Para tendência temporal (usar gráfico de linha, ainda a produzir) · para dados sem base comparável · quando a diferença for menor que a incerteza da medida.</dd>
+    </dl>
+  </div>
+
+</div>
+
+<!-- ================== MIOLO REGULATÓRIO ================== -->
+<div class="section-heading">Miolo regulatório <small>· atualização com data e alcance</small></div>
+
+<div class="grid">
+
+  <!-- M10 — Atualização regulatória -->
+  <div class="post-wrap">
+    <div class="post white-bg">
+      <div class="p-inner dark" style="padding:7cqi">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:2cqi">
+          <div class="p-brand" style="color:#8a8a8a;text-align:left;flex:1">ATUALIZAÇÃO REGULATÓRIA · EXEMPLO ESTRUTURAL</div>
+          <div style="font-family:'Inter Tight';font-size:1.9cqi;font-weight:300;color:#8a8a8a;letter-spacing:0.06em;text-transform:uppercase">[Tipo do ato]</div>
+        </div>
+        <div class="p-body left" style="gap:3cqi;width:100%;max-width:100%;justify-content:flex-start;margin-top:3cqi">
+          <div class="p-headline sans" style="font-size:4.4cqi;color:#111;text-align:left;line-height:1.2;max-width:100%">
+            [Título factual da<br>atualização em uma frase].
+          </div>
+          <div style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:2cqi 3cqi;font-family:'Inter Tight';font-size:2.1cqi;line-height:1.4;color:#333;margin-top:1cqi">
+            <div>
+              <div style="font-weight:400;color:#111;letter-spacing:0.06em;text-transform:uppercase;font-size:1.7cqi;margin-bottom:0.4cqi">Órgão · Ato</div>
+              <div style="font-weight:300">[Órgão] · [Nº/identificação]</div>
+            </div>
+            <div>
+              <div style="font-weight:400;color:#111;letter-spacing:0.06em;text-transform:uppercase;font-size:1.7cqi;margin-bottom:0.4cqi">Vigência</div>
+              <div style="font-weight:300">Publicação [dd/mm/aaaa]<br>Efeitos a partir de [dd/mm/aaaa]</div>
+            </div>
+            <div>
+              <div style="font-weight:400;color:#111;letter-spacing:0.06em;text-transform:uppercase;font-size:1.7cqi;margin-bottom:0.4cqi">O que muda</div>
+              <div style="font-weight:300">[Descrição factual, sem interpretação]</div>
+            </div>
+            <div>
+              <div style="font-weight:400;color:#111;letter-spacing:0.06em;text-transform:uppercase;font-size:1.7cqi;margin-bottom:0.4cqi">A quem se aplica</div>
+              <div style="font-weight:300">[Categoria alcançada pelo ato]</div>
+            </div>
+            <div style="grid-column:1 / -1;padding-top:2cqi;border-top:1px solid rgba(0,0,0,0.08)">
+              <div style="font-weight:400;color:#111;letter-spacing:0.06em;text-transform:uppercase;font-size:1.7cqi;margin-bottom:0.4cqi">Consequência prática</div>
+              <div style="font-weight:300">[Efeito objetivo para o público, sem promessa de ação da Trend Science que não tenha sido decidida]</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:auto;padding-top:2.4cqi;border-top:1px solid rgba(0,0,0,0.1);font-family:'Inter Tight';font-size:1.8cqi;font-weight:300;color:#8a8a8a;line-height:1.4;display:flex;justify-content:space-between;gap:2cqi">
+          <span><strong style="font-weight:400;color:#555">Fonte ·</strong> [Publicação oficial · link]</span>
+          <span>Consulta em [dd/mm/aaaa] · <em style="font-style:normal;color:#8a5a1a">revisar antes de publicar</em></span>
+        </div>
+      </div>
+    </div>
+    <div class="post-caption"><span class="label">M10</span><span class="tag">Atualização regulatória · estrutura demonstrativa</span></div>
+    <dl class="spec">
+      <dt>Função</dt><dd>Explicar uma atualização regulatória com data, alcance e consequência prática, sem generalização.</dd>
+      <dt>Base</dt><dd>M02 (título + parágrafo + nota) reorganizado com metadados em grid.</dd>
+      <dt>Obrigatórios</dt><dd>Tipo do ato · título factual · órgão · datas · o que muda · a quem se aplica · consequência · fonte oficial · data da consulta.</dd>
+      <dt>Opcionais</dt><dd>“Efeitos a partir de” só quando difere da publicação · comparação “antes/a partir de” só quando sustentada pelo ato.</dd>
+      <dt>Fixo</dt><dd>Fundo branco · rótulo “atualização regulatória” + tipo do ato no topo · grid 2×2 de metadados · consequência prática abaixo (destaque) · linha de fonte + status de revisão no rodapé.</dd>
+      <dt>Tipo do ato</dt><dd>Uma das opções: <em>Proposta · Consulta pública · Norma publicada · Anúncio · Medida específica</em>. Nunca omitir.</dd>
+      <dt>Título</dt><dd>2 linhas · 4.4cqi (≈ 48 px) · máx. <em>36 caracteres/linha</em>. Descrever o fato, não interpretar.</dd>
+      <dt>Consequência</dt><dd>2–3 linhas · 2.1cqi · descreve efeito para o público. Sem ação da Trend Science que não tenha sido decidida internamente.</dd>
+      <dt>Fonte</dt><dd>Link direto à publicação oficial + data da consulta.</dd>
+      <dt>Alerta editorial</dt><dd>Etiqueta “<em>revisar antes de publicar</em>” fixa no rodapé — reforça que peça regulatória exige revisão jurídica/regulatória antes da veiculação. Não remover em produção.</dd>
+      <dt>Validação</dt><dd><em>Estrutura demonstrativa</em>. Nenhuma norma real foi usada. Preencher com ato verificado em fonte oficial na data da produção.</dd>
+      <dt>Testado</dt><dd>Placeholders. Textos longos em “O que muda” e “A quem se aplica” podem estourar a coluna: dividir em duas telas.</dd>
+      <dt>Não usar</dt><dd>Para afirmar conformidade/licença de produto · para generalizar medida contra empresa/produto para o setor · para anunciar ação da Trend Science sem decisão registrada · como capa de carrossel.</dd>
+    </dl>
+  </div>
+
+</div>
+
+<!-- ================== SEQUÊNCIA CIENTÍFICA DEMONSTRATIVA ================== -->
+<div class="section-heading">Sequência científica demonstrativa <small>· como M08 → M09 · A → F01 · A se encadeiam</small></div>
+
+<div class="doc-block">
+  <h2>Por que essa sequência importa</h2>
+  <p class="lead">Educação médica com rigor: o leitor precisa entender o desenho do estudo <strong>antes</strong> de ler o resultado, e o carrossel precisa fechar com identidade da marca — não com o próprio resultado científico. F01 encerra <em>o carrossel</em>, não substitui a referência da fonte.</p>
+  <div class="flow">
+    <span>C05</span><span>M08 · ficha de estudo</span><span>M09 · A · resultado em contexto</span><span>M06 · afirmação de leitura</span><span>F01 · A · fecho institucional</span>
+  </div>
+  <p>A ordem preserva três regras da marca: (1) resultado científico se refere ao que foi estudado, não é transposto automaticamente ao produto Trend Science; (2) a assinatura oficial fecha, não abre; (3) o fechamento institucional não substitui referência bibliográfica — a fonte permanece registrada em M08 e M09.</p>
+</div>
+
+<!-- ================== ORIENTAÇÃO DE CARROSSÉIS ================== -->
+<div class="section-heading">Orientação de carrosséis <small>· combinações recomendadas</small></div>
+
+<div class="doc-block">
+  <h2>Como combinar os modelos</h2>
+  <p class="lead">Cinco tipos de carrossel institucional, com os códigos dos modelos disponíveis para cada função. Regra inicial: <strong>uma família de capa</strong> e <strong>até dois modelos principais de miolo por carrossel</strong>, para preservar coerência de hierarquia, rodapés e ritmo visual.</p>
+
+  <h3>Explicativo</h3>
+  <p>Capa → explicação → desenvolvimento → síntese → fechamento.</p>
+  <div class="flow">
+    <span>C01 · A</span><span>M02</span><span>M04</span><span>M06</span><span>F01 · A</span>
+  </div>
+
+  <h3>Processo em etapas</h3>
+  <p>Capa → sequência de etapas → conclusão. <em>Lacuna:</em> não há modelo dedicado para etapa numerada e responsabilidade (uma etapa por tela). Ver mapa de lacunas.</p>
+  <div class="flow">
+    <span>C01 · B</span><span class="gap">Etapa numerada · a produzir</span><span class="gap">Etapa numerada · a produzir</span><span class="gap">Etapa numerada · a produzir</span><span>T01 · A</span>
+  </div>
+
+  <h3>Lista comentada</h3>
+  <p>Capa → lista → aprofundamento → síntese.</p>
+  <div class="flow">
+    <span>C05</span><span>M01</span><span>M03</span><span>M06</span><span>T01 · B</span>
+  </div>
+
+  <h3>Editorial fotográfico</h3>
+  <p>Capa → explicações sobre imagem → transição.</p>
+  <div class="flow">
+    <span>C02</span><span>M03</span><span>M04</span><span>M03</span><span>T01 · A</span>
+  </div>
+
+  <h3>Análise científica</h3>
+  <p>Capa → contexto do estudo → resultado → leitura → fecho institucional. <em>Lacuna restante:</em> tela de referências e notas para carrossel com mais de uma fonte.</p>
+  <div class="flow">
+    <span>C05</span><span>M08</span><span>M09 · A</span><span>M06</span><span>F01 · A</span><span class="gap">Referências e notas · a produzir</span>
+  </div>
+
+  <h3>Atualização regulatória</h3>
+  <p>Capa factual → atualização com metadados → leitura prática → fecho institucional. Peca de um só assunto, sem generalização.</p>
+  <div class="flow">
+    <span>C01 · B</span><span>M10</span><span>M04</span><span>F01 · A</span>
+  </div>
+
+  <h3>Carrosséis institucionais previstos</h3>
+  <table>
+    <thead>
+      <tr><th>Tema</th><th>Tipo</th><th>Sequência sugerida</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>O papel da Trend Science</td>
+        <td>Explicativo</td>
+        <td>C02 → M04 → M02 → M07 → T01 · B</td>
+      </tr>
+      <tr>
+        <td>Como o fornecimento é acompanhado</td>
+        <td>Processo em etapas</td>
+        <td>C01 · B → <em>etapas (a produzir, 4 telas)</em> → F01 · A</td>
+      </tr>
+      <tr>
+        <td>O relacionamento com a clínica</td>
+        <td>Lista comentada</td>
+        <td>C05 → M01 → M03 → M06 → F01 · B</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ================== MAPA DE LACUNAS ================== -->
+<div class="section-heading">Mapa de lacunas <small>· layouts a desenvolver</small></div>
+
+<div class="doc-block">
+  <h2>O que ainda falta na biblioteca</h2>
+  <p class="lead">Sete layouts foram identificados inicialmente como ausentes ou insuficientes. Nesta etapa foram desenvolvidos <strong>quatro deles</strong>: fechamento institucional (F01 · A / B), ficha de estudo científico (M08), resultado em contexto (M09 · A / B) e atualização regulatória (M10). Permanecem pendentes três layouts, agora renumerados por prioridade restante.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Prio.</th><th>Layout</th><th>Função</th><th>Por que importa</th><th>Base</th><th>Acrescentar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background:#f4faf4">
+        <td>✓</td>
+        <td>Fechamento institucional com assinatura</td>
+        <td>Fechar carrossel com a frase oficial e um próximo passo opcional.</td>
+        <td>Desenvolvido nesta etapa como <strong>F01</strong> em dois estados (A sem convite, B com convite ao Representante Credenciado).</td>
+        <td>T01 · B</td>
+        <td>— Entregue.</td>
+      </tr>
+      <tr style="background:#f4faf4">
+        <td>✓</td>
+        <td>Ficha de estudo científico</td>
+        <td>Contexto de uma pesquisa antes do resultado.</td>
+        <td>Desenvolvido como <strong>M08</strong> em estrutura demonstrativa. Preenchimento com fonte real fica reservado à produção editorial.</td>
+        <td>M01 + M04</td>
+        <td>— Entregue.</td>
+      </tr>
+      <tr style="background:#f4faf4">
+        <td>✓</td>
+        <td>Resultado com gráfico ou dado</td>
+        <td>Um resultado com contexto suficiente para evitar leitura isolada.</td>
+        <td>Desenvolvido como <strong>M09 · A</strong> (dado principal) e <strong>M09 · B</strong> (gráfico de barras simples), com metadados e limitação obrigatórios.</td>
+        <td>C04</td>
+        <td>— Entregue.</td>
+      </tr>
+      <tr style="background:#f4faf4">
+        <td>✓</td>
+        <td>Atualização regulatória</td>
+        <td>Comunicar mudança regulatória com data, alcance e consequência prática.</td>
+        <td>Desenvolvido como <strong>M10</strong>, com etiqueta permanente “revisar antes de publicar” no rodapé.</td>
+        <td>M02</td>
+        <td>— Entregue.</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Etapa numerada com responsabilidade</td>
+        <td>Uma etapa por tela: número, nome da etapa, quem responde por ela.</td>
+        <td>Sem este modelo, o carrossel “Como o fornecimento é acompanhado” fica sem miolo próprio. Hoje é resolvido em M01, mas M01 é lista, não sequência.</td>
+        <td>M04</td>
+        <td>Numerador grande, rótulo do papel (Trend Science · farmácia · médico), campo de descrição curta.</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Documento comentado</td>
+        <td>Mostrar um trecho de documento (laudo, licença) com comentário lateral.</td>
+        <td>Verificação documental dupla é diferencial. Sem imagem de documento comentada, a promessa fica abstrata.</td>
+        <td>M03</td>
+        <td>Área para captura de documento em recorte, calouts numerados, legenda inferior.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Referências e notas</td>
+        <td>Fecho de carrossel científico com fontes numeradas.</td>
+        <td>Complementa M08 e M09 quando o carrossel usa mais de uma fonte. Sem ele, análise científica com múltiplos estudos termina sem consolidação bibliográfica.</td>
+        <td>M05</td>
+        <td>Lista de referências em fonte reduzida, coluna de números, campo para “como citar este material”.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ================== VERIFICAÇÃO ================== -->
+<div class="section-heading">Verificação <small>· o que foi conferido</small></div>
+
+<div class="doc-block">
+  <h2>Checagens executadas · etapa vigente</h2>
+  <p class="lead">Base identificada: <code>Replicas.html</code> na raiz do projeto (versão vigente). A versão anterior foi preservada em <code>Replicas_v1_original.html</code>. Nesta etapa foram acrescentados F01 · A, F01 · B, M08, M09 · A, M09 · B e M10. Nenhum modelo anterior teve composição, texto ou estilo alterado.</p>
+
+  <h3>Modelos anteriores</h3>
+  <ul>
+    <li><strong>Preservação visual:</strong> as 16 composições existentes (Capas, Miolos, Transições) mantêm posição, tipografia, cores, imagens e proporções. Nenhuma regra <code>&lt;style&gt;</code> ou marcação foi alterada.</li>
+    <li><strong>Ajustes de conteúdo dos modelos existentes:</strong> nenhum realizado nesta etapa.</li>
+  </ul>
+
+  <h3>Novos modelos</h3>
+  <ul>
+    <li><strong>Linguagem visual:</strong> tipografia (Inter Tight, pesos 300 e 400), padding padrão (7–8cqi), fundos brancos, régua fina <code>rgba(0,0,0,0.1)</code>, hierarquia de rótulos em caps espaçado — todos importados dos modelos existentes.</li>
+    <li><strong>F01 · A / B:</strong> a assinatura oficial <em>"A ciência de facilitar o trabalho de quem cuida."</em> está íntegra, na maior escala tipográfica da tela, sem seta, sem ícone-botão, sem urgência. Em F01 · B o convite fica abaixo da assinatura e em escala menor, para não competir.</li>
+    <li><strong>M08:</strong> fonte primária não verificada nesta etapa. Todos os campos aparecem como placeholder entre colchetes; nenhum autor, periódico, amostra ou resultado real foi inventado. O rótulo do topo diz explicitamente <em>"exemplo estrutural"</em>.</li>
+    <li><strong>M09 · A / B:</strong> mesmo tratamento. Dado, unidade, período e fonte são placeholders. Barra de M09 · B usa dois tons de cinza que contrastam (não depende de cor), escala não truncada, sem 3D, sem gradiente.</li>
+    <li><strong>M10:</strong> nenhuma norma real citada. Etiqueta <em>"revisar antes de publicar"</em> fixa no rodapé é permanente — parte da regra do modelo, não uma marca temporária.</li>
+    <li><strong>Léxico:</strong> Trend Science, Representante Credenciado, continuidade do tratamento, verificação documental dupla — todos preservados. Nenhum uso de "tudo, completo, líder, inovador, interface, ecossistema, jornada do paciente, medicina integrativa, consultor, executivo de contas".</li>
+    <li><strong>Assinatura oficial:</strong> aparece em T01 · B (existente) e agora em F01 · A e F01 · B (fecho). Não foi replicada como reforço em nenhum outro modelo.</li>
+  </ul>
+
+  <h3>Testes de conteúdo</h3>
+  <ul>
+    <li><strong>Curto:</strong> todos os quatro modelos testados com conteúdo mínimo (placeholder curto). Composição se mantém.</li>
+    <li><strong>No limite proposto:</strong> os placeholders mostrados nas peças estão no ou próximos do limite documentado nas fichas. F01 · A com síntese de 4 linhas cabe; M08 com pergunta de 3 linhas cabe; M09 · A com dado de até 4 dígitos e unidade curta cabe; M10 com "Consequência prática" de 2 linhas cabe.</li>
+    <li><strong>Ausência de campo opcional:</strong> M08 aceita omissão de "Intervenção" e "Duração" — a linha inteira sai, sem espaço residual. F01 aceita omissão da síntese — o bloco inferior sobe para o centro. M10 aceita omissão de "Efeitos a partir de" quando igual à publicação.</li>
+    <li><strong>Legibilidade a 360 px:</strong> validada em <em>preview</em>. Como o sistema usa <code>cqi</code>, toda a tipografia escala proporcionalmente. Textos abaixo de 1.7cqi (avisos de escala, endereço institucional) ficam próximos do limite legível a 360 px — não usar essas linhas para informação crítica.</li>
+  </ul>
+
+  <h3>Limites ainda não validados</h3>
+  <ul>
+    <li><strong>M08:</strong> conteúdo real com "Intervenção" longa (medicamento + comparador com dosagem) pode estourar a coluna direita — testar caso a caso.</li>
+    <li><strong>M09 · A:</strong> dados com 5+ dígitos (ex.: <em>12.500 mg/dL</em>) precisam de teste. A escala de 16cqi foi pensada para 3–4 caracteres.</li>
+    <li><strong>M09 · B:</strong> testado com 2 grupos. 3 grupos e diferenças menores que ~5% ainda não validados visualmente.</li>
+    <li><strong>M10:</strong> textos regulatórios reais tendem a ser mais longos que os placeholders mostrados. "O que muda" e "A quem se aplica" podem exigir divisão em duas telas — a ficha do modelo já orienta essa divisão.</li>
+    <li><strong>F01 · B:</strong> convite mais longo que o padrão "Converse com um Representante Credenciado." ainda não testado.</li>
+  </ul>
+
+  <h3>Regras aplicadas na tomada de decisão</h3>
+  <ul>
+    <li>Quando o conteúdo científico ou regulatório real não foi verificável nesta etapa, a peça foi marcada como <em>exemplo estrutural</em> em vez de simular um dado plausível. Isso preserva a integridade editorial para produção posterior.</li>
+    <li>F01 (fecho) e M08 (ficha) foram tratados como funções distintas: o fechamento institucional não substitui a referência bibliográfica; a fonte permanece registrada em M08 e M09.</li>
+    <li>M09 é apresentado em duas variantes funcionais (A dado, B gráfico) porque atendem a necessidades diferentes — dado com dígito único vs. comparação entre grupos. Não é decoração.</li>
+    <li>F01 tem duas variantes funcionais (A sem convite, B com convite) porque o brandbook prevê os dois estados. Nenhuma variante foi criada por preferência estética.</li>
+  </ul>
+
+  <p><strong>Regra geral mantida:</strong> quando o texto excede a capacidade, editar → dividir em duas telas → escolher outro modelo. Nunca reduzir fonte para caber.</p>
+</div>
+
+</body>
+</html>
