@@ -1,0 +1,1344 @@
+/* =============================================================
+   TRENDSCIENCE · Brand Guidelines
+   Design tokens + estilos base compartilhados por todas as seções.
+   ============================================================= */
+
+:root{
+  /* =============================================================
+     PALETA v3.0 · Sistema visual Trendscience
+     Duas famílias que nunca dividem a mesma peça.
+     ============================================================= */
+
+  /* ---------- Família petróleo (assinatura, padrão Brasil) ---------- */
+  --ink:          #042A2B;   /* fundo escuro principal + título sobre branco */
+  --petrol-700:   #0A4547;   /* camada dentro do escuro: card, faixa */
+  --teal:         #007A7D;   /* superfície e ação sobre branco */
+  --teal-signal:  #00D6B4;   /* destaque sobre fundo escuro */
+  --teal-100:     #D6F2F0;   /* fundo claro de seção e de tabela */
+
+  /* ---------- Família azul (operação internacional) ---------- */
+  --navy:         #0C1D46;   /* segunda superfície escura */
+  --blue:         #2C65EC;   /* destaque sobre navy, só ≥ 32px */
+  --blue-300:     #8FB4F7;   /* rótulo, legenda e texto pequeno sobre navy */
+
+  /* ---------- Neutros ---------- */
+  --white:        #FFFFFF;   /* fundo claro e texto sobre escuro */
+  --text-body:    #2E3838;   /* corpo de texto sobre fundo claro */
+  --gray-500:     #737979;   /* rótulo e metadado sobre fundo claro */
+
+  /* =============================================================
+     Aliases legados — mantidos para retrocompatibilidade com CSS
+     que ainda referencia --teal-500, --gray-XX, etc. Ao portar
+     para código novo, use os tokens oficiais acima.
+     ============================================================= */
+  --teal-50:  #E6F3F3;
+  --teal-200: #8FCBCB;
+  --teal-300: #5AB3B4;
+  --teal-400: #2E9799;
+  --teal-500: var(--teal);
+  --teal-600: #00686B;
+  --teal-700: #005457;
+  --teal-800: #00393B;
+  --teal-900: var(--ink);
+
+  --gray-50:  #F6F7F6;
+  --gray-100: #ECEEEE;
+  --gray-200: #DDE1E1;
+  --gray-300: #C2C7C7;
+  --gray-400: #9EA4A4;
+  --gray-600: #565B5B;
+  --gray-700: #3E4343;
+  --gray-800: #262A2A;
+  --gray-900: #0F1414;
+
+  --text-heading: var(--ink);
+  --text-muted:   var(--gray-500);
+  --text-inverse: var(--white);
+
+  /* ---------- Semânticas ---------- */
+  --success: #12805C;
+  --error:   #B03A2E;
+  --warning: #B7791F;
+  --info:    #005457;
+
+  /* ---------- Tipografia ---------- */
+  /* =============================================================
+     TIPOGRAFIA v3.1 · Par tipográfico, papéis não intercambiáveis.
+
+     • UBUNTU  carrega a voz     (display, big-number, ênfase inline,
+                                  subtítulo, frase-conceito)
+     • INTER TIGHT carrega a informação
+                                 (corpo, eyebrow, metadado, rótulo)
+
+     Regra de ouro em dúvida: use Inter Tight.
+     Ubuntu 300 · ênfase (nunca itálico verdadeiro).
+     Ubuntu 500 · display, big-number, subtítulo.
+     Ubuntu 700 · banido no brandbook. Só educação médica.
+     Inter Tight 400 · corpo.
+     Inter Tight 500/600 · metadado.
+     Inter Tight 700 · eyebrow, rótulo, tag caixa alta.
+     Inter Tight 800 · uso raro (display secundário técnico).
+     ============================================================= */
+  /* Tipografia unificada da marca: Inter Tight (Google Fonts).
+     Uma família só. --font-display permanece por retrocompatibilidade,
+     mas aponta para a mesma fonte — a hierarquia vem de peso/tamanho,
+     não de família. */
+  --font-display: "Inter Tight", ui-sans-serif, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-sans:    "Inter Tight", ui-sans-serif, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  /* Não temos monoespaçada — Inter Tight com tnum trava os numerais tabulares. */
+  --font-mono:    "Inter Tight", ui-sans-serif, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+
+  /* Escala oficial de tamanhos (13 valores, nenhum fora) */
+  --fs-kpi-xl:    clamp(64px, 9vw, 128px);   /* KPI gigante */
+  --fs-kpi-md:    56px;                       /* KPI de card */
+  --fs-kpi-sm:    32px;                       /* KPI pequeno em linha */
+  --fs-display:   clamp(36px, 5vw, 64px);    /* Display de capa */
+  --fs-chapter:   40px;                       /* Título de capítulo */
+  --fs-section:   32px;                       /* Título de seção */
+  --fs-card:      22px;                       /* Título de card */
+  --fs-subtitle:  18px;                       /* Subtítulo (500) */
+  --fs-lead:      18px;                       /* Lead (400) */
+  --fs-body:      16px;                       /* Corpo */
+  --fs-desc:      15px;                       /* Descrição de card */
+  --fs-caption:   13px;                       /* Legenda */
+  --fs-label:     11px;                       /* Rótulo e tag */
+
+  /* Tracking oficial (5 valores) */
+  --tr-kpi-xl:    -0.04em;
+  --tr-kpi-md:    -0.03em;
+  --tr-heading:   -0.02em;   /* display, capítulo, seção */
+  --tr-card-t:    -0.01em;   /* título de card */
+  --tr-label:     0.06em;    /* rótulo/tag caixa alta */
+
+  /* ---------- Spacing (múltiplos de 4, escala oficial) ---------- */
+  --sp-1:  4px;  --sp-2:  8px;  --sp-3:  12px; --sp-4:  16px;
+  --sp-5:  20px; --sp-6:  24px; --sp-8:  32px; --sp-10: 40px;
+  --sp-12: 48px; --sp-16: 64px; --sp-18: 72px; --sp-20: 80px;
+  --sp-24: 96px; --sp-32: 128px;
+
+  /* ---------- Radius ---------- */
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   14px;
+  --radius-pill: 999px;
+
+  /* ---------- Sombras ---------- */
+  --shadow-1: 0 1px 2px rgba(4,42,43,.06), 0 1px 1px rgba(4,42,43,.04);
+  --shadow-2: 0 4px 12px rgba(4,42,43,.08), 0 2px 4px rgba(4,42,43,.04);
+  --shadow-3: 0 12px 36px rgba(4,42,43,.10), 0 4px 10px rgba(4,42,43,.06);
+
+  /* ---------- Motion ---------- */
+  --dur-fast:   140ms;
+  --dur-normal: 240ms;
+  --ease:       cubic-bezier(.22,.61,.36,1);
+
+  /* ---------- Layout ---------- */
+  --nav-w: 268px;
+  --section-pad-x: clamp(40px, 6vw, 96px);
+  --section-pad-y: clamp(88px, 12vh, 144px);
+  --content-max: 1180px;
+}
+
+/* ============================================================ */
+/*  Reset + base                                                */
+/* ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+/* Corpo v3.0 · Roboto 400 · 16/25 · máximo 70 caracteres por linha (aplicado
+   nos containers de leitura via max-width em ch). */
+body{
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  background: var(--white);
+  color: var(--text-body);
+  line-height: 1.5625;   /* 25/16 */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+a { color: inherit; text-decoration: none; }
+/* v3.1 · ênfase inline em corpo é peso 600 (não 700 — Inter Tight 700 é pesado no corpo). */
+p b, li b, td b, dd b, .text-body b, .lede b { font-weight: 600; }
+
+img, svg { display: block; max-width: 100%; }
+::selection { background: var(--teal); color: #fff; }
+
+/* Utilitário: número/mono */
+/* .mono agora é Inter Tight com numerais tabulares travados + zero cortado. */
+.mono { font-family: var(--font-mono); font-feature-settings: "tnum" 1, "zero" 1; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* ============================================================ */
+/*  Layout shell                                                */
+/* ============================================================ */
+.shell{
+  display: grid;
+  grid-template-columns: var(--nav-w) minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+.nav{
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  border-right: 1px solid var(--gray-200);
+  padding: 40px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.nav .brand{
+  display: flex; flex-direction: column; gap: 12px;
+  margin-bottom: 36px;
+  align-items: flex-start;
+}
+.nav .brand-logo{
+  display: block;
+  width: 168px;      /* ~1/3 do width original 678 */
+  height: auto;
+  color: var(--ink); /* preenchimento via currentColor */
+  transition: color var(--dur-fast) var(--ease);
+}
+.nav .brand:hover .brand-logo{
+  color: var(--teal);
+}
+/* v3.1 · Metadado da sidebar: Inter Tight 500 · 11px. */
+.nav .brand .sub{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gray-500);
+}
+
+/* v3.1 · Eyebrow do grupo de navegação: Inter Tight 700 uppercase 0.12em. */
+.nav .group-label{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gray-400);
+  padding: 0 10px 10px;
+  margin-top: 24px;
+}
+.nav .group-label:first-of-type { margin-top: 8px; }
+
+.nav ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.nav li a{
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-body);
+  border-radius: var(--radius-sm);
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.nav li a:hover{
+  background: var(--gray-50);
+  color: var(--ink);
+}
+/* v3.1 · Numeração do item de menu: Inter Tight 500 · 11px. */
+.nav li a .n{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gray-400);
+  min-width: 20px;
+}
+.nav li a.active{
+  background: var(--gray-50);
+  color: var(--ink);
+}
+.nav li a.active .n{ color: var(--teal); }
+.nav li a .badge{
+  margin-left: auto;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--gray-100);
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+/* Badge para links que abrem em outra página do brandbook */
+.nav li a .badge.badge-ext{
+  background: transparent;
+  color: var(--teal);
+  /* letter-spacing removido */
+  text-transform: none;
+  padding: 1px 0;
+}
+.nav li a:hover .badge.badge-ext{
+  color: var(--teal);
+}
+
+/* v3.1 · Metadado do rodapé da sidebar: Inter Tight 400 · 11px, corpo. */
+.nav .foot{
+  margin-top: auto;
+  padding-top: 32px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--gray-500);
+  line-height: 1.7;
+  border-top: 1px solid var(--gray-100);
+}
+.nav .foot b { color: var(--ink); font-weight: 700; }
+
+/* ============================================================ */
+/*  Main + Section base                                         */
+/* ============================================================ */
+main {
+  min-width: 0;
+  overflow-x: clip; /* evita scroll horizontal quando .imgblock estica */
+}
+
+section{
+  padding: var(--section-pad-y) var(--section-pad-x);
+  border-bottom: 1px solid var(--gray-100);
+  max-width: var(--content-max);
+}
+section:last-of-type { border-bottom: none; }
+section.full { max-width: none; }
+
+.section-head{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 72px;
+  max-width: 780px;
+}
+/* Eyebrow / rótulo técnico · v3.0 · Roboto 600 · 11/14 · caixa alta · tracking .06em
+   O rótulo é o que dá o caráter técnico do sistema: abre cada bloco de dado. */
+.eyebrow{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow .num{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--teal);
+}
+/* linha decorativa removida a pedido — sem "──" após o número */
+.eyebrow .num::after{ content: none; }
+
+/* Display de capa · v3.0 · Montserrat 700 · escala clamp(36, 5vw, 64) */
+h2.section-title{
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+  margin: 0;
+  color: var(--ink);
+}
+.section-lead{
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--text-body);
+  margin: 8px 0 0;
+  max-width: 66ch;
+}
+
+/* v3.1 · Sub-head técnica: eyebrow Inter Tight 700 uppercase 0.12em. */
+h3.block-label{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gray-500);
+  margin: 0 0 28px;
+  padding-bottom: 12px;
+  border-top: 1px solid var(--gray-200);
+  padding-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+h3.block-label .idx{
+  font-family: var(--font-sans);
+  color: var(--teal);
+  font-weight: 700;
+}
+
+/* ============================================================ */
+/*  COVER                                                        */
+/* ============================================================ */
+.cover{
+  background: var(--ink);
+  color: #fff;
+  max-width: none;
+  padding: 0;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+/* v3.1 · Imagem de capa. A foto sangra full-bleed atrás do conteúdo.
+   Overlay em preto puro (nunca Ink com opacidade — regra 5 do sistema).
+   O gradient vertical concentra o overlay nas bordas superior e inferior
+   para não competir com o wordmark central. */
+.cover .cover-photo{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.cover .cover-photo img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.cover .cover-photo::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(0,0,0,0.55) 0%,
+      rgba(0,0,0,0.15) 32%,
+      rgba(0,0,0,0.15) 68%,
+      rgba(0,0,0,0.65) 100%);
+}
+.cover .inner{
+  min-height: 100vh;
+  padding: clamp(48px, 6vw, 80px) var(--section-pad-x);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 40px;
+  position: relative;
+  z-index: 1;
+}
+.cover .top{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+}
+/* v3.1 · Eyebrow do cover, fundo Ink: Teal Sinal. */
+.cover .top .eyebrow{
+  color: var(--teal-signal);
+}
+/* v3.1 · Metadado do cover: Inter Tight 400, Teal Sinal para labels. */
+.cover .top .doc-id{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--teal-signal);
+  text-align: right;
+  line-height: 1.7;
+}
+.cover .top .doc-id b{ color: var(--white); font-weight: 700; }
+
+.cover .center{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+}
+.cover .wm{
+  margin: 0;
+  display: block;
+  line-height: 0; /* remove baseline spacing */
+}
+.cover .wm svg{
+  display: block;
+  width: clamp(320px, 80%, 900px);
+  height: auto;
+  color: #fff; /* SVG usa currentColor */
+}
+
+/* Capa · headline v3.1 · Ubuntu 500 sobre Ink.
+   Ênfase inline em Ubuntu 300 Teal Sinal (regra 2 do sistema). */
+.cover .tag{
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.6vw, 48px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  color: var(--white);
+  max-width: 22ch;
+}
+.cover .tag em{
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 300;
+  color: var(--teal-signal);
+}
+
+.cover .bottom{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,.12);
+}
+/* v3.1 · Rótulo do metadado do cover: Inter Tight 700 uppercase 0.12em em Teal Sinal. */
+.cover .meta b{
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--teal-signal);
+  margin-bottom: 10px;
+}
+/* v3.1 · Valor do metadado: Inter Tight 500 · 15px branco. */
+.cover .meta div.v{
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 1.4;
+}
+
+/* Decorative rules */
+.cover .rule-mark{
+  position: absolute;
+  right: var(--section-pad-x);
+  top: clamp(48px, 6vw, 80px);
+  width: 1px;
+  height: 68px;
+  background: var(--teal-300);
+  opacity: .8;
+}
+
+/* ============================================================ */
+/*  Section: A MARCA                                            */
+/* ============================================================ */
+#a-marca .essencia{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  padding: 40px 0 96px;
+  border-bottom: 1px solid var(--gray-100);
+}
+/* v3.1 · Eyebrow da essência: Inter Tight 700 uppercase 0.12em. */
+#a-marca .essencia .kick{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--teal);
+}
+/* Essência — frase-conceito Ubuntu 300, fecho de material. */
+#a-marca .essencia .display{
+  font-family: var(--font-display);
+  font-size: clamp(48px, 8vw, 128px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+  max-width: 22ch;
+  margin: 0;
+}
+#a-marca .essencia .display .quote-open,
+#a-marca .essencia .display .quote-close{
+  color: var(--teal);
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+#a-marca .essencia .body{
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--text-body);
+  max-width: 56ch;
+  margin: 0;
+}
+#a-marca .essencia .body b { color: var(--ink); font-weight: 700; }
+
+/* Bloco 2 col padrão */
+.two-col{
+  display: grid;
+  grid-template-columns: 260px minmax(0,1fr);
+  gap: 64px;
+  align-items: start;
+  padding: 96px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+/* v3.1 · Eyebrow do bloco (função 5): Inter Tight 700 uppercase 0.12em. */
+.two-col > .label{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gray-500);
+}
+/* v3.1 · Índice grande do bloco: Ubuntu 500 tabular. */
+.two-col > .label .idx{
+  display: block;
+  color: var(--teal);
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 12px;
+  font-feature-settings: "tnum" 1;
+}
+/* v3.1 · Título de seção (função 1/3): Ubuntu 500 · 40px · -0.02em. */
+.two-col > .body h3{
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0 0 24px;
+  max-width: 22ch;
+}
+/* v3.1 · Lead (função 6): Inter Tight 400 · 18px · 1.55. */
+.two-col > .body p{
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--text-body);
+  margin: 0 0 16px;
+  max-width: 62ch;
+}
+.two-col > .body p:last-child { margin-bottom: 0; }
+/* v3.1 · Ênfase em corpo = peso 600 (não 700). */
+.two-col > .body strong { color: var(--ink); font-weight: 600; }
+
+/* Missão — 3 registros */
+/* Missão — cards preenchem toda a largura de segurança do bloco */
+.missao-registros{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+.miss-card{
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+/* v3.1 · Tag (função 5): Inter Tight 700 uppercase 0.12em, 11px. */
+.miss-card .tag-reg{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--teal);
+}
+.miss-card .tag-reg::before{
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  display: inline-block;
+}
+/* v3.1 · Metadado (função 7): Inter Tight 500, corpo (não caixa alta). */
+.miss-card .kicker{
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-500);
+}
+/* v3.1 · Subtítulo (função 4): Ubuntu 500 · 22px · -0.015em. */
+.miss-card blockquote{
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: var(--ink);
+  border: none;
+  padding: 0;
+}
+.miss-card blockquote::before{
+  content: "";
+  display: block;
+  width: 28px; height: 2px;
+  background: var(--teal);
+  margin-bottom: 16px;
+}
+/* v3.1 · Metadado do rodapé do card: Inter Tight 400 · 13px. */
+.miss-card .uso{
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--gray-500);
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--gray-100);
+}
+.miss-card .uso b{
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* Frase-conceito — callout */
+.callout-conceito{
+  margin-top: 40px;
+  padding: 48px 56px;
+  background: var(--gray-50);
+  border-left: 3px solid var(--teal);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 40px;
+  align-items: center;
+}
+/* v3.1 · Eyebrow do callout: Inter Tight 700 uppercase 0.12em. */
+.callout-conceito .label{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gray-500);
+  max-width: 12ch;
+  line-height: 1.5;
+}
+.callout-conceito .label b{ color: var(--teal); display: block; }
+/* v3.1 · Frase-conceito de bloco: Ubuntu 300 (sem itálico verdadeiro). */
+.callout-conceito .frase{
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 300;
+  font-style: normal;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0;
+}
+/* Redução específica para callouts dos capítulos 07, 09 e 10, que carregam
+   parágrafos densos onde 44px torna a leitura pesada. Escala mantida dentro
+   dos tokens oficiais (subtítulo/lead). */
+#como-funciona .callout-conceito .frase,
+#conformidade .callout-conceito .frase,
+#uso-responsavel .promessa .box .frase{
+  font-size: clamp(22px, 2.2vw, 32px);
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  max-width: 62ch;
+}
+
+/* Visão — full-width quote */
+.visao-block{
+  padding: 96px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+/* v3.1 · Eyebrow do bloco de visão: Inter Tight 700 uppercase 0.12em. */
+.visao-block .label{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--teal);
+  margin-bottom: 24px;
+}
+/* Visão — Ubuntu 500 display com ênfase em Ubuntu 300 teal. */
+.visao-block .frase{
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  color: var(--ink);
+  margin: 0;
+  max-width: 24ch;
+}
+.visao-block .frase .em{
+  font-weight: 300;
+  color: var(--teal);
+}
+/* v3.1 · Metadado ancorado: Inter Tight 500 · 13px. */
+.visao-block .anchor{
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-500);
+  margin-top: 40px;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.visao-block .anchor b{ color: var(--ink); font-weight: 700; }
+
+/* Pilares */
+.pilares{
+  padding: 96px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+/* Pilares — cards preenchem toda a largura de segurança do bloco.
+   auto-fit + minmax(240px, 1fr) faz N cards distribuírem 100% do row. */
+.pilares-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+}
+.pilar{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 2px solid var(--ink);
+}
+/* v3.1 · Ícone do pilar: Lucide 40x40, stroke 2, teal.
+   Fica entre a .num (eyebrow) e o h4. Alinhamento à esquerda,
+   respiro de 4px acima e abaixo para não colar no texto. */
+.pilar .pilar-icon{
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  color: var(--teal);
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.pilar .pilar-icon svg{ width: 100%; height: 100%; }
+/* v3.1 · Numeração do pilar: Inter Tight 700 uppercase 0.12em (eyebrow). */
+.pilar .num{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--teal);
+}
+/* v3.1 · Subtítulo (função 4): Ubuntu 500 · 22px · -0.015em. */
+.pilar h4{
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: var(--ink);
+  margin: 0;
+}
+/* v3.1 · Descrição de card: Inter Tight 400 · 15px · 1.5. */
+.pilar p{
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-body);
+  margin: 0;
+}
+/* v3.1 · Frase-conceito no fim do card: Ubuntu 300 (não itálico). */
+.pilar .pill-quote{
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--teal-700);
+  margin: 4px 0 0;
+  padding-top: 16px;
+  border-top: 1px dashed var(--teal-200);
+}
+
+/* Compromissos */
+.compromissos{
+  padding: 96px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+/* Compromissos — cards preenchem toda a largura de segurança */
+.comp-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 8px;
+  margin-top: 48px;
+  border-top: 1px solid var(--gray-200);
+  border-left: 1px solid var(--gray-200);
+}
+.comp{
+  padding: 40px;
+  background: #fff;
+  border-right: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.comp .head{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+/* v3.1 · Rótulo do compromisso: eyebrow Inter Tight 700 uppercase 0.12em. */
+.comp .head .n{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--teal);
+}
+/* v3.1 · Título de card grande: Ubuntu 500 · 32px · -0.02em (título de seção). */
+.comp h4{
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0;
+}
+/* v3.1 · Descrição de card: Inter Tight 400 · 15px. */
+.comp p{
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--text-body);
+  margin: 0;
+  max-width: 52ch;
+}
+/* v3.1 · Frase-conceito de fecho: Ubuntu 300, sem itálico verdadeiro. */
+.comp blockquote{
+  margin: 12px 0 0;
+  padding: 20px 0 0;
+  border-top: 1px solid var(--gray-100);
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+/* Personalidade + Tom de voz */
+.personalidade{
+  padding: 96px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.pers-top{
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 64px;
+  align-items: start;
+  margin-bottom: 56px;
+}
+/* v3.1 · Display Ubuntu 500 (função 1 da tabela). */
+.pers-top .arq{
+  font-family: var(--font-display);
+  font-size: clamp(36px, 3.5vw, 52px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  color: var(--ink);
+  margin: 0;
+}
+/* Ênfase inline em display: Ubuntu 300 teal (função 2). */
+.pers-top .arq .em{
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: normal;
+  color: var(--teal);
+}
+.pers-top .just{
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-body);
+  margin: 0;
+}
+/* Adjetivos/pares — preenchem toda a largura do bloco */
+.adjetivos{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 8px;
+}
+.adj-card{
+  padding: 28px;
+  background: #fff;
+  border: 1px solid var(--gray-200);
+}
+.adj-card.is-yes{ border-color: var(--teal-300); }
+.adj-card.is-no{ border-color: var(--gray-300); }
+/* v3.1 · Cabeçalho do card de adjetivo: eyebrow Inter Tight 700 uppercase. */
+.adj-card .h{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 20px;
+}
+.adj-card.is-yes .h{ color: var(--teal); }
+.adj-card.is-no .h{ color: var(--gray-500); }
+.adj-card .h .dot{
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.adj-card.is-yes .h .dot{ background: var(--teal); }
+.adj-card.is-no .h .dot{ background: var(--gray-400); }
+.adj-card ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.adj-card ul li{
+  font-family: var(--font-sans);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.adj-card.is-no ul li{ color: var(--gray-500); text-decoration: line-through; text-decoration-thickness: 1px; text-decoration-color: var(--gray-300); }
+
+/* Tom de voz */
+.tom{
+  padding: 96px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.tom-intro{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px 80px;
+  margin: 32px 0 56px;
+}
+.tom-intro dl{ margin: 0; }
+/* v3.1 · Eyebrow do dt: Inter Tight 700 uppercase 0.12em. */
+.tom-intro dt{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+.tom-intro dd{
+  margin: 0 0 24px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-body);
+}
+.tom-intro dd b{ color: var(--ink); font-weight: 700; }
+
+.tom-examples{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.tom-card{
+  padding: 32px;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.tom-card.is-yes{ background: var(--teal-50); border: 1px solid var(--teal-100); }
+.tom-card.is-no { background: var(--gray-50); border: 1px solid var(--gray-200); }
+/* v3.1 · Header do card do/don't: eyebrow Inter Tight 700 uppercase. */
+.tom-card .th{
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.tom-card.is-yes .th{ color: var(--teal-700); }
+.tom-card.is-no .th{ color: var(--text-muted); }
+.tom-card .icon{
+  width: 18px; height: 18px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 700; font-family: var(--font-sans); color: #fff;
+  font-size: 13px;
+}
+.tom-card.is-yes .icon{ background: var(--teal); }
+.tom-card.is-no .icon{ background: var(--error); }
+.tom-card ol{
+  list-style: none;
+  padding: 0; margin: 0;
+  counter-reset: t;
+  display: flex; flex-direction: column;
+  gap: 14px;
+}
+.tom-card ol li{
+  counter-increment: t;
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(4,42,43,.08);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+  font-style: italic;
+}
+.tom-card.is-no ol li{ color: var(--gray-600); }
+/* v3.1 · Numeração da lista: Inter Tight 500 tabular. */
+.tom-card ol li::before{
+  content: counter(t, decimal-leading-zero);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  font-style: normal;
+  color: var(--gray-500);
+  padding-top: 2px;
+  font-feature-settings: "tnum" 1;
+}
+.tom-card ol li:first-child{ border-top: none; padding-top: 0; }
+
+/* Promessa — closing block */
+.promessa{
+  padding: 96px 0 0;
+}
+.promessa .box{
+  background: var(--ink);
+  color: #fff;
+  padding: clamp(48px, 6vw, 96px);
+  border-radius: var(--radius-md);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 48px;
+  align-items: end;
+}
+/* v3.1 · Eyebrow do bloco escuro: Inter Tight 700 uppercase 0.12em em Teal Sinal. */
+.promessa .box .label{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--teal-signal);
+  max-width: 10ch;
+  line-height: 1.4;
+}
+.promessa .box .label::before{
+  content: "";
+  display: block;
+  width: 40px; height: 2px;
+  background: var(--teal-signal);
+  margin-bottom: 16px;
+}
+/* v3.1 · Frase-conceito grande em fundo escuro: Ubuntu 500 branco.
+   A ênfase interna é feita com Ubuntu 300 Teal Sinal (função 2). */
+.promessa .box .frase{
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.4vw, 48px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: #FFFFFF;
+  margin: 0;
+  max-width: 32ch;
+}
+.promessa .box .frase b{
+  font-family: var(--font-display);
+  font-weight: 300;
+  color: var(--teal-signal);
+}
+/* Stack de dois parágrafos dentro do box da promessa (bloco 10).
+   Sem esse wrapper, a segunda .frase cai na primeira coluna do grid
+   (a do rótulo) e fica espremida. Aqui ela ocupa a coluna 2 inteira. */
+.promessa .box .frase-stack{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 68ch;
+}
+.promessa .box .frase-stack .frase{ margin: 0; max-width: none; }
+
+/* Segundo parágrafo: Ubuntu 300, escala menor.
+   Cria hierarquia entre afirmação (500) e desdobramento (300).
+   Especificidade elevada com #uso-responsavel para vencer a regra de
+   escopo dos callouts densos definida acima. */
+#uso-responsavel .promessa .box .frase.frase-sub{
+  font-weight: 300;
+  font-size: clamp(18px, 1.8vw, 26px);
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+/* ============================================================ */
+/*  Image blocks — full-width (mockups virão aqui)             */
+/*  Placeholder mínimo: apenas retângulo cinza-claro.          */
+/*  Full-width dentro da área de CONTEÚDO (não passa           */
+/*  por baixo da sidebar).                                     */
+/* ============================================================ */
+/* ============================================================
+   Imgblock — retângulo cinza-claro que estende do final da sidebar
+   até a borda direita da viewport, INDEPENDENTE do max-width do
+   section pai.
+
+   Técnica: largura fixa em viewport-units, posicionado com `left`
+   relativo à sidebar. Escapa completamente do max-width do <section>.
+   ============================================================ */
+.imgblock{
+  position: relative;
+  padding: 0;
+  border: none !important;
+  background: transparent;
+  overflow: hidden;
+  margin: 96px 0;
+
+  /* Largura = viewport - sidebar (área útil do <main>) */
+  width: calc(100vw - var(--nav-w));
+  max-width: none;
+
+  /* Posiciona o início do bloco na borda esquerda do <main>,
+     compensando o padding-left do section pai */
+  left: calc(-1 * var(--section-pad-x));
+
+  /* Zera as margens laterais para não interferir com o `left` */
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.imgblock .frame{
+  position: relative;
+  width: 100%;
+  background: var(--gray-100);
+  border-top: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+  overflow: hidden;
+}
+/* Quando o frame carrega uma foto, ela preenche todo o retângulo sem
+   distorcer, com foco central. Sem overlay: a Regra Zero proíbe
+   Ink com opacidade; se um overlay for necessário, use preto puro. */
+.imgblock .frame > img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+/* Frame com foto ganha borders neutralizadas em fundo escuro. */
+.imgblock .frame.has-photo{
+  background: var(--ink);
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+}
+
+/* Proporções wide-screen (todas cinematográficas) */
+.imgblock.h-cine  .frame { aspect-ratio: 16/9;  }   /* widescreen padrão */
+.imgblock.h-wide  .frame { aspect-ratio: 21/9;  }   /* ultrawide */
+.imgblock.h-tall  .frame { aspect-ratio: 16/10; }   /* wide um pouco mais alto */
+.imgblock.h-short .frame { aspect-ratio: 21/7;  }   /* cinematic strip */
+
+/* Em viewports pequenas (sidebar oculta, main preenche tudo) */
+@media (max-width: 860px){
+  .imgblock{
+    width: 100vw;
+    left: -24px; /* compensa o padding do section em mobile */
+  }
+  .imgblock.h-cine .frame,
+  .imgblock.h-wide .frame,
+  .imgblock.h-tall .frame,
+  .imgblock.h-short .frame { aspect-ratio: 16/9; }
+}
+
+/* ============================================================ */
+/*  Placeholder — seções ainda não construídas                 */
+/* ============================================================ */
+.placeholder{
+  padding: var(--section-pad-y) var(--section-pad-x);
+  border-bottom: 1px solid var(--gray-100);
+  max-width: var(--content-max);
+}
+.placeholder .ph-box{
+  border: 1px dashed var(--gray-300);
+  border-radius: var(--radius-md);
+  padding: 64px;
+  background: var(--gray-50);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+/* v3.1 · Tag pílula (função 5): Inter Tight 700 uppercase 0.12em. */
+.placeholder .ph-box .tag{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--teal);
+  padding: 5px 10px;
+  border: 1px solid var(--teal-200);
+  border-radius: var(--radius-pill);
+  background: #fff;
+}
+.placeholder .ph-box p{
+  font-size: 15px;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 56ch;
+}
+
+/* ============================================================ */
+/*  Responsive                                                  */
+/* ============================================================ */
+@media (max-width: 1100px){
+  .cover .bottom{ grid-template-columns: repeat(2, 1fr); }
+  .missao-registros{ grid-template-columns: 1fr; }
+  .pilares-grid{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 860px){
+  :root { --nav-w: 0px; }
+  .shell{ grid-template-columns: 1fr; }
+  .nav{ display: none; }
+  section, .placeholder{ padding: 72px 24px; }
+  .two-col{ grid-template-columns: 1fr; gap: 24px; padding: 64px 0; }
+  .comp-grid{ grid-template-columns: 1fr; }
+  .adjetivos, .tom-intro, .tom-examples, .pers-top{ grid-template-columns: 1fr; }
+  .callout-conceito, .promessa .box{ grid-template-columns: 1fr; gap: 24px; }
+  .cover .bottom{ grid-template-columns: 1fr 1fr; }
+}

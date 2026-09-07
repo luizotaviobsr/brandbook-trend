@@ -1,0 +1,338 @@
+/* =============================================================
+   TRENDSCIENCE — Seção 07 Padrões Gráficos
+   Estilos específicos para as composições do ícone em escala.
+   ============================================================= */
+
+/* Manifesto: declaração da regra sagrada */
+.pattern-manifesto{
+  padding: 48px 56px;
+  background: var(--gray-50);
+  border-left: 3px solid var(--teal);
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 56px;
+  align-items: center;
+  margin-top: 40px;
+}
+.pattern-manifesto .lbl{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  /* letter-spacing removido */
+  color: var(--teal);
+  line-height: 1.5;
+  max-width: 14ch;
+}
+.pattern-manifesto .lbl b{
+  color: var(--ink);
+  display: block;
+  margin-bottom: 6px;
+}
+.pattern-manifesto .decl{
+  font-family: var(--font-sans);
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--ink);
+  margin: 0;
+}
+.pattern-manifesto .decl em{
+  font-style: normal;
+  color: var(--teal);
+  font-weight: 400;
+}
+
+/* Grid das composições */
+.compositions{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 48px;
+}
+.composition{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.composition.wide{
+  grid-column: span 2;
+}
+.composition.vertical{
+  grid-row: span 2;
+}
+
+/* Stage — mesma linguagem dos studies */
+.pattern-stage{
+  aspect-ratio: 16/9;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--gray-200);
+}
+.pattern-stage.vertical{ aspect-ratio: 9/16; }
+.pattern-stage.square{ aspect-ratio: 1/1; }
+
+.pattern-stage.bg-white{ background: #fff; color: var(--ink); }
+.pattern-stage.bg-ink{ background: var(--ink); color: #fff; border-color: var(--ink); }
+.pattern-stage.bg-teal{ background: var(--teal); color: #fff; border-color: var(--teal); }
+.pattern-stage.bg-tealsoft{ background: var(--teal-50); color: var(--ink); border-color: var(--teal-100); }
+
+.pattern-stage svg{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Brandmark dentro do stage */
+.pattern-stage .brandmark{
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+.pattern-stage .brandmark.ml { top: 50%; left: 6%; transform: translateY(-50%); }
+.pattern-stage .brandmark.mr { top: 50%; right: 6%; transform: translateY(-50%); }
+.pattern-stage .brandmark .mark-icon{
+  height: 22px;
+  width: auto;
+}
+.pattern-stage.bg-ink .brandmark,
+.pattern-stage.bg-teal .brandmark{ color: #fff; }
+.pattern-stage.bg-white .brandmark,
+.pattern-stage.bg-tealsoft .brandmark{ color: var(--ink); }
+
+/* V3 · Editorial content */
+.pattern-stage.v3-editorial .v3-content{
+  position: absolute;
+  top: 8%;
+  bottom: 8%;
+  left: 7%;
+  width: 52%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  z-index: 2;
+  color: var(--ink);
+  overflow: hidden;
+}
+.pattern-stage.v3-editorial .v3-eyebrow{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  /* letter-spacing removido */
+  color: var(--teal);
+  align-self: flex-start;
+}
+.pattern-stage.v3-editorial .v3-eyebrow .dot{
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--teal);
+  display: inline-block;
+}
+.pattern-stage.v3-editorial .v3-headline{
+  font-family: var(--font-sans);
+  font-size: clamp(20px, 2.4vw, 32px);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin: 0;
+  max-width: 16ch;
+  color: var(--ink);
+}
+.pattern-stage.v3-editorial .v3-body{
+  font-family: var(--font-sans);
+  font-size: clamp(12px, 1.05vw, 15px);
+  line-height: 1.6;
+  margin: 0;
+  color: var(--gray-500);
+  max-width: 34ch;
+}
+.pattern-stage.v3-editorial .v3-foot{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 20px;
+  border-top: 1px solid var(--gray-200);
+  margin-top: 4px;
+}
+.pattern-stage.v3-editorial .v3-tag{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink);
+  padding: 4px 10px;
+  background: var(--teal-50);
+  border-radius: 999px;
+}
+.pattern-stage.v3-editorial .v3-attr{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  /* letter-spacing removido */
+  color: var(--gray-500);
+}
+
+/* V4 · Vertical story content */
+.pattern-stage.vertical .story-content{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8%;
+  color: #fff;
+  z-index: 2;
+}
+.pattern-stage.vertical .story-content .top-b{
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+.pattern-stage.vertical .story-content .top-b svg{
+  height: 20px; width: auto; color: #fff;
+}
+.pattern-stage.vertical .story-content .h{
+  font-family: var(--font-sans);
+  font-size: clamp(20px, 3vw, 34px);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  max-width: 12ch;
+}
+.pattern-stage.vertical .story-content .tag{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  /* letter-spacing removido */
+  color: var(--teal-300);
+  display: block;
+  margin-bottom: 12px;
+}
+
+/* Caption */
+.composition .caption{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding-top: 4px;
+}
+.composition .caption .l{ display: flex; flex-direction: column; gap: 6px; }
+.composition .caption .n{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  /* letter-spacing removido */
+  font-weight: 700;
+}
+.composition .caption h4{
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0;
+}
+.composition .caption p{
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--text-body);
+  line-height: 1.55;
+  margin: 4px 0 0;
+  max-width: 56ch;
+}
+.composition .caption .meta{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: right;
+  line-height: 1.7;
+  /* letter-spacing removido */
+  flex: none;
+  min-width: 100px;
+}
+.composition .caption .meta b{ color: var(--ink); font-weight: 400; }
+
+/* Regras: do / don't */
+.pattern-rules{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 40px;
+}
+.pattern-rule{
+  padding: 28px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+}
+.pattern-rule.is-yes{ background: var(--teal-50); border-color: var(--teal-100); }
+.pattern-rule.is-no{ background: var(--gray-50); }
+.pattern-rule .h{
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  /* letter-spacing removido */
+  margin-bottom: 20px;
+}
+.pattern-rule.is-yes .h{ color: var(--teal-700); }
+.pattern-rule.is-no .h{ color: var(--text-muted); }
+.pattern-rule .h .ic{
+  width: 18px; height: 18px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 700; font-size: 11px;
+}
+.pattern-rule.is-yes .h .ic{ background: var(--teal); }
+.pattern-rule.is-no .h .ic{ background: var(--error); }
+.pattern-rule ul{
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.pattern-rule li{
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+  padding-left: 20px;
+  position: relative;
+}
+.pattern-rule.is-no li{ color: var(--gray-600); }
+.pattern-rule li::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .6em;
+  width: 8px;
+  height: 1.5px;
+  background: currentColor;
+  opacity: .5;
+}
+
+/* Responsive */
+@media (max-width: 1100px){
+  .compositions{ grid-template-columns: 1fr; }
+  .composition.wide, .composition.vertical{ grid-column: auto; grid-row: auto; }
+  .pattern-stage.vertical{ aspect-ratio: 16/9; }
+  .pattern-manifesto{ grid-template-columns: 1fr; gap: 24px; padding: 32px; }
+  .pattern-rules{ grid-template-columns: 1fr; }
+}

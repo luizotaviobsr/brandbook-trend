@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trendscience — Fotografia</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo/trendscience-icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  main > section { border-bottom: none; max-width: none; }
+  .fg-wrap { max-width: var(--content-max); padding-right: 0; }
+  .fg-back{ display:inline-flex; align-items:center; gap:8px; font-family:var(--font-sans); font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--gray-500); margin-bottom:40px; transition:color var(--dur-fast) var(--ease); }
+  .fg-back:hover{ color:var(--teal); }
+
+  .fg-cat{ margin-top: 96px; padding-top: 48px; border-top: 1px solid var(--gray-200); }
+
+  /* Destaque hero da imagem principal da marca — fundo Ink, respira, sem grid.
+     Tira o border-top cinza e usa a cor petróleo para diferenciar do resto do banco. */
+  .fg-cat-principal{
+    margin-top: 64px;
+    padding: 56px clamp(32px, 4vw, 64px) 64px;
+    border-top: none;
+    background: var(--ink);
+    color: #FFFFFF;
+  }
+  .fg-cat-principal .fg-cat-title{ font-size: 40px; }
+  .fg-grid-principal{ grid-template-columns: 1fr; gap: 0; }
+  .fg-item-principal{
+    aspect-ratio: 16 / 9;
+    border: 1px solid rgba(255,255,255,.12);
+    background: var(--ink);
+    cursor: zoom-in;
+  }
+  .fg-item-principal:hover{ border-color: var(--teal-signal); }
+  .fg-item-principal .thumb{ aspect-ratio: 16 / 9; }
+  .fg-item-principal .meta{ padding: 20px 24px; }
+  .fg-item-principal .meta .name{ color: var(--teal-signal); font-size: 11px; }
+  .fg-item-principal .meta .dl{ background: var(--teal-signal); color: var(--ink); border: none; }
+  .fg-item-principal .meta .dl:hover{ background: #FFFFFF; color: var(--ink); }
+  .fg-cat:first-of-type{ margin-top: 64px; }
+  .fg-cat-head{ display:grid; grid-template-columns: 260px 1fr; gap:64px; align-items:start; margin-bottom: 40px; }
+  .fg-cat-num{ font-family:var(--font-display); font-size:40px; font-weight:500; letter-spacing:-0.02em; line-height:1; color:var(--teal); font-feature-settings:"tnum" 1; }
+  .fg-cat-title{ font-family:var(--font-display); font-size:32px; font-weight:500; letter-spacing:-0.02em; line-height:1.1; color:var(--ink); margin:0 0 12px; }
+  .fg-cat-lead{ font-family:var(--font-sans); font-size:16px; font-weight:400; line-height:1.55; color:var(--text-body); margin:0; max-width:62ch; }
+  .fg-cat-tag{ display:inline-flex; align-items:center; gap:8px; font-family:var(--font-sans); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--teal); margin-bottom:12px; }
+  .fg-cat-tag .dot{ width:6px; height:6px; border-radius:50%; background:var(--teal); }
+
+  .fg-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px; }
+  .fg-grid.portrait{ grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .fg-item{ position:relative; overflow:hidden; border:1px solid var(--gray-200); background:var(--gray-100); cursor:zoom-in; transition: border-color var(--dur-fast) var(--ease); }
+  .fg-item:hover{ border-color: var(--teal); }
+  .fg-item .thumb{ display:block; width:100%; aspect-ratio: 16/9; object-fit:cover; }
+  .fg-grid.portrait .fg-item .thumb{ aspect-ratio: 4/5; }
+  .fg-item .meta{ position:absolute; inset:auto 0 0 0; padding:12px 14px; background:linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,0)); color:#fff; font-family:var(--font-sans); font-size:11px; font-weight:500; letter-spacing:0.04em; display:flex; justify-content:space-between; align-items:end; gap:12px; pointer-events:none; }
+  .fg-item .meta .name{ color:var(--teal-signal); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:10px; }
+  .fg-item .dl{ pointer-events:auto; display:inline-flex; align-items:center; gap:6px; padding:6px 10px; background:var(--white); color:var(--ink); border-radius:999px; font-family:var(--font-sans); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; transition: background var(--dur-fast) var(--ease); }
+  .fg-item .dl:hover{ background:var(--teal-signal); }
+
+  .fg-restriction{ display:inline-flex; align-items:center; gap:6px; padding:2px 8px; border-radius:999px; font-family:var(--font-sans); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; margin-left:8px; }
+  .fg-restriction.livre{ background:var(--teal-100); color:var(--teal-700); }
+  .fg-restriction.autorizacao{ background:#FFF3E0; color:#B7791F; }
+
+  .fg-viewer{ position:fixed; inset:0; background:rgba(0,0,0,.92); z-index:100; display:none; align-items:center; justify-content:center; padding:32px; }
+  .fg-viewer.is-open{ display:flex; }
+  .fg-viewer .stage{ max-width:min(96vw, 1600px); max-height:90vh; display:flex; flex-direction:column; gap:16px; }
+  .fg-viewer img{ max-width:100%; max-height:80vh; object-fit:contain; background:#000; }
+  .fg-viewer .foot{ display:flex; justify-content:space-between; align-items:center; color:#fff; font-family:var(--font-sans); font-size:12px; font-weight:500; }
+  .fg-viewer .foot .name{ color:var(--teal-signal); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:11px; }
+  .fg-viewer .actions{ display:flex; gap:12px; }
+  .fg-viewer .btn{ padding:8px 14px; background:transparent; border:1px solid rgba(255,255,255,.3); color:#fff; font-family:var(--font-sans); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:6px; }
+  .fg-viewer .btn:hover{ background:var(--teal-signal); color:var(--ink); border-color:var(--teal-signal); }
+  .fg-viewer .close{ position:absolute; top:24px; right:24px; background:none; border:none; color:#fff; font-size:24px; cursor:pointer; padding:8px; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="nav" aria-label="Índice do brandbook">
+    <a href="index.html#cover" class="brand">
+      <svg class="brand-logo" viewBox="0 0 678 114" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="assets/logo/trendscience-logo.svg#wordmark"/></svg>
+      <div class="sub">Brand Guidelines · v3.1 · 2026</div>
+    </a>
+
+    <div class="group-label">Verbal</div>
+    <ul>
+      <li><a href="index.html#a-marca"><span class="n">01</span><span>A marca</span></a></li>
+      <li><a href="index.html#para-quem"><span class="n">02</span><span>Para quem</span></a></li>
+      <li><a href="index.html#pilares"><span class="n">03</span><span>Pilares</span></a></li>
+      <li><a href="index.html#operacao"><span class="n">04</span><span>O que sustenta a operação</span></a></li>
+      <li><a href="index.html#compromissos"><span class="n">05</span><span>Compromissos com o cliente</span></a></li>
+      <li><a href="index.html#portfolio"><span class="n">06</span><span>Portfólio</span></a></li>
+      <li><a href="index.html#como-funciona"><span class="n">07</span><span>Como funciona</span></a></li>
+      <li><a href="index.html#provas"><span class="n">08</span><span>Provas</span></a></li>
+      <li><a href="index.html#conformidade"><span class="n">09</span><span>Qualidade e conformidade</span></a></li>
+      <li><a href="index.html#uso-responsavel"><span class="n">10</span><span>Uso responsável</span></a></li>
+      <li><a href="index.html#marca-escreve"><span class="n">11</span><span>Como a marca escreve</span></a></li>
+      <li><a href="index.html#marca-falando"><span class="n">12</span><span>A marca falando</span></a></li>
+    </ul>
+
+    <div class="group-label">Visual</div>
+    <ul>
+      <li><a href="index.html#logo"><span class="n">13</span><span>Design System</span></a></li>
+      <li><a href="index.html#aplicacoes"><span class="n">14</span><span>Aplicações e materiais</span></a></li>
+    </ul>
+
+    <div class="group-label">Materiais</div>
+    <ul>
+      <li><a href="Padrão Apresentação.html"><span class="n">15</span><span>Padrão Apresentação</span><span class="badge badge-ext">abrir ↗</span></a></li>
+      <li><a href="Padrão A4.html"><span class="n">16</span><span>Padrão A4</span><span class="badge badge-ext">abrir ↗</span></a></li>
+      <li><a href="Padrão Publicações e Criativos.html"><span class="n">17</span><span>Padrão Publicações e Criativos</span><span class="badge badge-ext">abrir ↗</span></a></li>
+      <li><a href="Fotografia.html" class="active"><span class="n">18</span><span>Fotografia</span></a></li>
+    </ul>
+
+    <div class="foot">
+      <b>Trendscience.</b><br>
+      Brand Guidelines<br>
+      Versão 3.1 · Set 2026<br>
+      Documento interno confidencial
+    </div>
+  </aside>
+
+  <main>
+    <section id="fotografia" data-screen-label="18 Fotografia">
+      <div class="fg-wrap">
+        <a href="index.html" class="fg-back"><span>←</span> Voltar ao Brandbook</a>
+
+        <header class="section-head">
+          <div class="eyebrow"><span class="num">18</span>Fotografia</div>
+          <h2 class="section-title">Banco de imagem<br>da marca.</h2>
+          <p class="section-lead">
+            65 imagens originais, geradas para a Trendscience. Nenhuma vem de banco
+            de terceiro. Cada categoria prova uma coisa que a marca precisa provar.
+            Categoria que não prova nada vira decoração e sobra sem uso.
+          </p>
+        </header>
+
+        <!-- 00 · Imagem principal da marca (destaque no topo) -->
+        <div class="fg-cat fg-cat-principal">
+          <div class="fg-cat-head">
+            <div class="fg-cat-num" style="color:var(--teal-signal)">00</div>
+            <div>
+              <div class="fg-cat-tag" style="color:var(--teal-signal)"><span class="dot" style="background:var(--teal-signal)"></span>Imagem principal · assinatura visual</div>
+              <h3 class="fg-cat-title" style="color:#FFFFFF">A imagem que abre a marca.</h3>
+              <p class="fg-cat-lead" style="color:#FFFFFF">
+                A fotografia oficial da capa do brandbook. Vidraria de laboratório
+                em foco raso sobre fundo petróleo, com respiração e luz suave.
+                Deve aparecer como imagem de abertura em capas, hero de propostas
+                comerciais, primeira tela de material institucional e assinatura
+                em publicações que iniciam uma narrativa. Nunca no meio de deck.
+              </p>
+            </div>
+          </div>
+          <div class="fg-grid fg-grid-principal">
+            <div class="fg-item fg-item-principal"
+                 data-name="imagem-principal-da-marca"
+                 data-restrict="livre">
+              <img class="thumb" loading="eager"
+                   src="assets/photography/00-principal/imagem-principal-da-marca.jpg"
+                   alt="Vidraria de laboratório em foco raso sobre fundo petróleo · imagem principal da marca">
+              <div class="meta">
+                <span class="name">imagem principal · capa oficial</span>
+                <a class="dl" href="assets/photography/00-principal/imagem-principal-da-marca.jpg"
+                   download="trendscience-imagem-principal.jpg">↓ JPG</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 01 · Farmacêutico e produto -->
+        <div class="fg-cat">
+          <div class="fg-cat-head">
+            <div class="fg-cat-num">01</div>
+            <div>
+              <div class="fg-cat-tag"><span class="dot"></span>17 imagens · A operação</div>
+              <h3 class="fg-cat-title">Farmacêutico e produto.</h3>
+              <p class="fg-cat-lead">
+                A farmácia credenciada como operação: envase, câmara fria, laudo,
+                capela, produto. Metade do que a empresa faz.
+              </p>
+            </div>
+          </div>
+          <div class="fg-grid" data-cat="farmaceutico">
+            <!-- 8 com pessoa identificável -->
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-01.jpg" data-name="farmaceutico-01" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-01.jpg" alt="Farmacêutico 01"><div class="meta"><span class="name">farmaceutico-01</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-01.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-02.jpg" data-name="farmaceutico-02" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-02.jpg" alt="Farmacêutico 02"><div class="meta"><span class="name">farmaceutico-02</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-02.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-03.jpg" data-name="farmaceutico-03" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-03.jpg" alt="Farmacêutico 03"><div class="meta"><span class="name">farmaceutico-03</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-03.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-04.jpg" data-name="farmaceutico-04" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-04.jpg" alt="Farmacêutico 04"><div class="meta"><span class="name">farmaceutico-04</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-04.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-06.jpg" data-name="farmaceutico-06" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-06.jpg" alt="Farmacêutico 06"><div class="meta"><span class="name">farmaceutico-06</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-06.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-09.jpg" data-name="farmaceutico-09" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-09.jpg" alt="Farmacêutico 09"><div class="meta"><span class="name">farmaceutico-09</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-09.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-12.jpg" data-name="farmaceutico-12" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-12.jpg" alt="Farmacêutico 12"><div class="meta"><span class="name">farmaceutico-12</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-12.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-16.jpg" data-name="farmaceutico-16" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-16.jpg" alt="Farmacêutico 16"><div class="meta"><span class="name">farmaceutico-16</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-16.jpg" download>↓ JPG</a></div></div>
+            <!-- 9 sem pessoa identificável -->
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-05.jpg" data-name="farmaceutico-05" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-05.jpg" alt="Farmacêutico 05"><div class="meta"><span class="name">farmaceutico-05</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-05.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-07.jpg" data-name="farmaceutico-07" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-07.jpg" alt="Farmacêutico 07"><div class="meta"><span class="name">farmaceutico-07</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-07.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-08.jpg" data-name="farmaceutico-08" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-08.jpg" alt="Farmacêutico 08"><div class="meta"><span class="name">farmaceutico-08</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-08.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-10.jpg" data-name="farmaceutico-10" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-10.jpg" alt="Farmacêutico 10"><div class="meta"><span class="name">farmaceutico-10</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-10.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-11.jpg" data-name="farmaceutico-11" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-11.jpg" alt="Farmacêutico 11"><div class="meta"><span class="name">farmaceutico-11</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-11.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-13.jpg" data-name="farmaceutico-13" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-13.jpg" alt="Farmacêutico 13"><div class="meta"><span class="name">farmaceutico-13</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-13.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-14.jpg" data-name="farmaceutico-14" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-14.jpg" alt="Farmacêutico 14"><div class="meta"><span class="name">farmaceutico-14</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-14.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-15.jpg" data-name="farmaceutico-15" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-15.jpg" alt="Farmacêutico 15"><div class="meta"><span class="name">farmaceutico-15</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-15.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-src="assets/photography/01-farmaceutico-e-produto/farmaceutico-17.jpg" data-name="farmaceutico-17" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/01-farmaceutico-e-produto/farmaceutico-17.jpg" alt="Farmacêutico 17"><div class="meta"><span class="name">farmaceutico-17</span><a class="dl" href="assets/photography/01-farmaceutico-e-produto/farmaceutico-17.jpg" download>↓ JPG</a></div></div>
+          </div>
+        </div>
+
+        <!-- 02 · Gesto clínico -->
+        <div class="fg-cat">
+          <div class="fg-cat-head">
+            <div class="fg-cat-num">02</div>
+            <div>
+              <div class="fg-cat-tag"><span class="dot"></span>13 imagens · O cuidado técnico</div>
+              <h3 class="fg-cat-title">Gesto clínico.</h3>
+              <p class="fg-cat-lead">
+                O procedimento e o cuidado técnico, majoritariamente em mãos. O
+                médico trabalhando, o tratamento na própria clínica.
+              </p>
+            </div>
+          </div>
+          <div class="fg-grid" data-cat="gesto-clinico">
+            <div class="fg-item" data-name="gesto-clinico-01-ausculta" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/02-gesto-clinico/gesto-clinico-01-ausculta.jpg" alt="Ausculta"><div class="meta"><span class="name">01 ausculta</span><a class="dl" href="assets/photography/02-gesto-clinico/gesto-clinico-01-ausculta.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="gesto-clinico-02-manguito" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/02-gesto-clinico/gesto-clinico-02-manguito.jpg" alt="Manguito"><div class="meta"><span class="name">02 manguito</span><a class="dl" href="assets/photography/02-gesto-clinico/gesto-clinico-02-manguito.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="gesto-clinico-03-palpacao" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/02-gesto-clinico/gesto-clinico-03-palpacao-do-punho.jpg" alt="Palpação do punho"><div class="meta"><span class="name">03 palpação</span><a class="dl" href="assets/photography/02-gesto-clinico/gesto-clinico-03-palpacao-do-punho.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="gesto-clinico-04-prescricao" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/02-gesto-clinico/gesto-clinico-04-prescricao-a-mao.jpg" alt="Prescrição à mão"><div class="meta"><span class="name">04 prescrição</span><a class="dl" href="assets/photography/02-gesto-clinico/gesto-clinico-04-prescricao-a-mao.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="gesto-clinico-05-otoscopio" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/02-gesto-clinico/gesto-clinico-05-checagem-do-otoscopio.jpg" alt="Otoscópio"><div class="meta"><span class="name">05 otoscópio</span><a class="dl" href="assets/photography/02-gesto-clinico/gesto-clinico-05-checagem-do-otoscopio.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="gesto-clinico-06-higienizacao" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/02-gesto-clinico/gesto-clinico-06-higienizacao-das-maos.jpg" alt="Higienização"><div class="meta"><span class="name">06 higienização</span><a class="dl" href="assets/photography/02-gesto-clinico/gesto-clinico-06-higienizacao-das-maos.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="gesto-clinico-07-oximetro" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/02-gesto-clinico/gesto-clinico-07-oximetro-no-dedo.jpg" alt="Oxímetro"><div class="meta"><span class="name">07 oxímetro</span><a class="dl" href="assets/photography/02-gesto-clinico/gesto-clinico-07-oximetro-no-dedo.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="gesto-clinico-08-prontuario" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/02-gesto-clinico/gesto-clinico-08-folheando-o-prontuario.jpg" alt="Prontuário"><div class="meta"><span class="name">08 prontuário</span><a class="dl" href="assets/photography/02-gesto-clinico/gesto-clinico-08-folheando-o-prontuario.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="gesto-clinico-09-aspiracao" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/02-gesto-clinico/gesto-clinico-09-aspiracao-do-frasco.jpg" alt="Aspiração do frasco"><div class="meta"><span class="name">09 aspiração</span><a class="dl" href="assets/photography/02-gesto-clinico/gesto-clinico-09-aspiracao-do-frasco.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="gesto-clinico-10-manometro" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/02-gesto-clinico/gesto-clinico-10-manometro.jpg" alt="Manômetro"><div class="meta"><span class="name">10 manômetro</span><a class="dl" href="assets/photography/02-gesto-clinico/gesto-clinico-10-manometro.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="gesto-clinico-11-exame" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/02-gesto-clinico/gesto-clinico-11-exame-do-punho.jpg" alt="Exame do punho"><div class="meta"><span class="name">11 exame do punho</span><a class="dl" href="assets/photography/02-gesto-clinico/gesto-clinico-11-exame-do-punho.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="gesto-clinico-12-prontuario" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/02-gesto-clinico/gesto-clinico-12-leitura-do-prontuario.jpg" alt="Leitura do prontuário"><div class="meta"><span class="name">12 leitura prontuário</span><a class="dl" href="assets/photography/02-gesto-clinico/gesto-clinico-12-leitura-do-prontuario.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="gesto-clinico-13-maos" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/02-gesto-clinico/gesto-clinico-13-maos-frasco-seringa.jpg" alt="Mãos com frasco e seringa"><div class="meta"><span class="name">13 mãos frasco seringa</span><a class="dl" href="assets/photography/02-gesto-clinico/gesto-clinico-13-maos-frasco-seringa.jpg" download>↓ JPG</a></div></div>
+          </div>
+        </div>
+
+        <!-- 03 · A pessoa que resolve -->
+        <div class="fg-cat">
+          <div class="fg-cat-head">
+            <div class="fg-cat-num">03</div>
+            <div>
+              <div class="fg-cat-tag"><span class="dot"></span>10 imagens · Representante Credenciado</div>
+              <h3 class="fg-cat-title">A pessoa que resolve.</h3>
+              <p class="fg-cat-lead">
+                Quem conduz o caso, em contexto de trabalho. Uma pessoa só, que
+                responde até a entrega.
+              </p>
+            </div>
+          </div>
+          <div class="fg-grid" data-cat="resolve">
+            <div class="fg-item" data-name="resolve-01-poltrona" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/03-a-pessoa-que-resolve/resolve-01-retrato-poltrona-janela.jpg" alt="Retrato poltrona janela"><div class="meta"><span class="name">01 poltrona janela</span><a class="dl" href="assets/photography/03-a-pessoa-que-resolve/resolve-01-retrato-poltrona-janela.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="resolve-02-laboratorio" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/03-a-pessoa-que-resolve/resolve-02-laboratorio-vidraria.jpg" alt="Laboratório vidraria"><div class="meta"><span class="name">02 laboratório</span><a class="dl" href="assets/photography/03-a-pessoa-que-resolve/resolve-02-laboratorio-vidraria.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="resolve-03-telefone" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/03-a-pessoa-que-resolve/resolve-03-telefone.jpg" alt="Telefone"><div class="meta"><span class="name">03 telefone</span><a class="dl" href="assets/photography/03-a-pessoa-que-resolve/resolve-03-telefone.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="resolve-04-documentacao" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/03-a-pessoa-que-resolve/resolve-04-documentacao.jpg" alt="Documentação"><div class="meta"><span class="name">04 documentação</span><a class="dl" href="assets/photography/03-a-pessoa-que-resolve/resolve-04-documentacao.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="resolve-05-porta-clinica" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/03-a-pessoa-que-resolve/resolve-05-porta-da-clinica.jpg" alt="Porta da clínica"><div class="meta"><span class="name">05 porta da clínica</span><a class="dl" href="assets/photography/03-a-pessoa-que-resolve/resolve-05-porta-da-clinica.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="resolve-06-laptop" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/03-a-pessoa-que-resolve/resolve-06-laptop.jpg" alt="Laptop"><div class="meta"><span class="name">06 laptop</span><a class="dl" href="assets/photography/03-a-pessoa-que-resolve/resolve-06-laptop.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="resolve-07-conferencia" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/03-a-pessoa-que-resolve/resolve-07-conferencia-da-caixa.jpg" alt="Conferência da caixa"><div class="meta"><span class="name">07 conferência</span><a class="dl" href="assets/photography/03-a-pessoa-que-resolve/resolve-07-conferencia-da-caixa.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="resolve-08-entrega" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/03-a-pessoa-que-resolve/resolve-08-entrega-na-clinica.jpg" alt="Entrega na clínica"><div class="meta"><span class="name">08 entrega</span><a class="dl" href="assets/photography/03-a-pessoa-que-resolve/resolve-08-entrega-na-clinica.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="resolve-09-reuniao" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/03-a-pessoa-que-resolve/resolve-09-reuniao-com-a-farmacia.jpg" alt="Reunião com a farmácia"><div class="meta"><span class="name">09 reunião farmácia</span><a class="dl" href="assets/photography/03-a-pessoa-que-resolve/resolve-09-reuniao-com-a-farmacia.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="resolve-10-deslocamento" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/03-a-pessoa-que-resolve/resolve-10-deslocamento.jpg" alt="Deslocamento"><div class="meta"><span class="name">10 deslocamento</span><a class="dl" href="assets/photography/03-a-pessoa-que-resolve/resolve-10-deslocamento.jpg" download>↓ JPG</a></div></div>
+          </div>
+        </div>
+
+        <!-- 04 · Abstrato de marca -->
+        <div class="fg-cat">
+          <div class="fg-cat-head">
+            <div class="fg-cat-num">04</div>
+            <div>
+              <div class="fg-cat-tag"><span class="dot"></span>6 imagens · Assinatura visual</div>
+              <h3 class="fg-cat-title">Abstrato de marca.</h3>
+              <p class="fg-cat-lead">
+                Fundo, divisória e capa. Vidro, líquido, bolha em fundo claro.
+                Assinatura visual, com uso restrito. Nenhum abstrato ocupa o lugar
+                de uma foto que provaria algo.
+              </p>
+            </div>
+          </div>
+          <div class="fg-grid" data-cat="abstrato">
+            <div class="fg-item" data-name="abstrato-01-helice" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/04-abstrato-de-marca/abstrato-01-helice-vidro-claro.jpg" alt="Hélice vidro"><div class="meta"><span class="name">01 hélice vidro</span><a class="dl" href="assets/photography/04-abstrato-de-marca/abstrato-01-helice-vidro-claro.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="abstrato-02-bolhas" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/04-abstrato-de-marca/abstrato-02-bolhas-placa-petri.jpg" alt="Bolhas placa petri"><div class="meta"><span class="name">02 bolhas petri</span><a class="dl" href="assets/photography/04-abstrato-de-marca/abstrato-02-bolhas-placa-petri.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="abstrato-03-gotas" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/04-abstrato-de-marca/abstrato-03-gotas-luz-lateral.jpg" alt="Gotas luz lateral"><div class="meta"><span class="name">03 gotas</span><a class="dl" href="assets/photography/04-abstrato-de-marca/abstrato-03-gotas-luz-lateral.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="abstrato-04-onda-luz" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/04-abstrato-de-marca/abstrato-04-onda-de-luz.jpg" alt="Onda de luz"><div class="meta"><span class="name">04 onda de luz</span><a class="dl" href="assets/photography/04-abstrato-de-marca/abstrato-04-onda-de-luz.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="abstrato-05-agua" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/04-abstrato-de-marca/abstrato-05-superficie-de-agua.jpg" alt="Superfície de água"><div class="meta"><span class="name">05 água</span><a class="dl" href="assets/photography/04-abstrato-de-marca/abstrato-05-superficie-de-agua.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="abstrato-06-malha" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/04-abstrato-de-marca/abstrato-06-malha-cristalina.jpg" alt="Malha cristalina"><div class="meta"><span class="name">06 malha cristalina</span><a class="dl" href="assets/photography/04-abstrato-de-marca/abstrato-06-malha-cristalina.jpg" download>↓ JPG</a></div></div>
+          </div>
+        </div>
+
+        <!-- 05 · Vida em curso -->
+        <div class="fg-cat">
+          <div class="fg-cat-head">
+            <div class="fg-cat-num">05</div>
+            <div>
+              <div class="fg-cat-tag"><span class="dot"></span>5 imagens · Para quem serve</div>
+              <h3 class="fg-cat-title">Vida em curso.</h3>
+              <p class="fg-cat-lead">
+                O dia comum de quem é atendido. Sem resultado, sem antes e depois.
+              </p>
+            </div>
+          </div>
+          <div class="fg-grid" data-cat="vida">
+            <div class="fg-item" data-name="vida-01-cozinha" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/05-vida-em-curso/vida-01-cozinha-manha.jpg" alt="Cozinha manhã"><div class="meta"><span class="name">01 cozinha manhã</span><a class="dl" href="assets/photography/05-vida-em-curso/vida-01-cozinha-manha.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="vida-02-calcada" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/05-vida-em-curso/vida-02-calcada-manha.jpg" alt="Calçada manhã"><div class="meta"><span class="name">02 calçada manhã</span><a class="dl" href="assets/photography/05-vida-em-curso/vida-02-calcada-manha.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="vida-03-escrivaninha" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/05-vida-em-curso/vida-03-escrivaninha-tarde.jpg" alt="Escrivaninha tarde"><div class="meta"><span class="name">03 escrivaninha tarde</span><a class="dl" href="assets/photography/05-vida-em-curso/vida-03-escrivaninha-tarde.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="vida-04-tenis" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/05-vida-em-curso/vida-04-tenis-degrau-amanhecer.jpg" alt="Tênis degrau amanhecer"><div class="meta"><span class="name">04 tênis degrau</span><a class="dl" href="assets/photography/05-vida-em-curso/vida-04-tenis-degrau-amanhecer.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="vida-05-banco-praca" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/05-vida-em-curso/vida-05-banco-praca-conversa.jpg" alt="Banco praça conversa"><div class="meta"><span class="name">05 banco praça</span><a class="dl" href="assets/photography/05-vida-em-curso/vida-05-banco-praca-conversa.jpg" download>↓ JPG</a></div></div>
+          </div>
+        </div>
+
+        <!-- 06 · Retratos de médico -->
+        <div class="fg-cat">
+          <div class="fg-cat-head">
+            <div class="fg-cat-num">06</div>
+            <div>
+              <div class="fg-cat-tag"><span class="dot"></span>10 imagens · Corpo clínico</div>
+              <h3 class="fg-cat-title">Retratos de médico.</h3>
+              <p class="fg-cat-lead">
+                4:5, fundo off-white. 7 frontais e 3 três quartos. Todos exigem
+                autorização de uso antes de publicar.
+              </p>
+            </div>
+          </div>
+          <div class="fg-grid portrait" data-cat="medico">
+            <div class="fg-item" data-name="medico-01-oculos" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/06-retratos-de-medico/medico-01-frontal-oculos.jpg" alt="Médico óculos"><div class="meta"><span class="name">01 óculos</span><a class="dl" href="assets/photography/06-retratos-de-medico/medico-01-frontal-oculos.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="medico-02-grisalha" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/06-retratos-de-medico/medico-02-frontal-grisalha.jpg" alt="Médica grisalha"><div class="meta"><span class="name">02 grisalha</span><a class="dl" href="assets/photography/06-retratos-de-medico/medico-02-frontal-grisalha.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="medico-03-jovem" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/06-retratos-de-medico/medico-03-tresquartos-jovem.jpg" alt="Médico jovem"><div class="meta"><span class="name">03 três quartos jovem</span><a class="dl" href="assets/photography/06-retratos-de-medico/medico-03-tresquartos-jovem.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="medico-04-asiatica" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/06-retratos-de-medico/medico-04-frontal-asiatica.jpg" alt="Médica asiática"><div class="meta"><span class="name">04 asiática</span><a class="dl" href="assets/photography/06-retratos-de-medico/medico-04-frontal-asiatica.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="medico-05-senior" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/06-retratos-de-medico/medico-05-tresquartos-senior.jpg" alt="Médico senior"><div class="meta"><span class="name">05 três quartos senior</span><a class="dl" href="assets/photography/06-retratos-de-medico/medico-05-tresquartos-senior.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="medico-06-jovem" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/06-retratos-de-medico/medico-06-frontal-jovem.jpg" alt="Médico jovem"><div class="meta"><span class="name">06 frontal jovem</span><a class="dl" href="assets/photography/06-retratos-de-medico/medico-06-frontal-jovem.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="medico-07-pardo" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/06-retratos-de-medico/medico-07-frontal-pardo.jpg" alt="Médico pardo"><div class="meta"><span class="name">07 pardo</span><a class="dl" href="assets/photography/06-retratos-de-medico/medico-07-frontal-pardo.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="medico-08-tranca" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/06-retratos-de-medico/medico-08-frontal-tranca.jpg" alt="Médica tranças"><div class="meta"><span class="name">08 tranças</span><a class="dl" href="assets/photography/06-retratos-de-medico/medico-08-frontal-tranca.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="medico-09-calvo" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/06-retratos-de-medico/medico-09-frontal-calvo.jpg" alt="Médico calvo"><div class="meta"><span class="name">09 calvo</span><a class="dl" href="assets/photography/06-retratos-de-medico/medico-09-frontal-calvo.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="medico-10-loira" data-restrict="autorizacao"><img class="thumb" loading="lazy" src="assets/photography/06-retratos-de-medico/medico-10-tresquartos-loira.jpg" alt="Médica loira"><div class="meta"><span class="name">10 três quartos loira</span><a class="dl" href="assets/photography/06-retratos-de-medico/medico-10-tresquartos-loira.jpg" download>↓ JPG</a></div></div>
+          </div>
+        </div>
+
+        <!-- 07 · A vida por dentro -->
+        <div class="fg-cat">
+          <div class="fg-cat-head">
+            <div class="fg-cat-num">07</div>
+            <div>
+              <div class="fg-cat-tag"><span class="dot"></span>5 imagens · Microscopia</div>
+              <h3 class="fg-cat-title">A vida por dentro.</h3>
+              <p class="fg-cat-lead">
+                A biologia sob microscopia: célula, tecido, DNA, sangue. Fundo claro,
+                aceitam headline escura.
+              </p>
+            </div>
+          </div>
+          <div class="fg-grid" data-cat="vida-por-dentro">
+            <div class="fg-item" data-name="vpd-01-celulas" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/07-a-vida-por-dentro/vida-por-dentro-01-celulas-em-cultura.jpg" alt="Células em cultura"><div class="meta"><span class="name">01 células em cultura</span><a class="dl" href="assets/photography/07-a-vida-por-dentro/vida-por-dentro-01-celulas-em-cultura.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="vpd-02-mosaico" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/07-a-vida-por-dentro/vida-por-dentro-02-mosaico-de-tecido.jpg" alt="Mosaico de tecido"><div class="meta"><span class="name">02 mosaico tecido</span><a class="dl" href="assets/photography/07-a-vida-por-dentro/vida-por-dentro-02-mosaico-de-tecido.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="vpd-03-colageno" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/07-a-vida-por-dentro/vida-por-dentro-03-matriz-de-colageno.jpg" alt="Matriz de colágeno"><div class="meta"><span class="name">03 matriz colágeno</span><a class="dl" href="assets/photography/07-a-vida-por-dentro/vida-por-dentro-03-matriz-de-colageno.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="vpd-04-filamentos" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/07-a-vida-por-dentro/vida-por-dentro-04-celulas-com-filamentos.jpg" alt="Células com filamentos"><div class="meta"><span class="name">04 células filamentos</span><a class="dl" href="assets/photography/07-a-vida-por-dentro/vida-por-dentro-04-celulas-com-filamentos.jpg" download>↓ JPG</a></div></div>
+            <div class="fg-item" data-name="vpd-05-neuronios" data-restrict="livre"><img class="thumb" loading="lazy" src="assets/photography/07-a-vida-por-dentro/vida-por-dentro-05-rede-de-neuronios.jpg" alt="Rede de neurônios"><div class="meta"><span class="name">05 neurônios</span><a class="dl" href="assets/photography/07-a-vida-por-dentro/vida-por-dentro-05-rede-de-neuronios.jpg" download>↓ JPG</a></div></div>
+          </div>
+        </div>
+
+      </div><!-- /.fg-wrap -->
+    </section>
+  </main>
+</div>
+
+<!-- Viewer modal fullscreen -->
+<div class="fg-viewer" id="fgViewer">
+  <button class="close" aria-label="Fechar">×</button>
+  <div class="stage">
+    <img id="fgViewerImg" src="" alt="">
+    <div class="foot">
+      <span class="name" id="fgViewerName">—</span>
+      <div class="actions">
+        <a class="btn" id="fgViewerDL" href="" download>↓ Download JPG</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const viewer = document.getElementById('fgViewer');
+  const vimg = document.getElementById('fgViewerImg');
+  const vname = document.getElementById('fgViewerName');
+  const vdl = document.getElementById('fgViewerDL');
+  const closeBtn = viewer.querySelector('.close');
+
+  document.querySelectorAll('.fg-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      // Não abrir modal ao clicar no link de download
+      if (e.target.closest('.dl')) return;
+      const img = item.querySelector('img.thumb');
+      const src = img.getAttribute('src');
+      const name = item.dataset.name || '';
+      vimg.src = src;
+      vimg.alt = img.alt;
+      vname.textContent = name;
+      vdl.href = src;
+      vdl.setAttribute('download', name + '.jpg');
+      viewer.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function close(){ viewer.classList.remove('is-open'); document.body.style.overflow=''; vimg.src=''; }
+  closeBtn.addEventListener('click', close);
+  viewer.addEventListener('click', (e) => { if (e.target === viewer) close(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+})();
+</script>
+
+</body>
+</html>

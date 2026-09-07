@@ -1,0 +1,1960 @@
+/* =============================================================
+   TRENDSCIENCE — Padrão A4
+   Sistema de templates A4 retrato (210 × 297mm · @96dpi = 794×1123px)
+
+   Herda a identidade oficial do brandbook:
+   - Cores: Ink #042A2B, Branco, Teal #007A7D
+   - Tipografia: Geist + Geist Mono
+   - Ícones: Lucide oficial (stroke 2, round)
+   - Padrão gráfico: ícone Trendscience preservado
+   ============================================================= */
+
+:root{
+  --a4-w: 794px;
+  --a4-h: 1123px;
+  --a4-margin: 60px;   /* ~15-16mm em digital */
+  --a4-cols: 6;
+  --a4-gap: 20px;
+}
+
+/* ============================================================
+   GALERIA de A4s (grid de miniaturas)
+   ============================================================ */
+.a4-gallery{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 48px 40px;
+  margin-top: 8px;
+}
+@media (min-width: 1400px){
+  .a4-gallery{ grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1700px){
+  .a4-gallery{ grid-template-columns: repeat(4, 1fr); }
+}
+
+.a4-tile{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  cursor: zoom-in;
+}
+.a4-tile .thumb{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 794 / 1123;
+  overflow: hidden;
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  background: #fff;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+.a4-tile:hover .thumb{ border-color: var(--teal); }
+.a4-tile .thumb .page-a4{
+  position: absolute;
+  top: 0; left: 0;
+  transform-origin: top left;
+}
+.a4-tile .cap{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+.a4-tile .cap .l{ display: flex; flex-direction: column; gap: 4px; min-width: 0;}
+.a4-tile .cap .code{
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--teal);
+  /* text-transform removido */
+  /* letter-spacing removido */
+  font-weight: 400;
+}
+.a4-tile .cap .fn{
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.a4-tile .cap .ctx{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gray-500);
+  letter-spacing: 0;
+  margin-top: 2px;
+  /* text-transform removido */
+}
+.a4-tile .cap .badge{
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  /* text-transform removido */
+  letter-spacing: 0;
+  flex: none;
+  border: 1px solid var(--gray-200);
+  color: var(--gray-500);
+  background: #fff;
+}
+.a4-tile .cap .badge.b-txt{
+  background: var(--gray-50);
+  border-color: var(--gray-200);
+  color: var(--gray-600);
+}
+.a4-tile .cap .badge.b-viz{
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #fff;
+}
+
+/* ============================================================
+   VIEWER (fullscreen modal)
+   ============================================================ */
+.a4-viewer{
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 20, 20, 0.94);
+  z-index: 999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 80px;
+}
+.a4-viewer.is-open{ display: flex; }
+.a4-viewer .stage{
+  position: relative;
+  height: 100%;
+  max-height: min(calc(100vh - 80px), 1400px);
+  aspect-ratio: 794 / 1123;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,.5);
+}
+.a4-viewer .stage .page-a4{
+  transform-origin: top left;
+}
+.a4-viewer .chrome{
+  position: absolute;
+  top: 24px; left: 24px; right: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--teal-signal);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+}
+.a4-viewer .chrome .code{ color: #fff; }
+.a4-viewer .chrome .close{
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.25);
+  color: #fff;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  border-radius: 3px;
+  transition: background var(--dur-fast) var(--ease);
+}
+.a4-viewer .chrome .close:hover{ background: rgba(255,255,255,.1); }
+.a4-viewer .nav-btn{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.25);
+  color: #fff;
+  width: 48px; height: 48px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  border-radius: 50%;
+  transition: background var(--dur-fast) var(--ease);
+}
+.a4-viewer .nav-btn:hover{ background: rgba(255,255,255,.1); }
+.a4-viewer .nav-btn.prev{ left: 20px; }
+.a4-viewer .nav-btn.next{ right: 20px; }
+.a4-viewer .counter{
+  position: absolute;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  color: var(--teal-signal);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* letter-spacing removido */
+  /* text-transform removido */
+}
+
+/* ============================================================
+   BASE da página A4
+   ============================================================ */
+.page-a4{
+  width: 794px;
+  height: 1123px;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: #fff;
+  font-size: 15px;
+  line-height: 1.55;
+  /* Alinhamento editorial padrão da marca */
+  text-align: left;
+}
+.page-a4.bg-white{ background: #fff; color: var(--ink); }
+.page-a4.bg-ink{ background: var(--ink); color: #fff; }
+.page-a4.bg-teal{ background: var(--teal); color: #fff; }
+
+/* Guardrail: TODO conteúdo textual à esquerda */
+.page-a4, .page-a4 .frame, .page-a4 .body{ text-align: left; }
+.page-a4 h1, .page-a4 h2, .page-a4 h3, .page-a4 h4, .page-a4 p, .page-a4 li{
+  text-align: left;
+}
+
+/* Padrão gráfico oficial (ícone Trendscience) */
+.page-a4 .brand-pattern{
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+.page-a4 .brand-pattern.watermark{
+  right: -8%;
+  bottom: -8%;
+  width: 380px;
+  height: 475px;
+  color: currentColor;
+  opacity: .06;
+}
+.page-a4.bg-ink .brand-pattern.watermark{ opacity: .10; }
+.page-a4.bg-teal .brand-pattern.watermark{ opacity: .18; }
+.page-a4 .brand-pattern.hero{
+  right: -10%;
+  top: -8%;
+  width: 500px;
+  height: 625px;
+  opacity: .10;
+}
+.page-a4.bg-ink .brand-pattern.hero{ opacity: .12; }
+
+/* Frame com margens padrão */
+.page-a4 .frame{
+  position: relative;
+  z-index: 1;
+  width: 100%; height: 100%;
+  padding: var(--a4-margin);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header comum: eyebrow + wordmark */
+.page-a4 .p-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex: none;
+  margin-bottom: 24px;
+}
+.page-a4 .p-eyebrow{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 400;
+  /* text-transform removido */
+  letter-spacing: 0;
+  color: var(--teal);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.page-a4.bg-ink .p-eyebrow,
+.page-a4.bg-teal .p-eyebrow{ color: #fff; opacity: .78; }
+.page-a4 .p-eyebrow::after{ content: none; }
+.page-a4 .p-mark{
+  height: 28px;
+  color: var(--ink);
+}
+.page-a4.bg-ink .p-mark,
+.page-a4.bg-teal .p-mark{ color: #fff; }
+
+/* Rodapé */
+.page-a4 .p-foot{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(4,42,43,.12);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--gray-500);
+  /* letter-spacing removido */
+  /* text-transform removido */
+  flex: none;
+}
+.page-a4.bg-ink .p-foot,
+.page-a4.bg-teal .p-foot{
+  border-top-color: rgba(255,255,255,.18);
+  color: var(--teal-signal);
+}
+.page-a4 .p-foot .l,
+.page-a4 .p-foot .r{ display: flex; gap: 20px; align-items: center; }
+.page-a4 .p-foot b{
+  color: var(--ink);
+  font-weight: 400;
+}
+.page-a4.bg-ink .p-foot b,
+.page-a4.bg-teal .p-foot b{ color: #fff; }
+
+/* ============================================================
+   ESCALA TIPOGRÁFICA A4 (valores absolutos · escala editorial)
+   ============================================================ */
+.page-a4 .t-display{
+  font-family: var(--font-display);
+  font-size: 108px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: .95;
+  margin: 0;
+}
+.page-a4 .t-h1{
+  font-family: var(--font-display);
+  font-size: 72px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin: 0;
+}
+.page-a4 .t-h2{
+  font-family: var(--font-display);
+  font-size: 52px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  margin: 0;
+}
+.page-a4 .t-h3{
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin: 0;
+}
+.page-a4 .t-lead{
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0;
+}
+.page-a4 .t-body{
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.65;
+  margin: 0;
+}
+.page-a4 .t-caption{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  margin: 0;
+}
+.page-a4.bg-ink .t-caption,
+.page-a4.bg-teal .t-caption{ color: var(--teal-signal); }
+.page-a4 em.hl{
+  font-style: normal;
+  color: var(--teal);
+  font-weight: 400;
+}
+.page-a4.bg-ink em.hl,
+.page-a4.bg-teal em.hl{ color: #fff; }
+
+/* ============================================================
+   PLACEHOLDERS (imagem / ícone) — mesmo padrão do deck
+   ============================================================ */
+.page-a4 .ph-img{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  overflow: hidden;
+}
+.page-a4 .ph-img::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 12px,
+      rgba(4,42,43,.045) 12px 13px
+    );
+}
+/* Foto real dentro do placeholder A4 — cobre 100% e oculta labels. */
+.page-a4 .ph-img > img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1;
+  display: block;
+}
+.page-a4 .ph-img:has(> img) .lbl,
+.page-a4 .ph-img:has(> img) .aspect{ display: none; }
+.page-a4 .ph-img:has(> img){ background: var(--ink); border-color: transparent; }
+.page-a4 .ph-img .lbl{
+  position: absolute;
+  top: 14px; left: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  background: rgba(255,255,255,.92);
+  padding: 4px 8px;
+  border: 1px solid var(--gray-200);
+  z-index: 2;
+  max-width: 70%;
+  line-height: 1.4;
+}
+.page-a4 .ph-img .aspect{
+  position: absolute;
+  bottom: 14px; right: 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--gray-400);
+  letter-spacing: 0;
+  z-index: 2;
+}
+.page-a4 .ph-img-dark{
+  background: var(--gray-800, #262A2A);
+}
+.page-a4 .ph-img-dark::before{
+  opacity: .28;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 14px,
+      rgba(255,255,255,.05) 14px 15px
+    );
+}
+.page-a4 .ph-img-dark .lbl{
+  background: rgba(0,0,0,.85);
+  color: #fff;
+  border-color: rgba(255,255,255,.2);
+}
+
+/* Ícone-shape (mesma linguagem dos slides) */
+.page-a4 .icon-shape{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+.page-a4 .icon-shape svg{
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+.page-a4 .icon-shape.xs{ width: 20px; height: 20px; }
+.page-a4 .icon-shape.sm{ width: 28px; height: 28px; }
+.page-a4 .icon-shape.md{ width: 40px; height: 40px; }
+.page-a4 .icon-shape.lg{ width: 64px; height: 64px; }
+.page-a4 .icon-shape.xl{ width: 120px; height: 120px; }
+
+/* ============================================================
+   TEMPLATES ESPECÍFICOS
+   ============================================================ */
+
+/* --- CAPA-01 · Capa institucional dark --- */
+.tpl-capa-inst .frame{ padding: 60px; }
+.tpl-capa-inst .body{
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.tpl-capa-inst .kicker{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: #FFFFFF;
+}
+.tpl-capa-inst h1{
+  font-family: var(--font-display);
+  font-size: 84px;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: .98;
+  color: #fff;
+  margin: 0;
+  max-width: 12ch;
+}
+.tpl-capa-inst .sub{
+  font-size: 20px;
+  line-height: 1.4;
+  color: #FFFFFF;
+  margin: 8px 0 0;
+  max-width: 45ch;
+}
+.tpl-capa-inst .meta-strip{
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.22);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #FFFFFF;
+  /* letter-spacing removido */
+  /* text-transform removido */
+}
+.tpl-capa-inst .meta-strip .k b{ display: block; color: var(--teal-signal); font-weight: 400; margin-bottom: 4px; }
+
+/* --- CAPA-02 · Capa relatório com foto full-bleed --- */
+.tpl-capa-foto{ position: relative; }
+.tpl-capa-foto .stage-img{
+  position: absolute; inset: 0; z-index: 0;
+}
+.tpl-capa-foto .stage-img .ph-img{
+  height: 100%;
+}
+.tpl-capa-foto::before{
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.05) 30%, rgba(0,0,0,.5) 75%, rgba(0,0,0,.85) 100%);
+  z-index: 1;
+}
+.tpl-capa-foto .frame{ position: relative; z-index: 2; padding: 60px; }
+.tpl-capa-foto .p-eyebrow, .tpl-capa-foto .p-mark{ color: #fff; }
+.tpl-capa-foto .body{
+  margin-top: auto;
+  max-width: 480px;
+}
+.tpl-capa-foto .kicker{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: #FFFFFF;
+  margin-bottom: 16px;
+  display: block;
+}
+.tpl-capa-foto h1{
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #fff;
+  margin: 0;
+}
+.tpl-capa-foto .sub{
+  font-size: 18px;
+  line-height: 1.4;
+  color: #FFFFFF;
+  margin: 16px 0 0;
+}
+.tpl-capa-foto .p-foot{ border-top-color: rgba(255,255,255,.22); color: var(--teal-signal); }
+.tpl-capa-foto .p-foot b{ color: #fff; }
+
+/* --- DIV-01 · Divisor de capítulo com numeral gigante --- */
+.tpl-div .frame{ justify-content: center; }
+.tpl-div .body{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 40px;
+  align-items: end;
+}
+.tpl-div .big-idx{
+  font-family: var(--font-display);
+  font-feature-settings: "tnum" 1;
+  font-size: 340px;
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: .78;
+  color: var(--teal);
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+  padding-bottom: 12px;
+}
+.tpl-div .side{
+  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.tpl-div .side .kicker{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+}
+.tpl-div .side h2{
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0;
+  max-width: 12ch;
+}
+.tpl-div .side .list{
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+}
+.tpl-div .side .list .row{
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-200);
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 16px;
+  font-size: 16px;
+  color: var(--ink);
+}
+.tpl-div .side .list .row .n{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--teal);
+  /* letter-spacing removido */
+}
+
+/* --- ART-01 · Artigo científico 1 coluna com abstract --- */
+.tpl-art-1col .body{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+.tpl-art-1col .head-block{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 20px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.tpl-art-1col .head-block h1{
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0;
+  max-width: 22ch;
+}
+.tpl-art-1col .head-block .authors{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--gray-600);
+  /* letter-spacing removido */
+}
+.tpl-art-1col .abstract{
+  background: var(--gray-50);
+  padding: 20px 24px;
+  border-left: 3px solid var(--teal);
+}
+.tpl-art-1col .abstract .lbl{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+  display: block;
+  margin-bottom: 8px;
+}
+.tpl-art-1col .abstract p{
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-art-1col .figure{ margin-top: 8px; }
+.tpl-art-1col .figure .img{
+  aspect-ratio: 16/9;
+  width: 100%;
+}
+.tpl-art-1col .figure .cap{
+  padding-top: 8px;
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1;
+  font-size: 12px;
+  color: var(--gray-500);
+  /* letter-spacing removido */
+}
+.tpl-art-1col .figure .cap b{ color: var(--teal); font-weight: 400; }
+.tpl-art-1col .prose{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tpl-art-1col .prose h3{
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--ink);
+  margin: 12px 0 0;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  font-family: var(--font-mono);
+}
+.tpl-art-1col .prose p{
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* --- ART-02 · Artigo 2 colunas paper-style --- */
+.tpl-art-2col .body{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+.tpl-art-2col .head-block h1{
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0 0 8px;
+  max-width: 24ch;
+}
+.tpl-art-2col .head-block .authors{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--gray-600);
+  /* letter-spacing removido */
+  padding-bottom: 16px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.tpl-art-2col .cols{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  flex: 1;
+}
+.tpl-art-2col .col{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tpl-art-2col .col h3{
+  font-family: var(--font-mono);
+  font-family: var(--font-display);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+  margin: 8px 0 4px;
+}
+.tpl-art-2col .col p{
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-art-2col .col .figure{ margin: 8px 0; }
+.tpl-art-2col .col .figure .img{
+  aspect-ratio: 4/3;
+  width: 100%;
+}
+.tpl-art-2col .col .figure .cap{
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1;
+  font-size: 11px;
+  color: var(--gray-500);
+  /* letter-spacing removido */
+  margin-top: 6px;
+}
+.tpl-art-2col .col .figure .cap b{ color: var(--teal); font-weight: 400; }
+
+/* --- ART-03 · Página científica com gráfico + citações --- */
+.tpl-art-chart .body{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+.tpl-art-chart .head-block{
+  padding-bottom: 16px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.tpl-art-chart .head-block h1{
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+.tpl-art-chart .head-block .authors{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--gray-600);
+  /* letter-spacing removido */
+}
+.tpl-art-chart .chart-block{
+  padding: 20px;
+  border: 1px solid var(--gray-200);
+  background: var(--gray-50);
+}
+.tpl-art-chart .chart-block .lbl{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+  margin-bottom: 12px;
+}
+/* Mini bar chart */
+.tpl-art-chart .mini-chart{
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  height: 180px;
+  padding: 0 8px;
+  border-bottom: 1.5px solid var(--ink);
+  position: relative;
+}
+.tpl-art-chart .mini-chart .b{
+  flex: 1;
+  background: var(--teal);
+  min-height: 4px;
+  position: relative;
+}
+.tpl-art-chart .mini-chart .b.alt{ background: var(--ink); }
+.tpl-art-chart .mini-chart .b.mute{ background: var(--gray-300); }
+.tpl-art-chart .mini-chart .b .v{
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink);
+}
+.tpl-art-chart .mini-x{
+  display: flex;
+  gap: 12px;
+  padding: 6px 8px 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--gray-500);
+}
+.tpl-art-chart .mini-x span{ flex: 1; text-align: center; letter-spacing: 0; }
+.tpl-art-chart .cite-block{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tpl-art-chart .cite-block h3{
+  font-family: var(--font-mono);
+  font-family: var(--font-display);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+  margin: 0 0 4px;
+}
+.tpl-art-chart .cite-block .ref{
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  padding-left: 18px;
+  position: relative;
+}
+.tpl-art-chart .cite-block .ref::before{
+  content: attr(data-n);
+  position: absolute; left: 0; top: 0;
+  font-family: var(--font-mono);
+  color: var(--teal);
+  font-size: 10px;
+}
+
+/* --- PROD-01 · Ficha de produto com hero --- */
+.tpl-prod-ficha .body{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+.tpl-prod-ficha .hero{
+  aspect-ratio: 4/3;
+  width: 100%;
+}
+.tpl-prod-ficha .name-block{
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.tpl-prod-ficha .name-block h1{
+  font-family: var(--font-display);
+  font-size: 52px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-prod-ficha .name-block .lbl{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--teal);
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+.tpl-prod-ficha .name-block .price{
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1;
+  color: var(--teal);
+  font-variant-numeric: tabular-nums;
+}
+.tpl-prod-ficha .name-block .price .lbl-mini{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  display: block;
+  margin-bottom: 6px;
+}
+.tpl-prod-ficha .specs{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 32px;
+  margin-top: 4px;
+}
+.tpl-prod-ficha .specs .spec{
+  padding: 10px 0;
+  border-bottom: 1px solid var(--gray-200);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: baseline;
+}
+.tpl-prod-ficha .specs .spec .k{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+}
+.tpl-prod-ficha .specs .spec .v{
+  font-size: 15px;
+  color: var(--ink);
+  font-weight: 400;
+}
+.tpl-prod-ficha .desc{
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0;
+  max-width: 65ch;
+}
+
+/* --- PROD-02 · Detalhe de produto (foto grande + descrição vertical) --- */
+.tpl-prod-detail .body{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  flex: 1;
+}
+.tpl-prod-detail .col-img{ height: 100%; }
+.tpl-prod-detail .col-txt{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.tpl-prod-detail .col-txt .kicker{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+}
+.tpl-prod-detail .col-txt h1{
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-prod-detail .col-txt .desc{
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-prod-detail .feature{
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--gray-200);
+  align-items: start;
+}
+.tpl-prod-detail .feature .ico{ color: var(--teal); margin-top: 2px; }
+.tpl-prod-detail .feature h4{
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--ink);
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+.tpl-prod-detail .feature p{
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--gray-600);
+  margin: 0;
+}
+.tpl-prod-detail .cta{
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1.5px solid var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.tpl-prod-detail .cta .price{
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 36px;
+  color: var(--teal);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.tpl-prod-detail .cta .cta-txt{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--ink);
+}
+
+/* --- PROD-03 · Comparativo de 3 produtos --- */
+.tpl-prod-3col .body{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+.tpl-prod-3col .top{
+  padding-bottom: 12px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.tpl-prod-3col .top h1{
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+.tpl-prod-3col .top p{
+  font-size: 14px;
+  color: var(--gray-600);
+  margin: 0;
+  line-height: 1.55;
+}
+.tpl-prod-3col .cols{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.tpl-prod-3col .prod{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--gray-200);
+  background: #fff;
+}
+.tpl-prod-3col .prod.hero{
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.tpl-prod-3col .prod .img{
+  aspect-ratio: 1/1;
+  width: 100%;
+}
+.tpl-prod-3col .prod .name{
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.tpl-prod-3col .prod.hero .name{ color: #fff; }
+.tpl-prod-3col .prod .lbl{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+}
+.tpl-prod-3col .prod.hero .lbl{ color: var(--teal-signal); }
+.tpl-prod-3col .prod .specs{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid var(--gray-200);
+  padding-top: 10px;
+}
+.tpl-prod-3col .prod.hero .specs{ border-top-color: rgba(255,255,255,.18); }
+.tpl-prod-3col .prod .spec-row{
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+.tpl-prod-3col .prod .spec-row .k{ color: var(--gray-500); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0; /* text-transform removido */ }
+.tpl-prod-3col .prod.hero .spec-row .k{ color: var(--teal-signal); }
+.tpl-prod-3col .prod .spec-row .v{ color: var(--ink); font-weight: 400; }
+.tpl-prod-3col .prod.hero .spec-row .v{ color: #fff; }
+.tpl-prod-3col .prod .price{
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--teal);
+  font-variant-numeric: tabular-nums;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1.5px solid var(--ink);
+}
+.tpl-prod-3col .prod.hero .price{ color: #fff; border-top-color: rgba(255,255,255,.35); }
+
+/* --- COM-01 · Tabela de vendas / precificação --- */
+.tpl-tabela-vendas .body{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+.tpl-tabela-vendas .top{
+  padding-bottom: 12px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.tpl-tabela-vendas .top h1{
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+.tpl-tabela-vendas .top p{
+  font-size: 14px;
+  color: var(--gray-600);
+  margin: 0;
+  line-height: 1.55;
+}
+.tpl-tabela-vendas table{
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 1.5px solid var(--ink);
+}
+.tpl-tabela-vendas thead th{
+  padding: 14px 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  text-align: left;
+  border-bottom: 1px solid var(--gray-200);
+  vertical-align: bottom;
+  font-weight: 400;
+}
+.tpl-tabela-vendas thead th.num{ text-align: right; }
+.tpl-tabela-vendas tbody td{
+  padding: 14px 8px;
+  font-size: 14px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--gray-100);
+  vertical-align: middle;
+}
+.tpl-tabela-vendas tbody td.num{
+  text-align: right;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.tpl-tabela-vendas tbody td.hero{ color: var(--teal); font-weight: 400; }
+.tpl-tabela-vendas tbody tr.hero-row{ background: var(--gray-50); }
+.tpl-tabela-vendas tbody tr.hero-row td.hero{ color: var(--teal); }
+.tpl-tabela-vendas tfoot td{
+  padding: 16px 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--ink);
+  border-top: 1.5px solid var(--ink);
+  border-bottom: none;
+  font-weight: 400;
+}
+.tpl-tabela-vendas tfoot td.num{ text-align: right; font-family: var(--font-mono); }
+.tpl-tabela-vendas tfoot td.total{ color: var(--teal); font-size: 18px; }
+.tpl-tabela-vendas .status{
+  display: inline-block;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0;
+  /* text-transform removido */
+  border: 1px solid var(--gray-300);
+  color: var(--gray-600);
+}
+.tpl-tabela-vendas .status.ok{ background: var(--teal); border-color: var(--teal); color: #fff; }
+.tpl-tabela-vendas .status.warn{ background: var(--ink); border-color: var(--ink); color: #fff; }
+
+/* --- CASE-01 · Case study com foto contexto --- */
+.tpl-case-foto .body{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+.tpl-case-foto .hero{
+  aspect-ratio: 16/8;
+  width: 100%;
+}
+.tpl-case-foto .name-block h1{
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-case-foto .name-block .kicker{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+.tpl-case-foto .grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1.5px solid var(--ink);
+}
+.tpl-case-foto .block h3{
+  font-family: var(--font-mono);
+  font-family: var(--font-display);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+  margin: 0 0 6px;
+}
+.tpl-case-foto .block p{
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-case-foto .kpi-strip{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding-top: 12px;
+  margin-top: auto;
+  border-top: 1.5px solid var(--ink);
+}
+.tpl-case-foto .kpi-strip .k .lbl{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+}
+.tpl-case-foto .kpi-strip .k .v{
+  font-size: 40px;
+  font-weight: 400;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  margin-top: 2px;
+}
+.tpl-case-foto .kpi-strip .k.hero .v{ color: var(--teal); }
+
+/* --- CASE-02 · Case editorial com quote de cliente --- */
+.tpl-case-quote .body{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+.tpl-case-quote .top{ padding-bottom: 16px; border-bottom: 1.5px solid var(--ink); }
+.tpl-case-quote .top .kicker{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+.tpl-case-quote .top h1{
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-case-quote .split{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  flex: 1;
+}
+.tpl-case-quote .split .portrait{
+  aspect-ratio: 3/4;
+  width: 100%;
+}
+.tpl-case-quote .quote-col{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 4px;
+}
+.tpl-case-quote .quote-col .qmark{
+  font-size: 120px;
+  color: var(--teal);
+  line-height: .5;
+  height: 48px;
+  margin-left: -4px;
+}
+.tpl-case-quote .quote-col .q{
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-case-quote .quote-col .attr{
+  padding-top: 14px;
+  border-top: 1px solid var(--gray-200);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--gray-600);
+  letter-spacing: 0;
+}
+.tpl-case-quote .quote-col .attr b{ display: block; color: var(--ink); font-family: var(--font-sans); font-size: 17px; text-transform: none; letter-spacing: -0.01em; margin-bottom: 4px; font-weight: 400; }
+.tpl-case-quote .results{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1.5px solid var(--ink);
+  margin-top: auto;
+}
+.tpl-case-quote .results .r .lbl{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+}
+.tpl-case-quote .results .r .v{
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.tpl-case-quote .results .r.hero .v{ color: var(--teal); }
+
+/* --- INFO-01 · Infográfico KPIs + ícones (6 métricas) --- */
+.tpl-info-kpis .body{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+.tpl-info-kpis .top{ padding-bottom: 12px; border-bottom: 1.5px solid var(--ink); }
+.tpl-info-kpis .top h1{
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+.tpl-info-kpis .top p{
+  font-size: 14px;
+  color: var(--gray-600);
+  margin: 0;
+  line-height: 1.55;
+}
+.tpl-info-kpis .grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.tpl-info-kpis .cell{
+  padding: 16px;
+  border: 1px solid var(--gray-200);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tpl-info-kpis .cell.hero{
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.tpl-info-kpis .cell .ico{ color: var(--teal); }
+.tpl-info-kpis .cell.hero .ico{ color: #fff; }
+.tpl-info-kpis .cell .lbl{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  margin-top: 6px;
+}
+.tpl-info-kpis .cell.hero .lbl{ color: var(--teal-signal); }
+.tpl-info-kpis .cell .v{
+  font-size: 52px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: .95;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  margin: 4px 0 6px;
+}
+.tpl-info-kpis .cell.hero .v{ color: #fff; }
+.tpl-info-kpis .cell .v .u{ font-size: 26px; color: var(--gray-500); }
+.tpl-info-kpis .cell.hero .v .u{ color: var(--teal-signal); }
+.tpl-info-kpis .cell p{
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--gray-600);
+  margin: 0;
+}
+.tpl-info-kpis .cell.hero p{ color: var(--teal-signal); }
+.tpl-info-kpis .foot-strip{
+  margin-top: auto;
+  padding: 16px;
+  background: var(--gray-50);
+  border-left: 3px solid var(--teal);
+}
+.tpl-info-kpis .foot-strip p{
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* --- INFO-02 · Infográfico visual (foto + dados sobrepostos) --- */
+.tpl-info-visual{ position: relative; }
+.tpl-info-visual .stage-img{
+  position: absolute; inset: 0; z-index: 0;
+}
+.tpl-info-visual .stage-img .ph-img{
+  height: 100%;
+}
+.tpl-info-visual::before{
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,.05) 20%, rgba(0,0,0,.7) 100%);
+  z-index: 1;
+}
+.tpl-info-visual .frame{ position: relative; z-index: 2; padding: 60px; }
+.tpl-info-visual .p-eyebrow, .tpl-info-visual .p-mark{ color: #fff; }
+.tpl-info-visual .body{
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.tpl-info-visual h1{
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: #fff;
+  margin: 0;
+  max-width: 20ch;
+}
+.tpl-info-visual .cards{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.tpl-info-visual .cards .c{
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,.18);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tpl-info-visual .cards .c .ico{ color: #fff; }
+.tpl-info-visual .cards .c .lbl{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal-signal);
+}
+.tpl-info-visual .cards .c .v{
+  font-size: 36px;
+  font-weight: 400;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.tpl-info-visual .cards .c.hero .v{ color: var(--teal); }
+.tpl-info-visual .cards .c p{
+  font-size: 13px;
+  line-height: 1.5;
+  color: #FFFFFF;
+  margin: 0;
+}
+.tpl-info-visual .p-foot{ border-top-color: rgba(255,255,255,.22); color: var(--teal-signal); }
+.tpl-info-visual .p-foot b{ color: #fff; }
+
+/* --- EDU-01 · Passo a passo didático 4 etapas --- */
+.tpl-edu-passo .body{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+.tpl-edu-passo .top{ padding-bottom: 12px; border-bottom: 1.5px solid var(--ink); }
+.tpl-edu-passo .top h1{
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+.tpl-edu-passo .top p{
+  font-size: 14px;
+  color: var(--gray-600);
+  margin: 0;
+  line-height: 1.55;
+}
+.tpl-edu-passo .steps{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+.tpl-edu-passo .step{
+  display: grid;
+  grid-template-columns: 88px 60px 1fr 160px;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--gray-200);
+  align-items: start;
+}
+.tpl-edu-passo .step .n{
+  font-size: 64px;
+  font-weight: 400;
+  color: var(--teal);
+  font-variant-numeric: tabular-nums;
+  line-height: .9;
+  letter-spacing: -0.04em;
+}
+.tpl-edu-passo .step .ico{ color: var(--teal); margin-top: 8px; }
+.tpl-edu-passo .step .txt h4{
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+.tpl-edu-passo .step .txt p{
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+}
+.tpl-edu-passo .step .img{
+  aspect-ratio: 4/3;
+  width: 100%;
+}
+
+/* --- EDU-02 · Educativo científico com diagrama + texto denso --- */
+.tpl-edu-diagram .body{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+.tpl-edu-diagram .top h1{
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+.tpl-edu-diagram .top .kicker{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+.tpl-edu-diagram .split{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  flex: 1;
+  padding-top: 12px;
+  border-top: 1.5px solid var(--ink);
+}
+.tpl-edu-diagram .diagram{
+  aspect-ratio: 4/5;
+}
+.tpl-edu-diagram .prose{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tpl-edu-diagram .prose h3{
+  font-family: var(--font-mono);
+  font-family: var(--font-display);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+  margin: 6px 0 2px;
+}
+.tpl-edu-diagram .prose p{
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-edu-diagram .prose .call{
+  padding: 14px 16px;
+  background: var(--gray-50);
+  border-left: 3px solid var(--teal);
+  font-size: 14px;
+  color: var(--ink);
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+/* --- TL-01 · Timeline vertical de marcos --- */
+.tpl-timeline-v .body{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+.tpl-timeline-v .top{ padding-bottom: 12px; border-bottom: 1.5px solid var(--ink); }
+.tpl-timeline-v .top h1{
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+.tpl-timeline-v .top p{
+  font-size: 14px;
+  color: var(--gray-600);
+  margin: 0;
+  line-height: 1.55;
+}
+.tpl-timeline-v .rail{
+  position: relative;
+  padding-left: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+.tpl-timeline-v .rail::before{
+  content: "";
+  position: absolute;
+  left: 16px; top: 8px; bottom: 8px;
+  width: 1px;
+  background: var(--gray-300);
+}
+.tpl-timeline-v .marker{
+  position: relative;
+  display: grid;
+  grid-template-columns: 80px 80px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+.tpl-timeline-v .marker::before{
+  content: "";
+  position: absolute;
+  left: -32px;
+  top: 6px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--gray-300);
+}
+.tpl-timeline-v .marker.active::before{
+  background: var(--teal);
+  border-color: var(--teal);
+}
+.tpl-timeline-v .marker .year{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--teal);
+  /* text-transform removido */
+  /* letter-spacing removido */
+  padding-top: 2px;
+}
+.tpl-timeline-v .marker .img{
+  aspect-ratio: 1/1;
+  width: 100%;
+}
+.tpl-timeline-v .marker .txt h4{
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+.tpl-timeline-v .marker .txt p{
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+}
+
+/* --- LEGAL-01 · Termos legais / regulatório denso --- */
+.tpl-legal-a4 .body{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+.tpl-legal-a4 .top{ padding-bottom: 12px; border-bottom: 1.5px solid var(--ink); }
+.tpl-legal-a4 .top .kicker{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+.tpl-legal-a4 .top h1{
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-legal-a4 .cols{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  flex: 1;
+}
+.tpl-legal-a4 .block{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--gray-200);
+}
+.tpl-legal-a4 .block h3{
+  font-family: var(--font-mono);
+  font-family: var(--font-display);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+  margin: 0 0 4px;
+}
+.tpl-legal-a4 .block p{
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: .02em;
+}
+
+/* --- CTA-01 · Próximos passos + contato + assinatura --- */
+.tpl-cta-a4 .body{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+.tpl-cta-a4 .top{ padding-bottom: 16px; border-bottom: 1.5px solid rgba(255,255,255,.28); }
+.tpl-cta-a4 .top .kicker{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal-signal);
+  margin-bottom: 12px;
+}
+.tpl-cta-a4 .top h1{
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #fff;
+  margin: 0;
+  max-width: 16ch;
+}
+.tpl-cta-a4 .steps-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.tpl-cta-a4 .step-card{
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(255,255,255,.05);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tpl-cta-a4 .step-card .n{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--teal);
+  /* letter-spacing removido */
+}
+.tpl-cta-a4 .step-card h4{
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.tpl-cta-a4 .step-card p{
+  font-size: 13px;
+  line-height: 1.55;
+  color: #FFFFFF;
+  margin: 0;
+}
+.tpl-cta-a4 .contact-block{
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,.22);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.tpl-cta-a4 .contact-block .col .lbl{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal-signal);
+  margin-bottom: 6px;
+  display: block;
+}
+.tpl-cta-a4 .contact-block .col p{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #fff;
+  line-height: 1.6;
+  margin: 0;
+  /* letter-spacing removido */
+}
+
+/* --- CONTRA-01 · Contra-capa institucional --- */
+.tpl-contra-a4 .frame{ padding: 60px; }
+.tpl-contra-a4 .body{
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+}
+.tpl-contra-a4 .wordmark-big{
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  color: #fff;
+}
+.tpl-contra-a4 .tag{
+  font-size: 26px;
+  line-height: 1.35;
+  color: #FFFFFF;
+  margin: 0;
+  max-width: 40ch;
+}
+.tpl-contra-a4 em.hl{ color: #fff; }
+.tpl-contra-a4 .contact-line{
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.28);
+  display: flex;
+  gap: 40px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--teal-signal);
+  /* letter-spacing removido */
+  flex-wrap: wrap;
+  max-width: 620px;
+  margin-top: 8px;
+}

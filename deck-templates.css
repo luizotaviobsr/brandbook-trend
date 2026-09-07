@@ -1,0 +1,3586 @@
+/* =============================================================
+   TRENDSCIENCE — Padrão Apresentação
+   Sistema de templates de deck 1920×1080 (Full HD · 16:9)
+
+   IDENTIDADE VISUAL 100% oficial:
+   - Cores: Ink #042A2B, Branco #FFFFFF, Teal #007A7D
+   - Tipografia: Geist + Geist Mono (herdada do brandbook)
+   - Padrão gráfico: ícone Trendscience preservado, aplicado
+     em escala massiva e cortado por margens do frame
+   - Ícones: estilo Lucide, stroke 2px, line-cap/join round
+   ============================================================= */
+
+:root{
+  /* Deck-only tokens (todos derivados do brandbook oficial) */
+  --deck-w: 1920px;
+  --deck-h: 1080px;
+  --deck-margin-x: 96px;
+  --deck-margin-y: 72px;
+  --deck-col-gap: 32px;
+  --deck-cols: 12;
+}
+
+/* ============================================================
+   GALERIA (grid de miniaturas na página)
+   ============================================================ */
+.deck-toolbar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 40px 0 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--gray-200);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--text-muted);
+}
+.deck-toolbar .lote-tag{ color: var(--teal); }
+.deck-toolbar .audit{ display: flex; gap: 24px; }
+.deck-toolbar .audit b{ color: var(--ink); font-weight: 400; }
+
+.deck-gallery{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px 32px;
+  margin-top: 8px;
+}
+@media (min-width: 1400px){
+  .deck-gallery{ grid-template-columns: repeat(3, 1fr); }
+}
+
+.deck-tile{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  cursor: zoom-in;
+}
+.deck-tile .thumb{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  background: #fff;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+.deck-tile:hover .thumb{ border-color: var(--teal); }
+.deck-tile .thumb .slide-1080{
+  position: absolute;
+  top: 0; left: 0;
+  transform-origin: top left;
+  /* Fator preenchido via variável — cada thumb calcula com base no seu width real */
+  transform: scale(0.2083); /* 400/1920 default (será ajustado por JS) */
+}
+
+.deck-tile .cap{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+.deck-tile .cap .l{ display: flex; flex-direction: column; gap: 4px; min-width: 0;}
+.deck-tile .cap .code{
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--teal);
+  /* text-transform removido */
+  /* letter-spacing removido */
+  font-weight: 400;
+}
+.deck-tile .cap .fn{
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.deck-tile .cap .badge{
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  /* text-transform removido */
+  letter-spacing: 0;
+  flex: none;
+  border: 1px solid var(--gray-200);
+  color: var(--gray-500);
+  background: #fff;
+}
+.deck-tile .cap .badge.b-txt{ /* Texto puro */
+  background: var(--gray-50);
+  border-color: var(--gray-200);
+  color: var(--gray-600);
+}
+.deck-tile .cap .badge.b-viz{ /* Texto + Visual */
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #fff;
+}
+
+/* ============================================================
+   VIEWER (fullscreen modal)
+   ============================================================ */
+.deck-viewer{
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 20, 20, 0.94);
+  z-index: 999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 80px;
+}
+.deck-viewer.is-open{ display: flex; }
+.deck-viewer .stage{
+  position: relative;
+  width: 100%;
+  max-width: min(calc(100vh * 16/9 - 120px), 1600px);
+  aspect-ratio: 16 / 9;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,.5);
+}
+.deck-viewer .stage .slide-1080{
+  transform-origin: top left;
+}
+.deck-viewer .chrome{
+  position: absolute;
+  top: 24px; left: 24px; right: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--teal-signal);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+}
+.deck-viewer .chrome .code{ color: #fff; }
+.deck-viewer .chrome .close{
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.25);
+  color: #fff;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  border-radius: 3px;
+  transition: background var(--dur-fast) var(--ease);
+}
+.deck-viewer .chrome .close:hover{ background: rgba(255,255,255,.1); }
+.deck-viewer .nav-btn{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.25);
+  color: #fff;
+  width: 48px; height: 48px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  border-radius: 50%;
+  transition: background var(--dur-fast) var(--ease);
+}
+.deck-viewer .nav-btn:hover{ background: rgba(255,255,255,.1); }
+.deck-viewer .nav-btn.prev{ left: 20px; }
+.deck-viewer .nav-btn.next{ right: 20px; }
+.deck-viewer .counter{
+  position: absolute;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  color: var(--teal-signal);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* letter-spacing removido */
+  /* text-transform removido */
+}
+
+/* ============================================================
+   BASE DO SLIDE 1920×1080
+   ============================================================ */
+.slide-1080{
+  width: 1920px;
+  height: 1080px;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: #fff;
+  /* Fixa a tipografia em escala absoluta (não vh-based) para que o
+     scale() do container reduza tudo proporcionalmente. */
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Fundos oficiais */
+.slide-1080.bg-white{ background: #fff; color: var(--ink); }
+.slide-1080.bg-ink  { background: var(--ink); color: #fff; }
+.slide-1080.bg-teal { background: var(--teal); color: #fff; }
+
+/* Padrão gráfico oficial (ícone Trendscience preservado, cortado
+   por margens do frame). Renderizado como <svg> filho .brand-pattern */
+.slide-1080 .brand-pattern{
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+.slide-1080 .brand-pattern.watermark{
+  right: -8%;
+  bottom: -12%;
+  width: 620px;
+  height: 776px;
+  color: currentColor;
+  opacity: .06;
+}
+.slide-1080.bg-ink .brand-pattern.watermark{ opacity: .10; }
+.slide-1080 .brand-pattern.hero{
+  right: -6%;
+  top: -10%;
+  width: 900px;
+  height: 1125px;
+  opacity: .12;
+}
+.slide-1080.bg-teal .brand-pattern.watermark{ opacity: .18; }
+
+/* Wrapper com margens padrão + z acima do watermark */
+.slide-1080 .frame{
+  position: relative;
+  z-index: 1;
+  width: 100%; height: 100%;
+  padding: var(--deck-margin-y) var(--deck-margin-x);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Slide header (eyebrow + logo) — presente em maioria dos slides */
+.slide-1080 .s-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+  flex: none;
+}
+.slide-1080 .s-eyebrow{
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 400;
+  /* text-transform removido */
+  letter-spacing: 0;
+  color: var(--teal);
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+.slide-1080.bg-ink .s-eyebrow,
+.slide-1080.bg-teal .s-eyebrow{ color: #fff; opacity: .78; }
+.slide-1080 .s-eyebrow .num{
+  font-family: var(--font-mono);
+  color: inherit;
+}
+.slide-1080 .s-eyebrow::after{ content: none; }
+
+/* Logo/monograma no header */
+.slide-1080 .s-mark{
+  height: 40px;
+  color: var(--ink);
+}
+.slide-1080.bg-ink .s-mark,
+.slide-1080.bg-teal .s-mark{ color: #fff; }
+
+/* Rodapé com meta (auditoria + código) — usado em slides normais */
+.slide-1080 .s-foot{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  margin-top: auto;
+  padding-top: 32px;
+  border-top: 1px solid rgba(4,42,43,.12);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--gray-500);
+  letter-spacing: 0;
+  /* text-transform removido */
+  flex: none;
+}
+.slide-1080.bg-ink .s-foot,
+.slide-1080.bg-teal .s-foot{
+  border-top-color: rgba(255,255,255,.18);
+  color: var(--teal-signal);
+}
+.slide-1080 .s-foot .l,
+.slide-1080 .s-foot .r{ display: flex; gap: 32px; align-items: center; }
+.slide-1080 .s-foot b{
+  color: var(--ink);
+  font-weight: 400;
+}
+.slide-1080.bg-ink .s-foot b,
+.slide-1080.bg-teal .s-foot b{ color: #fff; }
+
+/* ============================================================
+   ESCALA TIPOGRÁFICA (valores absolutos p/ 1920×1080)
+   Do brandbook oficial — Geist
+   ============================================================ */
+.slide-1080 .t-display{
+  font-family: var(--font-display);
+  font-size: 168px;
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: .95;
+  margin: 0;
+}
+.slide-1080 .t-h1{
+  font-family: var(--font-display);
+  font-size: 112px;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  margin: 0;
+}
+.slide-1080 .t-h2{
+  font-family: var(--font-display);
+  font-size: 80px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  margin: 0;
+}
+.slide-1080 .t-h3{
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
+}
+.slide-1080 .t-lead{
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.45;
+  margin: 0;
+  max-width: 60ch;
+}
+.slide-1080 .t-body{
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 62ch;
+}
+.slide-1080 .t-caption{
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 400;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  margin: 0;
+}
+.slide-1080.bg-ink .t-caption,
+.slide-1080.bg-teal .t-caption{ color: var(--teal-signal); }
+
+/* Big number */
+.slide-1080 .big-num{
+  font-family: var(--font-display);
+  font-feature-settings: "tnum" 1;
+  font-weight: 400;
+  font-size: 340px;
+  letter-spacing: -0.055em;
+  line-height: .85;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.slide-1080.bg-ink .big-num,
+.slide-1080.bg-teal .big-num{ color: #fff; }
+.slide-1080 .big-num .accent{ color: var(--teal); }
+.slide-1080.bg-ink .big-num .accent{ color: var(--teal); }
+
+/* Cor de acento em corpo */
+/* Ênfase editorial — regra oficial de contraste do brandbook:
+   · Fundo claro: teal como cor de acento
+   · Fundo escuro (Ink): tipografia SEMPRE branca 100%,
+     sem tingimento com teal (que só existe em fundos claros)
+   · Fundo teal: branco 100% para garantir contraste
+*/
+/* Ênfase inline · Inter Tight 300, sempre normal (nunca itálico verdadeiro).
+   Cor: teal sobre claro, teal-signal sobre escuro. */
+.slide-1080 em.hl{
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 300;
+  color: var(--teal);
+}
+.slide-1080.bg-ink em.hl,
+.slide-1080.bg-teal em.hl{
+  color: var(--teal-signal);
+}
+/* Sobre teal chapado, toda a linha é branca — não há ênfase de cor. */
+.slide-1080.bg-teal em.hl{ color: #FFFFFF; font-weight: 300; }
+
+/* ============================================================
+   PLACEHOLDERS (imagem / ícone) — hatching sutil + label mono
+   ============================================================ */
+.ph-img{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  overflow: hidden;
+}
+.ph-img::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 14px,
+      rgba(4,42,43,.045) 14px 15px
+    );
+}
+/* Quando o placeholder é preenchido com uma foto real, ela cobre 100%
+   do quadro e as labels (.lbl / .aspect) são ocultadas. O hatching não
+   aparece porque a imagem está sobre ele. */
+.ph-img > img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1;
+  display: block;
+}
+.ph-img:has(> img) .lbl,
+.ph-img:has(> img) .aspect{ display: none; }
+.ph-img:has(> img){ background: var(--ink); border-color: transparent; }
+.ph-img .lbl{
+  position: absolute;
+  top: 20px; left: 20px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 400;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  background: rgba(255,255,255,.92);
+  padding: 6px 10px;
+  border: 1px solid var(--gray-200);
+  z-index: 2;
+  max-width: 70%;
+  line-height: 1.4;
+}
+.ph-img .aspect{
+  position: absolute;
+  bottom: 20px; right: 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--gray-400);
+  letter-spacing: 0;
+  z-index: 2;
+}
+
+/* Placeholder de ícone */
+.ph-icon{
+  width: 96px;
+  height: 96px;
+  border: 1.5px solid var(--gray-300);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--teal);
+  background: transparent;
+  position: relative;
+  flex: none;
+}
+.ph-icon svg{
+  width: 44px; height: 44px;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  stroke: currentColor;
+}
+.ph-icon.lg{ width: 128px; height: 128px; }
+.ph-icon.lg svg{ width: 60px; height: 60px; }
+.slide-1080.bg-ink .ph-icon{ border-color: rgba(255,255,255,.35); color: #fff; }
+.slide-1080.bg-teal .ph-icon{ border-color: rgba(255,255,255,.5); color: #fff; }
+
+.ph-icon .lbl{
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gray-400);
+  white-space: nowrap;
+  /* text-transform removido */
+  letter-spacing: 0;
+}
+
+/* ============================================================
+   TEMPLATE-SPECIFIC LAYOUTS
+   ============================================================ */
+
+/* --- IMPACTO-01 — Capa principal (orientação EDITORIAL: tudo à esquerda) --- */
+.tpl-capa-principal .frame{ padding: 96px; align-items: flex-start; text-align: left; }
+.tpl-capa-principal .stack{
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: flex-start;
+}
+.tpl-capa-principal .headline{
+  max-width: 1400px;
+  text-align: left;
+}
+.tpl-capa-principal .sub{ max-width: 800px; text-align: left; }
+
+/* --- IMPACTO-02 — Divisor de capítulo (tudo à esquerda) --- */
+.tpl-divisor .frame{ justify-content: center; align-items: flex-start; text-align: left; }
+.tpl-divisor .divisor-body{
+  max-width: 1300px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+.tpl-divisor .num-cap{
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 400;
+  /* text-transform removido */
+  letter-spacing: 0;
+  color: var(--teal-signal);
+  margin-bottom: 40px;
+  display: block;
+}
+.tpl-divisor .toc-hint{
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+  width: 100%;
+}
+.tpl-divisor .toc-hint li{
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  font-size: 22px;
+  color: var(--teal-signal);
+  list-style: none;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+.tpl-divisor .toc-hint li .n{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--teal);
+  min-width: 40px;
+}
+.tpl-divisor .toc-hint li.active{ color: #fff; }
+.tpl-divisor ul{ padding: 0; margin: 0; }
+
+/* --- IMPACTO-03 — Big number puro (número à esquerda, contexto à direita) --- */
+.tpl-big-number .frame{ padding: 96px; }
+.tpl-big-number .grid{
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 80px;
+  align-items: flex-end;
+  flex: 1;
+  margin: 32px 0;
+}
+.tpl-big-number .grid .main{
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+.tpl-big-number .grid .aside{
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  padding-bottom: 32px;
+}
+
+/* --- IMPACTO-04 — Big number comparativo --- */
+.tpl-comparativo .grid{
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 48px;
+  flex: 1;
+  align-items: center;
+  margin: 40px 0;
+}
+.tpl-comparativo .col{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.tpl-comparativo .col.right{ text-align: right; align-items: flex-end; }
+.tpl-comparativo .col .big-num{ font-family: var(--font-display);
+  font-feature-settings: "tnum" 1; font-size: 240px; }
+.tpl-comparativo .arrow{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--teal);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+}
+.tpl-comparativo .arrow svg{
+  width: 64px; height: 64px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tpl-comparativo .icons-row{
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 12px;
+}
+
+/* --- IMPACTO-05 — Manifesto quote (à esquerda, editorial) --- */
+.tpl-manifesto .frame{
+  justify-content: center;
+  padding: 96px;
+  align-items: flex-start;
+  text-align: left;
+}
+.tpl-manifesto .body{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 1500px;
+  margin: 32px 0;
+}
+.tpl-manifesto .qmark{
+  font-family: var(--font-sans);
+  font-size: 280px;
+  font-weight: 400;
+  line-height: .7;
+  color: #fff;
+  opacity: .3;
+  height: 120px;
+  overflow: visible;
+  margin-left: -12px;
+}
+.tpl-manifesto .quote{
+  font-size: 116px;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  max-width: 1500px;
+  margin: 40px 0 56px;
+  text-align: left;
+}
+.tpl-manifesto .attr{
+  font-family: var(--font-mono);
+  font-size: 18px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: #FFFFFF;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,.28);
+  min-width: 320px;
+}
+
+/* --- EDITORIAL-01 — Capa de relatório (tudo à esquerda) --- */
+.tpl-capa-relat .frame{ padding: 96px; }
+.tpl-capa-relat .split{
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 96px;
+  flex: 1;
+  align-items: flex-end;
+}
+.tpl-capa-relat .split .main{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+.tpl-capa-relat .toc{
+  border-left: 1px solid rgba(255,255,255,.18);
+  padding-left: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 40px;
+}
+.tpl-capa-relat .toc-lbl{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--teal-signal);
+  /* text-transform removido */
+  /* letter-spacing removido */
+  margin-bottom: 12px;
+}
+.tpl-capa-relat .toc-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  color: #fff;
+  font-size: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.tpl-capa-relat .toc-item .pg{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--teal-signal);
+}
+.tpl-capa-relat .huge-year{
+  font-family: var(--font-display);
+  font-feature-settings: "tnum" 1;
+  font-size: 260px;
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: .85;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- EDITORIAL-02 — Texto institucional --- */
+.tpl-texto-inst .split{
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 96px;
+  flex: 1;
+  margin: 56px 0 0;
+}
+.tpl-texto-inst .prose{
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 900px;
+  text-align: left;
+  align-items: flex-start;
+}
+.tpl-texto-inst .prose h2{
+  text-align: left;
+  align-self: flex-start;
+}
+.tpl-texto-inst .prose p{
+  font-size: 26px;
+  line-height: 1.55;
+  margin: 0;
+  color: var(--ink);
+  font-weight: 400;
+  text-align: left;
+  align-self: stretch;
+}
+.tpl-texto-inst .prose p.lead{
+  font-size: 34px;
+  line-height: 1.35;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.tpl-texto-inst .toc-side{
+  border-left: 1px solid var(--gray-200);
+  padding-left: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.tpl-texto-inst .toc-lbl{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  margin-bottom: 8px;
+}
+.tpl-texto-inst .toc-item{
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-100);
+  font-size: 20px;
+  color: var(--ink);
+}
+.tpl-texto-inst .toc-item .pg{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--gray-400);
+}
+.tpl-texto-inst .toc-item.active{ color: var(--teal); font-weight: 400; }
+.tpl-texto-inst .toc-item.active .pg{ color: var(--teal); }
+
+/* --- EDITORIAL-03 — Pilares/categorias --- */
+.tpl-pilares .grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  flex: 1;
+  margin-top: 56px;
+  align-content: start;
+}
+.tpl-pilares .pilar{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 32px;
+  border-top: 1px solid var(--gray-200);
+}
+.tpl-pilares .pilar .idx{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+}
+.tpl-pilares .pilar h3{
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0;
+  color: var(--ink);
+}
+.tpl-pilares .pilar p{
+  font-size: 18px;
+  line-height: 1.5;
+  margin: 0;
+  color: var(--gray-600);
+}
+.tpl-pilares .pilar .ph-icon{ margin-bottom: 8px; }
+
+/* --- EDITORIAL-04 — Dashboard KPIs (headline à esquerda) --- */
+.tpl-kpis .headline-row{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 96px;
+  align-items: end;
+  margin-top: 32px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--gray-200);
+  text-align: left;
+}
+.tpl-kpis .headline-row h2{ text-align: left; }
+.tpl-kpis .headline-row p{ text-align: left; }
+.tpl-kpis .grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  flex: 1;
+  margin-top: 48px;
+}
+.tpl-kpis .kpi{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 32px 40px;
+  border-right: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+}
+.tpl-kpis .kpi:nth-child(3n){ border-right: none; }
+.tpl-kpis .kpi:nth-child(n+4){ padding-bottom: 0; border-bottom: none; }
+.tpl-kpis .kpi:first-child,
+.tpl-kpis .kpi:nth-child(2),
+.tpl-kpis .kpi:nth-child(3){ padding-top: 0; }
+.tpl-kpis .kpi:first-child,
+.tpl-kpis .kpi:nth-child(4){ padding-left: 0;}
+.tpl-kpis .kpi .lbl{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  line-height: 1.3;
+}
+.tpl-kpis .kpi .val{
+  font-size: 128px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: .95;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  margin: 4px 0 8px;
+}
+.tpl-kpis .kpi .val .accent{ color: var(--teal); }
+.tpl-kpis .kpi .note{
+  font-size: 16px;
+  color: var(--gray-600);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ============================================================
+   LOTE 02 — templates novos
+   ============================================================ */
+
+/* Guardrail global: TODO o conteúdo textual dos templates do Lote 02
+   fica sempre alinhado à esquerda (orientação editorial oficial). */
+.tpl-manifesto-img, .tpl-manifesto-img .frame, .tpl-manifesto-img .body,
+.tpl-3col, .tpl-3col .frame,
+.tpl-timeline, .tpl-timeline .frame, .tpl-timeline .headline-block,
+.tpl-valores, .tpl-valores .frame, .tpl-valores .stack,
+.tpl-title-2col, .tpl-title-2col .frame, .tpl-title-2col .body,
+.tpl-framework, .tpl-framework .frame, .tpl-framework .body, .tpl-framework .fw-title,
+.tpl-tabela, .tpl-tabela .frame, .tpl-tabela .body,
+.tpl-num-prose, .tpl-num-prose .frame, .tpl-num-prose .body, .tpl-num-prose .prose,
+.tpl-carta, .tpl-carta .frame, .tpl-carta .body, .tpl-carta .letter,
+.tpl-cta, .tpl-cta .frame, .tpl-cta .body{
+  text-align: left;
+}
+.tpl-manifesto-img h1, .tpl-manifesto-img p,
+.tpl-3col h2, .tpl-3col h3, .tpl-3col p, .tpl-3col .headline-block,
+.tpl-timeline h2, .tpl-timeline h4, .tpl-timeline p, .tpl-timeline .headline-block p,
+.tpl-title-2col h1, .tpl-title-2col p, .tpl-title-2col .cols,
+.tpl-framework h2, .tpl-framework h4, .tpl-framework p, .tpl-framework .fw-title p,
+.tpl-tabela h2, .tpl-tabela p, .tpl-tabela .fw-title p,
+.tpl-num-prose h2, .tpl-num-prose p, .tpl-num-prose .prose h2, .tpl-num-prose .prose p,
+.tpl-carta h2, .tpl-carta p,
+.tpl-cta h1, .tpl-cta h4, .tpl-cta p{
+  text-align: left !important;
+}
+
+/* --- IMPACTO-06 — Big title manifesto sobre imagem dark --- */
+.tpl-manifesto-img .frame{ padding: 96px; }
+.tpl-manifesto-img .stage-img{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.tpl-manifesto-img .stage-img .ph-img{
+  background: var(--gray-800, #262A2A);
+}
+.tpl-manifesto-img .stage-img .ph-img::before{
+  opacity: .28;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 20px,
+      rgba(255,255,255,.05) 20px 22px
+    );
+}
+.tpl-manifesto-img .stage-img .ph-img .lbl{
+  background: rgba(0,0,0,.85);
+  color: #fff;
+  border-color: rgba(255,255,255,.2);
+}
+.tpl-manifesto-img::before{
+  /* Escurecimento sobre imagem: overlay preto puro (regra oficial da marca) */
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.5) 60%, rgba(0,0,0,.2) 100%);
+  z-index: 1;
+}
+.tpl-manifesto-img .frame{ position: relative; z-index: 2; }
+.tpl-manifesto-img .body{
+  margin-top: auto;
+  max-width: 1400px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: flex-start;
+}
+.tpl-manifesto-img .body h1{
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 128px;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  margin: 0;
+  text-align: left;
+}
+
+/* --- IMPACTO-07 — 3 pilares verticais (numerais grandes) --- */
+.tpl-3col .headline-block{
+  margin-top: 24px;
+  max-width: 1200px;
+}
+.tpl-3col .grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 64px;
+  flex: 1;
+  margin-top: 72px;
+  align-content: start;
+}
+.tpl-3col .col{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 40px;
+  border-top: 2px solid var(--ink);
+  align-items: flex-start;
+  text-align: left;
+}
+.tpl-3col .col .num{
+  font-family: var(--font-sans);
+  font-size: 148px;
+  font-weight: 400;
+  line-height: .9;
+  letter-spacing: -0.05em;
+  color: var(--teal);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.tpl-3col .col h3{
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0;
+  color: var(--ink);
+}
+.tpl-3col .col p{
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+}
+
+/* --- IMPACTO-08 — Timeline horizontal 5 marcos --- */
+.tpl-timeline .headline-block{
+  margin-top: 24px;
+  max-width: 1300px;
+}
+.tpl-timeline .track{
+  position: relative;
+  margin-top: 88px;
+  margin-bottom: 24px;
+}
+.tpl-timeline .track::before{
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  top: 24px;
+  height: 1px;
+  background: var(--gray-200);
+}
+.tpl-timeline .steps{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+  position: relative;
+}
+.tpl-timeline .step{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+  padding-right: 24px;
+}
+.tpl-timeline .step .dot{
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--gray-300);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--gray-500);
+}
+.tpl-timeline .step.active .dot{
+  border-color: var(--teal);
+  background: var(--teal);
+  color: #fff;
+}
+.tpl-timeline .step .year{
+  font-family: var(--font-mono);
+  font-size: 15px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+  margin-top: 4px;
+}
+.tpl-timeline .step h4{
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  margin: 0;
+  color: var(--ink);
+}
+.tpl-timeline .step p{
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--gray-600);
+  margin: 0;
+}
+
+/* --- IMPACTO-09 — Manifesto de valores empilhados (dark, texto puro) --- */
+.tpl-valores .frame{ padding: 96px; }
+.tpl-valores .stack{
+  margin-top: 32px;
+  max-width: 1500px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tpl-valores .val-line{
+  display: flex;
+  align-items: baseline;
+  gap: 32px;
+  padding: 32px 0;
+  border-bottom: 1px solid rgba(255,255,255,.15);
+}
+.tpl-valores .val-line .idx{
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--teal-signal);
+  min-width: 60px;
+}
+.tpl-valores .val-line .txt{
+  font-size: 96px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #fff;
+}
+
+/* --- IMPACTO-10 — Big title editorial + 2 colunas suporte --- */
+.tpl-title-2col .body{
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  flex: 1;
+  margin-top: 24px;
+}
+.tpl-title-2col h1{
+  font-family: var(--font-display);
+  font-size: 116px;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  max-width: 1500px;
+  margin: 0;
+  color: #fff;
+}
+.tpl-title-2col.bg-white h1{ color: var(--ink); }
+.tpl-title-2col .cols{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 96px;
+  max-width: 1500px;
+  margin-top: auto;
+}
+.tpl-title-2col .cols p{
+  font-size: 22px;
+  line-height: 1.55;
+  color: #FFFFFF;
+  margin: 0;
+}
+.tpl-title-2col.bg-white .cols p{ color: var(--gray-600); }
+
+/* --- EDITORIAL-06 — Framework caixas conectadas --- */
+.tpl-framework .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 32px;
+}
+.tpl-framework .fw-title{
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.tpl-framework .fw-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 32px;
+  margin-top: 24px;
+  position: relative;
+}
+.tpl-framework .fw-box{
+  padding: 32px;
+  border: 1px solid var(--gray-300);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 220px;
+  position: relative;
+}
+.tpl-framework .fw-box.filled{
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.tpl-framework .fw-box.filled .fw-lbl{ color: var(--teal-signal); }
+.tpl-framework .fw-box.filled h4{ color: #fff; }
+.tpl-framework .fw-box.filled p{ color: var(--teal-signal); }
+.tpl-framework .fw-box .fw-lbl{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+}
+.tpl-framework .fw-box h4{
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  margin: 0;
+  color: var(--ink);
+}
+.tpl-framework .fw-box p{
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--gray-600);
+  margin: 0;
+}
+.tpl-framework .fw-arrow{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--teal);
+  font-family: var(--font-mono);
+  font-size: 22px;
+  z-index: 2;
+}
+
+/* --- EDITORIAL-07 — Tabela comparativa 3 colunas --- */
+.tpl-tabela .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 32px;
+}
+.tpl-tabela .table{
+  width: 100%;
+  border-top: 2px solid var(--ink);
+  border-collapse: collapse;
+}
+.tpl-tabela .table thead th{
+  padding: 20px 24px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 400;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  text-align: left;
+  border-bottom: 1px solid var(--gray-200);
+  vertical-align: bottom;
+}
+.tpl-tabela .table thead th.hero{
+  color: var(--teal);
+  font-size: 20px;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+}
+.tpl-tabela .table tbody td{
+  padding: 24px;
+  font-size: 22px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--gray-200);
+  vertical-align: top;
+  line-height: 1.45;
+}
+.tpl-tabela .table tbody td:first-child{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  min-width: 240px;
+}
+.tpl-tabela .table tbody tr:last-child td{ border-bottom: 2px solid var(--ink); }
+.tpl-tabela .table tbody td.highlight{
+  color: var(--teal);
+  font-weight: 400;
+}
+
+/* --- EDITORIAL-08 — Big number narrativo (num gigante + prose) --- */
+.tpl-num-prose .body{
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 96px;
+  align-items: end;
+  margin-top: 48px;
+}
+/* Escopado ao .body para não colidir com o .num do eyebrow no s-header */
+.tpl-num-prose > .frame > .body > .num{
+  font-size: 380px;
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: .82;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+}
+.tpl-num-prose.bg-white > .frame > .body > .num{ color: var(--ink); }
+.tpl-num-prose .prose{
+  padding-bottom: 40px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+}
+.tpl-num-prose .prose .lbl{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal-signal);
+}
+.tpl-num-prose.bg-white .prose .lbl{ color: var(--gray-500); }
+.tpl-num-prose .prose h2{
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
+  color: #fff;
+}
+.tpl-num-prose.bg-white .prose h2{ color: var(--ink); }
+.tpl-num-prose .prose p{
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--teal-signal);
+  margin: 0;
+}
+.tpl-num-prose.bg-white .prose p{ color: var(--gray-600); }
+
+/* --- EDITORIAL-09 — Carta/prose longa com assinatura (texto puro) --- */
+.tpl-carta .body{
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 96px;
+  margin-top: 48px;
+}
+.tpl-carta .letter{
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  align-items: flex-start;
+}
+.tpl-carta .letter .kicker{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+}
+.tpl-carta .letter h2{
+  font-family: var(--font-display);
+  font-size: 52px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 16px;
+  color: var(--ink);
+  text-align: left;
+}
+.tpl-carta .letter p{
+  font-size: 22px;
+  line-height: 1.65;
+  color: var(--ink);
+  margin: 0;
+  text-align: left;
+}
+.tpl-carta .letter .sig{
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  padding-top: 32px;
+  border-top: 1px solid var(--gray-200);
+  min-width: 320px;
+}
+.tpl-carta .letter .sig .who{
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--ink);
+}
+.tpl-carta .letter .sig .role{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+}
+.tpl-carta .aside{
+  border-left: 1px solid var(--gray-200);
+  padding-left: 32px;
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.tpl-carta .aside .lbl{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  margin-bottom: 8px;
+}
+.tpl-carta .aside .item{
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+/* --- EDITORIAL-10 — Fechamento / CTA (dark) --- */
+.tpl-cta .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  margin-top: auto;
+  margin-bottom: 24px;
+  max-width: 1500px;
+  align-items: flex-start;
+}
+.tpl-cta .body .kicker{
+  font-family: var(--font-mono);
+  font-size: 16px;
+  /* text-transform removido */
+  letter-spacing: 0;
+  color: var(--teal);
+}
+.tpl-cta .body h1{
+  font-family: var(--font-display);
+  font-size: 144px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: .95;
+  color: #fff;
+  margin: 0;
+  text-align: left;
+}
+.tpl-cta .steps{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  margin-top: 32px;
+  width: 100%;
+  max-width: 1400px;
+}
+.tpl-cta .steps .step{
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.25);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+.tpl-cta .steps .step .n{
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--teal);
+  /* letter-spacing removido */
+}
+.tpl-cta .steps .step h4{
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin: 0;
+  color: #fff;
+}
+.tpl-cta .steps .step p{
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--teal-signal);
+  margin: 0;
+}
+.tpl-cta .contact-strip{
+  margin-top: 40px;
+  padding: 24px 0;
+  border-top: 1px solid rgba(255,255,255,.2);
+  display: flex;
+  gap: 64px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--teal-signal);
+  letter-spacing: 0;
+}
+
+/* ============================================================
+   LOTE 03 — templates novos
+   ============================================================ */
+
+/* Guardrail global do Lote 03: força left-align em toda a hierarquia
+   dos templates que ainda estavam herdando center. */
+.tpl-stack-nums, .tpl-stack-nums .frame, .tpl-stack-nums .body,
+.tpl-stack-nums .col-title, .tpl-stack-nums .stack-list, .tpl-stack-nums .n-row,
+.tpl-agenda, .tpl-agenda .frame, .tpl-agenda .body,
+.tpl-agenda .top, .tpl-agenda .agenda-grid, .tpl-agenda .row,
+.tpl-legal, .tpl-legal .frame, .tpl-legal .body,
+.tpl-legal .top, .tpl-legal .grid, .tpl-legal .grid .block{
+  text-align: left;
+}
+.tpl-stack-nums h2, .tpl-stack-nums p, .tpl-stack-nums .lbl, .tpl-stack-nums .val,
+.tpl-agenda h2, .tpl-agenda h3, .tpl-agenda p,
+.tpl-legal h2, .tpl-legal p, .tpl-legal .lbl, .tpl-legal .kicker{
+  text-align: left !important;
+}
+
+/* --- IMPACTO-11 — Big numbers empilhados (3 métricas verticais) --- */
+.tpl-stack-nums .body{
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 96px;
+  margin-top: 40px;
+  align-items: stretch;
+}
+.tpl-stack-nums .col-title{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 8px;
+  align-items: flex-start;
+}
+.tpl-stack-nums .col-title h2{
+  font-family: var(--font-display);
+  font-size: 76px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  color: #fff;
+  margin: 0;
+  text-align: left;
+}
+.tpl-stack-nums .col-title p{
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--teal-signal);
+  margin: 0;
+  max-width: 48ch;
+}
+.tpl-stack-nums .stack-list{
+  display: flex;
+  flex-direction: column;
+}
+.tpl-stack-nums .n-row{
+  padding: 24px 0;
+  border-top: 1px solid rgba(255,255,255,.18);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: baseline;
+}
+.tpl-stack-nums .n-row:last-child{ border-bottom: 1px solid rgba(255,255,255,.18); }
+.tpl-stack-nums .n-row .lbl{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal-signal);
+  line-height: 1.5;
+  max-width: 32ch;
+}
+.tpl-stack-nums .n-row .val{
+  font-size: 132px;
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.tpl-stack-nums .n-row .val .u{ font-size: 48px; color: var(--teal-signal); margin-left: 4px; }
+.tpl-stack-nums .n-row.hero .val{ color: var(--teal); font-size: 156px; }
+.tpl-stack-nums .n-row.hero .val .u{ color: #FFFFFF; }
+
+/* --- IMPACTO-12 — Split KPIs (imagem esquerda, 4 KPIs direita) --- */
+.tpl-split-kpis .body{
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-top: 32px;
+  align-items: stretch;
+}
+.tpl-split-kpis .col-img{
+  height: 100%;
+  min-height: 640px;
+}
+.tpl-split-kpis .col-kpis{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 8px;
+  align-items: flex-start;
+  text-align: left;
+}
+.tpl-split-kpis .col-kpis h2{
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0 0 24px;
+  text-align: left;
+}
+.tpl-split-kpis .kpis-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  width: 100%;
+}
+.tpl-split-kpis .k-cell{
+  padding: 24px 0;
+  border-top: 1.5px solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tpl-split-kpis .k-cell .lbl{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+}
+.tpl-split-kpis .k-cell .val{
+  font-size: 88px;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.tpl-split-kpis .k-cell .val .u{ font-size: 32px; color: var(--gray-500); }
+.tpl-split-kpis .k-cell.hero .val{ color: var(--teal); }
+.tpl-split-kpis .k-cell .note{
+  font-size: 14px;
+  color: var(--gray-600);
+  line-height: 1.5;
+  margin: 4px 0 0;
+}
+
+/* --- IMPACTO-13 — Imagem full-bleed + card sobreposto (substitui mapa) --- */
+.tpl-fullbleed{
+  position: relative;
+}
+.tpl-fullbleed .stage-img{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.tpl-fullbleed .stage-img .ph-img{
+  background: var(--gray-800, #262A2A);
+  height: 100%;
+}
+.tpl-fullbleed .stage-img .ph-img::before{
+  opacity: .25;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 22px,
+      rgba(255,255,255,.05) 22px 24px
+    );
+}
+.tpl-fullbleed .stage-img .ph-img .lbl{
+  background: rgba(0,0,0,.85);
+  color: #fff;
+  border-color: rgba(255,255,255,.2);
+}
+.tpl-fullbleed::before{
+  /* Overlay preto puro (regra oficial da marca — nunca outra cor) */
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,.9) 0%, rgba(0,0,0,.6) 45%, rgba(0,0,0,.15) 100%);
+  z-index: 1;
+}
+.tpl-fullbleed .frame{
+  position: relative;
+  z-index: 2;
+  padding: 96px;
+}
+.tpl-fullbleed .card-overlay{
+  margin-top: auto;
+  max-width: 780px;
+  padding: 48px 44px;
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.2);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+  text-align: left;
+}
+.tpl-fullbleed .card-overlay .kicker{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  /* text-transform removido */
+  letter-spacing: 0;
+  color: var(--teal-signal);
+}
+.tpl-fullbleed .card-overlay h1{
+  font-family: var(--font-display);
+  font-size: 76px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  color: #fff;
+  margin: 0;
+  text-align: left;
+}
+.tpl-fullbleed .card-overlay p{
+  font-size: 22px;
+  line-height: 1.55;
+  color: #FFFFFF;
+  margin: 0;
+  max-width: 44ch;
+  text-align: left;
+}
+.tpl-fullbleed .card-overlay .strip{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 12px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,.25);
+  width: 100%;
+}
+.tpl-fullbleed .card-overlay .strip .k{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.tpl-fullbleed .card-overlay .strip .k .lbl{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal-signal);
+}
+.tpl-fullbleed .card-overlay .strip .k .val{
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.tpl-fullbleed .card-overlay .strip .k.hero .val{ color: var(--teal); }
+
+/* --- IMPACTO-14 — Quote executiva com foto retrato --- */
+.tpl-quote-exec .body{
+  flex: 1;
+  display: grid;
+  grid-template-columns: 460px 1fr;
+  gap: 80px;
+  margin-top: 32px;
+  align-items: center;
+}
+.tpl-quote-exec .portrait{
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  min-height: 640px;
+}
+.tpl-quote-exec .portrait .ph-img{
+  background: var(--gray-800, #262A2A);
+}
+.tpl-quote-exec .portrait .ph-img::before{
+  opacity: .3;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 16px,
+      rgba(255,255,255,.06) 16px 17px
+    );
+}
+.tpl-quote-exec .portrait .ph-img .lbl{
+  background: rgba(0,0,0,.85);
+  color: #fff;
+  border-color: rgba(255,255,255,.2);
+}
+.tpl-quote-exec .col-quote{
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: flex-start;
+}
+.tpl-quote-exec .qmark{
+  font-size: 200px;
+  font-weight: 400;
+  line-height: .7;
+  color: #fff;
+  opacity: .3;
+  height: 90px;
+  margin-left: -8px;
+}
+.tpl-quote-exec .quote{
+  font-size: 66px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: #fff;
+  margin: 0;
+  max-width: 22ch;
+  text-align: left;
+}
+.tpl-quote-exec .attr{
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.25);
+  min-width: 320px;
+}
+.tpl-quote-exec .attr .who{
+  font-size: 24px;
+  font-weight: 400;
+  color: #fff;
+  display: block;
+}
+.tpl-quote-exec .attr .role{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal-signal);
+  margin-top: 6px;
+  display: block;
+}
+
+/* --- IMPACTO-15 — Divisor subcapítulo (numeral gigante + sumário) --- */
+.tpl-sub-divisor .body{
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 96px;
+  margin-top: 40px;
+  align-items: end;
+}
+.tpl-sub-divisor .big-idx{
+  font-family: var(--font-display);
+  font-feature-settings: "tnum" 1;
+  font-size: 480px;
+  font-weight: 400;
+  line-height: .78;
+  letter-spacing: -0.055em;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+  padding-bottom: 24px;
+}
+.tpl-sub-divisor .side{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 60px;
+  align-items: flex-start;
+}
+.tpl-sub-divisor .side .kicker{
+  font-family: var(--font-mono);
+  font-size: 16px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal-signal);
+}
+.tpl-sub-divisor .side h2{
+  font-family: var(--font-display);
+  font-size: 88px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #fff;
+  margin: 0;
+  text-align: left;
+  max-width: 14ch;
+}
+.tpl-sub-divisor .side .list{
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  max-width: 520px;
+}
+.tpl-sub-divisor .side .list .row{
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,.22);
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 20px;
+  font-size: 20px;
+  color: #FFFFFF;
+}
+.tpl-sub-divisor .side .list .row .n{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--teal-signal);
+  /* letter-spacing removido */
+}
+
+/* --- EDITORIAL-11 — Agenda / sumário executivo (6 itens) --- */
+.tpl-agenda .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 32px;
+}
+.tpl-agenda .top{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 96px;
+  align-items: end;
+  padding-bottom: 32px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.tpl-agenda .top h2{
+  font-family: var(--font-display);
+  font-size: 80px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0;
+  text-align: left;
+}
+.tpl-agenda .top p{
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+  max-width: 44ch;
+}
+.tpl-agenda .agenda-grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 96px;
+  row-gap: 0;
+}
+.tpl-agenda .row{
+  padding: 28px 0;
+  border-bottom: 1px solid var(--gray-200);
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  gap: 24px;
+  align-items: baseline;
+}
+.tpl-agenda .row .n{
+  font-family: var(--font-mono);
+  font-size: 15px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+}
+.tpl-agenda .row h3{
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+.tpl-agenda .row p{
+  font-size: 15px;
+  color: var(--gray-600);
+  margin: 0;
+  line-height: 1.5;
+}
+.tpl-agenda .row .pg{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--gray-500);
+  letter-spacing: 0;
+}
+
+/* --- EDITORIAL-12 — Portfólio 3 áreas com KPIs --- */
+.tpl-portfolio .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: 32px;
+}
+.tpl-portfolio .top{
+  max-width: 1300px;
+}
+.tpl-portfolio .top h2{
+  font-family: var(--font-display);
+  font-size: 68px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  color: var(--ink);
+  margin: 0;
+  text-align: left;
+}
+.tpl-portfolio .grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-top: 24px;
+}
+.tpl-portfolio .card{
+  padding: 32px;
+  border: 1px solid var(--gray-300);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 460px;
+}
+.tpl-portfolio .card.hero{
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.tpl-portfolio .card.hero .kicker{ color: var(--teal-signal); }
+.tpl-portfolio .card.hero h3{ color: #fff; }
+.tpl-portfolio .card.hero .lbl-row .lbl{ color: var(--teal-signal); border-color: rgba(255,255,255,.25); }
+.tpl-portfolio .card.hero .lbl-row .val{ color: #fff; }
+.tpl-portfolio .card.hero .foot p{ color: var(--teal-signal); }
+.tpl-portfolio .card .kicker{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+}
+.tpl-portfolio .card h3{
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-portfolio .card .lbl-row{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+.tpl-portfolio .card .lbl-row .item{
+  padding: 14px 0;
+  border-top: 1px solid var(--gray-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+.tpl-portfolio .card.hero .lbl-row .item{ border-top-color: rgba(255,255,255,.18); }
+.tpl-portfolio .card .lbl-row .lbl{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+}
+.tpl-portfolio .card .lbl-row .val{
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.tpl-portfolio .card .foot{ margin-top: auto; }
+.tpl-portfolio .card .foot p{
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+}
+
+/* --- EDITORIAL-13 — Pipeline por fases (5 colunas com pills) --- */
+.tpl-pipeline .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: 32px;
+}
+.tpl-pipeline .top h2{
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  color: var(--ink);
+  margin: 0 0 12px;
+  text-align: left;
+}
+.tpl-pipeline .top p{
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+  max-width: 60ch;
+}
+.tpl-pipeline .stages{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+.tpl-pipeline .stage{
+  padding: 20px 20px 24px;
+  border: 1px solid var(--gray-300);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 320px;
+}
+.tpl-pipeline .stage.active{ background: var(--gray-50); border-color: var(--gray-300); }
+.tpl-pipeline .stage.hero{ background: var(--ink); border-color: var(--ink); }
+.tpl-pipeline .stage.hero .head, .tpl-pipeline .stage.hero .pill{ color: #fff; border-color: rgba(255,255,255,.35); }
+.tpl-pipeline .stage.hero .head{ border-bottom-color: rgba(255,255,255,.25); }
+.tpl-pipeline .stage .head{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--gray-200);
+}
+.tpl-pipeline .pill{
+  padding: 12px 14px;
+  border: 1px solid var(--gray-300);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.tpl-pipeline .stage.hero .pill{ background: transparent; }
+.tpl-pipeline .pill .id{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--teal);
+  /* letter-spacing removido */
+}
+.tpl-pipeline .stage.hero .pill .id{ color: #fff; }
+.tpl-pipeline .pill .lbl{
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.tpl-pipeline .stage.hero .pill .lbl{ color: #fff; }
+
+/* --- EDITORIAL-14 — Do & Don't --- */
+.tpl-donts .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 32px;
+}
+.tpl-donts .top h2{
+  font-family: var(--font-display);
+  font-size: 68px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  color: var(--ink);
+  margin: 0 0 12px;
+  text-align: left;
+}
+.tpl-donts .top p{
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+  max-width: 60ch;
+}
+.tpl-donts .grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 16px;
+}
+.tpl-donts .col{
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+}
+.tpl-donts .col.yes{ background: var(--gray-50); border-left: 3px solid var(--teal); }
+.tpl-donts .col.no{ background: #fff; border-left: 3px solid var(--ink); }
+.tpl-donts .col .head{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+}
+.tpl-donts .col.yes .head{ color: var(--teal); }
+.tpl-donts .col.no .head{ color: var(--gray-600); }
+.tpl-donts .col .head .badge{
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 400;
+  font-size: 14px;
+}
+.tpl-donts .col.yes .head .badge{ background: var(--teal); }
+.tpl-donts .col.no .head .badge{ background: var(--ink); }
+.tpl-donts .col ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+.tpl-donts .col li{
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--ink);
+  padding-left: 24px;
+  position: relative;
+}
+.tpl-donts .col.no li{ color: var(--gray-600); }
+.tpl-donts .col li::before{
+  content: "";
+  position: absolute;
+  left: 0; top: .55em;
+  width: 12px; height: 1.5px;
+  background: currentColor;
+  opacity: .5;
+}
+
+/* ============================================================
+   MINI-LOTE IMAGEM — templates com imagem forte
+   ============================================================ */
+
+/* --- IMPACTO-16 — Full-bleed puro (imagem domina, título minimalista) --- */
+.tpl-photo-hero{
+  position: relative;
+}
+.tpl-photo-hero .stage-img{
+  position: absolute; inset: 0; z-index: 0;
+}
+.tpl-photo-hero .stage-img .ph-img{
+  background: var(--gray-800, #262A2A);
+  height: 100%;
+}
+.tpl-photo-hero .stage-img .ph-img::before{
+  opacity: .22;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 24px,
+      rgba(255,255,255,.05) 24px 26px
+    );
+}
+.tpl-photo-hero .stage-img .ph-img .lbl{
+  background: rgba(0,0,0,.85);
+  color: #fff;
+  border-color: rgba(255,255,255,.2);
+}
+.tpl-photo-hero::before{
+  /* Overlay preto puro (regra oficial da marca — nunca outra cor) */
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.05) 40%, rgba(0,0,0,.05) 60%, rgba(0,0,0,.85) 100%);
+  z-index: 1;
+}
+.tpl-photo-hero .frame{ position: relative; z-index: 2; padding: 96px; }
+.tpl-photo-hero .body{
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  max-width: 1400px;
+  text-align: left;
+}
+.tpl-photo-hero .kicker{
+  font-family: var(--font-mono);
+  font-size: 16px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: #FFFFFF;
+}
+.tpl-photo-hero h1{
+  font-family: var(--font-display);
+  font-size: 132px;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  color: #fff;
+  margin: 0;
+  text-align: left;
+}
+.tpl-photo-hero .tag-line{
+  font-size: 24px;
+  line-height: 1.4;
+  color: #FFFFFF;
+  margin: 12px 0 0;
+  max-width: 60ch;
+  text-align: left;
+}
+
+/* --- EDITORIAL-16 — Imagem em cima + tópicos abaixo (asymmetric grid) --- */
+.tpl-photo-top .body{
+  flex: 1;
+  display: grid;
+  grid-template-rows: 460px 1fr;
+  gap: 40px;
+  margin-top: 32px;
+}
+.tpl-photo-top .banner{
+  width: 100%;
+  height: 100%;
+}
+.tpl-photo-top .banner .ph-img{
+  height: 100%;
+}
+.tpl-photo-top .content{
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 80px;
+  align-items: start;
+}
+.tpl-photo-top .content h2{
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  color: var(--ink);
+  margin: 0;
+  text-align: left;
+}
+.tpl-photo-top .topics{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.tpl-photo-top .topic{
+  padding-top: 20px;
+  border-top: 1.5px solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  text-align: left;
+}
+.tpl-photo-top .topic .n{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+}
+.tpl-photo-top .topic h4{
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-photo-top .topic p{
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+}
+
+/* --- EDITORIAL-17 — Trio de imagens em polaroid horizontal --- */
+.tpl-photo-trio .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 32px;
+}
+.tpl-photo-trio .top h2{
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  color: var(--ink);
+  margin: 0 0 12px;
+  text-align: left;
+}
+.tpl-photo-trio .top p{
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+  max-width: 70ch;
+  text-align: left;
+}
+.tpl-photo-trio .trio{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 8px;
+}
+.tpl-photo-trio .card{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.tpl-photo-trio .card .img-wrap{
+  aspect-ratio: 4 / 5;
+  width: 100%;
+}
+.tpl-photo-trio .card .cap{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 16px;
+  border-top: 1.5px solid var(--ink);
+  align-items: flex-start;
+  text-align: left;
+}
+.tpl-photo-trio .card .cap .n{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+}
+.tpl-photo-trio .card .cap h4{
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-photo-trio .card .cap p{
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+}
+
+/* ============================================================
+   LOTE FINAL — templates novos
+   ============================================================ */
+
+/* Guardrail — force left-align */
+.tpl-pull-quote, .tpl-pull-quote .frame, .tpl-pull-quote .body,
+.tpl-barchart, .tpl-barchart .frame, .tpl-barchart .body,
+.tpl-govern, .tpl-govern .frame, .tpl-govern .body,
+.tpl-metodologia, .tpl-metodologia .frame, .tpl-metodologia .body,
+.tpl-compliance, .tpl-compliance .frame, .tpl-compliance .body,
+.tpl-num-img, .tpl-num-img .frame, .tpl-num-img .body,
+.tpl-contracapa, .tpl-contracapa .frame, .tpl-contracapa .body{
+  text-align: left;
+}
+.tpl-pull-quote h1, .tpl-pull-quote p, .tpl-pull-quote .attr,
+.tpl-barchart h2, .tpl-barchart p,
+.tpl-govern h2, .tpl-govern h4, .tpl-govern p,
+.tpl-metodologia h2, .tpl-metodologia h4, .tpl-metodologia p,
+.tpl-compliance h2, .tpl-compliance p,
+.tpl-num-img h1, .tpl-num-img p, .tpl-num-img .num,
+.tpl-contracapa h1, .tpl-contracapa p{
+  text-align: left !important;
+}
+
+/* --- IMPACTO-17 — Pull quote (aspas gigantes, texto puro) --- */
+.tpl-pull-quote .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+  padding: 40px 0;
+  max-width: 1500px;
+}
+.tpl-pull-quote .qmark{
+  font-size: 320px;
+  font-weight: 400;
+  line-height: .7;
+  color: var(--teal);
+  height: 140px;
+  margin-left: -12px;
+  overflow: visible;
+}
+.tpl-pull-quote h1{
+  font-family: var(--font-display);
+  font-size: 96px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0;
+  max-width: 22ch;
+}
+.tpl-pull-quote h1 em.hl{
+  color: var(--teal);
+  font-style: normal;
+  font-weight: 400;
+}
+.tpl-pull-quote .attr{
+  padding-top: 32px;
+  border-top: 1.5px solid var(--ink);
+  min-width: 380px;
+  margin-top: 24px;
+}
+.tpl-pull-quote .attr .who{
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--ink);
+  display: block;
+}
+.tpl-pull-quote .attr .role{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  margin-top: 6px;
+  display: block;
+}
+
+/* --- IMPACTO-18 — Gráfico de barras verticais --- */
+.tpl-barchart .body{
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 80px;
+  margin-top: 32px;
+  align-items: stretch;
+}
+.tpl-barchart .col-txt{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 8px;
+  align-items: flex-start;
+}
+.tpl-barchart .col-txt h2{
+  font-family: var(--font-display);
+  font-size: 60px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-barchart .col-txt p{
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+  max-width: 44ch;
+}
+.tpl-barchart .col-txt .legend{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+  width: 100%;
+  max-width: 440px;
+}
+.tpl-barchart .col-txt .legend .row{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  border-top: 1px solid var(--gray-200);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+.tpl-barchart .col-txt .legend .swatch{
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+.tpl-barchart .col-txt .legend .swatch.a{ background: var(--ink); }
+.tpl-barchart .col-txt .legend .swatch.b{ background: var(--teal); }
+.tpl-barchart .col-txt .legend .swatch.c{ background: var(--gray-300); }
+.tpl-barchart .col-chart{
+  position: relative;
+  padding-bottom: 60px;
+}
+.tpl-barchart .chart-grid{
+  position: relative;
+  height: 520px;
+  border-bottom: 1.5px solid var(--ink);
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 0;
+}
+.tpl-barchart .chart-grid .y-axis{
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+.tpl-barchart .chart-grid .y-axis span{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gray-500);
+  letter-spacing: 0;
+}
+.tpl-barchart .bars{
+  position: relative;
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  gap: 32px;
+  align-items: end;
+  padding: 0 20px;
+}
+.tpl-barchart .bars .col{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  align-items: end;
+  height: 100%;
+  position: relative;
+}
+.tpl-barchart .bars .bar{
+  min-height: 4px;
+  position: relative;
+}
+.tpl-barchart .bars .bar.a{ background: var(--ink); }
+.tpl-barchart .bars .bar.b{ background: var(--teal); }
+.tpl-barchart .bars .bar.c{ background: var(--gray-300); }
+.tpl-barchart .bars .bar .val-tag{
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink);
+  /* letter-spacing removido */
+  white-space: nowrap;
+}
+.tpl-barchart .x-axis{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 32px;
+  padding: 16px 60px 0 60px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--gray-500);
+  /* text-transform removido */
+  /* letter-spacing removido */
+  text-align: center;
+}
+.tpl-barchart .x-axis span{ text-align: center; }
+
+/* --- EDITORIAL-18 — Governança 4 blocos com foto --- */
+.tpl-govern .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 32px;
+}
+.tpl-govern .top h2{
+  font-family: var(--font-display);
+  font-size: 60px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0 0 12px;
+}
+.tpl-govern .top p{
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+  max-width: 60ch;
+}
+.tpl-govern .grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  margin-top: 16px;
+}
+.tpl-govern .person{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.tpl-govern .person .avatar{
+  aspect-ratio: 1 / 1;
+  width: 100%;
+}
+.tpl-govern .person .cap{
+  padding-top: 16px;
+  border-top: 1.5px solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+.tpl-govern .person .cap .lbl{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+}
+.tpl-govern .person .cap h4{
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-govern .person .cap .role{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--gray-600);
+  /* letter-spacing removido */
+}
+.tpl-govern .person .cap p{
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 4px 0 0;
+}
+
+/* --- EDITORIAL-19 — Metodologia científica (4 etapas numeradas) --- */
+.tpl-metodologia .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: 32px;
+}
+.tpl-metodologia .top{
+  padding-bottom: 24px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.tpl-metodologia .top h2{
+  font-family: var(--font-display);
+  font-size: 60px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0 0 12px;
+}
+.tpl-metodologia .top p{
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+  max-width: 70ch;
+}
+.tpl-metodologia .grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+.tpl-metodologia .step{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 4px;
+  align-items: flex-start;
+}
+.tpl-metodologia .step .n{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+}
+.tpl-metodologia .step .big-n{
+  font-family: var(--font-display);
+  font-feature-settings: "tnum" 1;
+  font-size: 96px;
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: .9;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  margin: 0 0 4px;
+}
+.tpl-metodologia .step h4{
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-metodologia .step p{
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--gray-600);
+  margin: 0;
+}
+.tpl-metodologia .step .meta{
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--gray-200);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  width: 100%;
+}
+
+/* --- EDITORIAL-20 — Compliance checklist tabular --- */
+.tpl-compliance .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: 32px;
+}
+.tpl-compliance .top h2{
+  font-family: var(--font-display);
+  font-size: 60px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0 0 12px;
+}
+.tpl-compliance .top p{
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+  max-width: 60ch;
+}
+.tpl-compliance .checklist{
+  width: 100%;
+  border-top: 1.5px solid var(--ink);
+}
+.tpl-compliance .cl-row{
+  display: grid;
+  grid-template-columns: 80px 1fr 1.4fr 140px;
+  gap: 32px;
+  padding: 22px 4px;
+  border-bottom: 1px solid var(--gray-200);
+  align-items: baseline;
+}
+.tpl-compliance .cl-row.head{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  padding: 12px 4px 16px;
+}
+.tpl-compliance .cl-row .id{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--teal);
+  letter-spacing: 0;
+}
+.tpl-compliance .cl-row h4{
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-compliance .cl-row p{
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+}
+.tpl-compliance .cl-row .status{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--gray-300);
+  justify-self: end;
+  color: var(--gray-600);
+}
+.tpl-compliance .cl-row .status.ok{ background: var(--teal); border-color: var(--teal); color: #fff; }
+.tpl-compliance .cl-row .status.no{ background: var(--ink); border-color: var(--ink); color: #fff; }
+
+/* --- IMPACTO-19 — Big number sobre imagem esbatida (full-bleed) --- */
+.tpl-num-img{
+  position: relative;
+}
+.tpl-num-img .stage-img{
+  position: absolute; inset: 0; z-index: 0;
+}
+.tpl-num-img .stage-img .ph-img{
+  height: 100%;
+  background: var(--gray-800, #262A2A);
+}
+.tpl-num-img .stage-img .ph-img::before{
+  opacity: .18;
+}
+.tpl-num-img .stage-img .ph-img .lbl{
+  background: rgba(0,0,0,.85);
+  color: #fff;
+  border-color: rgba(255,255,255,.2);
+}
+.tpl-num-img::before{
+  content: "";
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.65);
+  z-index: 1;
+}
+.tpl-num-img .frame{
+  position: relative;
+  z-index: 2;
+  padding: 96px;
+}
+.tpl-num-img .body{
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 80px;
+  align-items: end;
+}
+.tpl-num-img .num{
+  font-size: 460px;
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: .82;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+}
+.tpl-num-img .num .u{ font-size: 200px; color: var(--teal); }
+.tpl-num-img .aside{
+  padding-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 520px;
+}
+.tpl-num-img .aside .lbl{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal-signal);
+}
+.tpl-num-img .aside h1{
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: #fff;
+  margin: 0;
+}
+.tpl-num-img .aside p{
+  font-size: 20px;
+  line-height: 1.55;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+/* --- IMPACTO-20 — Contra-capa (fecha o deck) --- */
+.tpl-contracapa .frame{
+  padding: 96px;
+  justify-content: space-between;
+}
+.tpl-contracapa .body{
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: flex-start;
+  max-width: 1500px;
+}
+.tpl-contracapa .body .wordmark-big{
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  color: #fff;
+}
+.tpl-contracapa .body .tag{
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.35;
+  color: #FFFFFF;
+  margin: 0;
+  max-width: 40ch;
+}
+.tpl-contracapa .body em.hl{
+  color: #fff;
+  font-style: italic;
+}
+.tpl-contracapa .contact-line{
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.25);
+  display: flex;
+  gap: 64px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--teal-signal);
+  letter-spacing: 0;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* ============================================================
+   MINI-LOTE ÍCONES — templates com ícone como protagonista
+   ============================================================ */
+
+/* Guardrail alinhamento */
+.tpl-icon-grid, .tpl-icon-grid .frame, .tpl-icon-grid .body,
+.tpl-icon-hero, .tpl-icon-hero .frame, .tpl-icon-hero .body,
+.tpl-icon-list, .tpl-icon-list .frame, .tpl-icon-list .body,
+.tpl-icon-kpis, .tpl-icon-kpis .frame, .tpl-icon-kpis .body,
+.tpl-icon-compare, .tpl-icon-compare .frame, .tpl-icon-compare .body{
+  text-align: left;
+}
+.tpl-icon-grid h2, .tpl-icon-grid h4, .tpl-icon-grid p,
+.tpl-icon-hero h1, .tpl-icon-hero h2, .tpl-icon-hero p,
+.tpl-icon-list h2, .tpl-icon-list h4, .tpl-icon-list p,
+.tpl-icon-kpis h2, .tpl-icon-kpis p,
+.tpl-icon-compare h2, .tpl-icon-compare p{
+  text-align: left !important;
+}
+
+/* Ícone-shape base para todos os templates deste bloco.
+   Estilo Lucide oficial (stroke 2px, round). Cor via currentColor. */
+.icon-shape{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+.icon-shape svg{
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+.icon-shape.xs{ width: 32px; height: 32px; }
+.icon-shape.sm{ width: 48px; height: 48px; }
+.icon-shape.md{ width: 72px; height: 72px; }
+.icon-shape.lg{ width: 120px; height: 120px; }
+.icon-shape.xl{ width: 200px; height: 200px; }
+.icon-shape.xxl{ width: 280px; height: 280px; }
+
+/* Variantes: em quadro (bordered), sólido teal, minimal */
+.icon-shape.boxed{
+  border: 1.5px solid var(--gray-300);
+  padding: 20%;
+}
+.icon-shape.boxed.md{ padding: 22%; }
+.icon-shape.boxed.lg{ padding: 24%; }
+.slide-1080.bg-ink .icon-shape.boxed{ border-color: rgba(255,255,255,.35); }
+.slide-1080.bg-teal .icon-shape.boxed{ border-color: rgba(255,255,255,.5); }
+
+.icon-shape.filled{
+  background: var(--teal);
+  color: #fff;
+  padding: 18%;
+}
+.icon-shape.ink-fill{
+  background: var(--ink);
+  color: #fff;
+  padding: 18%;
+}
+
+/* --- IMPACTO-21 — Grid 6 ícones institucionais (matriz de features) --- */
+.tpl-icon-grid .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 32px;
+}
+.tpl-icon-grid .top{ max-width: 1300px; }
+.tpl-icon-grid .top h2{
+  font-family: var(--font-display);
+  font-size: 68px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  color: var(--ink);
+  margin: 0 0 12px;
+}
+.tpl-icon-grid .top p{
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+  max-width: 70ch;
+}
+.tpl-icon-grid .grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px 48px;
+  margin-top: 24px;
+}
+.tpl-icon-grid .cell{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 32px;
+  border-top: 1.5px solid var(--ink);
+  align-items: flex-start;
+}
+.tpl-icon-grid .cell .ico{
+  color: var(--teal);
+}
+.tpl-icon-grid .cell h4{
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0;
+}
+.tpl-icon-grid .cell p{
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+}
+
+/* --- IMPACTO-22 — Ícone hero gigante (single feature em destaque) --- */
+.tpl-icon-hero .body{
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 96px;
+  margin-top: 32px;
+  align-items: center;
+}
+.tpl-icon-hero .col-icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.tpl-icon-hero.bg-white .col-icon{ color: var(--ink); }
+.tpl-icon-hero .col-icon .icon-shape{
+  color: var(--teal);
+}
+.tpl-icon-hero.bg-ink .col-icon .icon-shape,
+.tpl-icon-hero.bg-teal .col-icon .icon-shape{
+  color: #fff;
+}
+.tpl-icon-hero .col-txt{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+}
+.tpl-icon-hero .col-txt .kicker{
+  font-family: var(--font-mono);
+  font-size: 16px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal-signal);
+}
+.tpl-icon-hero.bg-white .col-txt .kicker{ color: var(--teal); }
+.tpl-icon-hero .col-txt h1{
+  font-family: var(--font-display);
+  font-size: 96px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #fff;
+  margin: 0;
+}
+.tpl-icon-hero.bg-white .col-txt h1{ color: var(--ink); }
+.tpl-icon-hero .col-txt p{
+  font-size: 24px;
+  line-height: 1.5;
+  color: #FFFFFF;
+  margin: 0;
+  max-width: 40ch;
+}
+.tpl-icon-hero.bg-white .col-txt p{ color: var(--gray-600); }
+.tpl-icon-hero .col-txt .meta{
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.25);
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal-signal);
+  min-width: 320px;
+}
+.tpl-icon-hero.bg-white .col-txt .meta{
+  border-top-color: var(--ink);
+  color: var(--gray-500);
+}
+
+/* --- EDITORIAL-21 — Lista de features (4 ícones à esquerda, texto detalhado à direita) --- */
+.tpl-icon-list .body{
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 96px;
+  margin-top: 32px;
+}
+.tpl-icon-list .col-txt{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 8px;
+  align-items: flex-start;
+}
+.tpl-icon-list .col-txt h2{
+  font-family: var(--font-display);
+  font-size: 60px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  color: var(--ink);
+  margin: 0 0 12px;
+}
+.tpl-icon-list .col-txt p{
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+  max-width: 44ch;
+}
+.tpl-icon-list .col-list{
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.tpl-icon-list .li{
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 32px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--gray-200);
+  align-items: start;
+}
+.tpl-icon-list .li:first-child{ padding-top: 12px; border-top: 1.5px solid var(--ink); }
+.tpl-icon-list .li .ico{
+  color: var(--teal);
+  margin-top: 4px;
+}
+.tpl-icon-list .li h4{
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+.tpl-icon-list .li p{
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+}
+
+/* --- EDITORIAL-22 — Ícones + KPIs (métricas com ícone contextual acima) --- */
+.tpl-icon-kpis .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 32px;
+}
+.tpl-icon-kpis .top{ max-width: 1300px; }
+.tpl-icon-kpis .top h2{
+  font-family: var(--font-display);
+  font-size: 68px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  color: var(--ink);
+  margin: 0 0 12px;
+}
+.tpl-icon-kpis .top p{
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+  max-width: 60ch;
+}
+.tpl-icon-kpis .grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  margin-top: 16px;
+}
+.tpl-icon-kpis .kpi-cell{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 32px 24px;
+  border: 1px solid var(--gray-300);
+  background: #fff;
+  align-items: flex-start;
+}
+.tpl-icon-kpis .kpi-cell.hero{
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.tpl-icon-kpis .kpi-cell .ico{
+  color: var(--teal);
+}
+.tpl-icon-kpis .kpi-cell.hero .ico{ color: #fff; }
+.tpl-icon-kpis .kpi-cell .lbl{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+}
+.tpl-icon-kpis .kpi-cell.hero .lbl{ color: var(--teal-signal); }
+.tpl-icon-kpis .kpi-cell .val{
+  font-size: 76px;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: .95;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  margin: 4px 0 0;
+}
+.tpl-icon-kpis .kpi-cell.hero .val{ color: #fff; }
+.tpl-icon-kpis .kpi-cell .val .u{ font-size: 32px; color: var(--gray-500); }
+.tpl-icon-kpis .kpi-cell.hero .val .u{ color: var(--teal-signal); }
+.tpl-icon-kpis .kpi-cell .note{
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--gray-600);
+  margin: auto 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--gray-200);
+  width: 100%;
+}
+.tpl-icon-kpis .kpi-cell.hero .note{ color: var(--teal-signal); border-top-color: rgba(255,255,255,.2); }
+
+/* --- EDITORIAL-23 — Comparativo antes/depois com ícones --- */
+.tpl-icon-compare .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: 32px;
+}
+.tpl-icon-compare .top h2{
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  color: var(--ink);
+  margin: 0 0 12px;
+}
+.tpl-icon-compare .top p{
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin: 0;
+  max-width: 60ch;
+}
+.tpl-icon-compare .rows{
+  display: flex;
+  flex-direction: column;
+  border-top: 1.5px solid var(--ink);
+}
+.tpl-icon-compare .row-comp{
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  gap: 32px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--gray-200);
+  align-items: center;
+}
+.tpl-icon-compare .side{
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 24px;
+  align-items: center;
+}
+.tpl-icon-compare .side .ico{ color: var(--gray-500); }
+.tpl-icon-compare .side.now .ico{ color: var(--teal); }
+.tpl-icon-compare .side .lbl{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+  display: block;
+  margin-bottom: 4px;
+}
+.tpl-icon-compare .side h4{
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  line-height: 1.2;
+  margin: 0;
+}
+.tpl-icon-compare .side.now h4{ color: var(--teal); }
+.tpl-icon-compare .arrow{
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+.tpl-icon-compare .arrow svg{
+  width: 32px; height: 32px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* --- EDITORIAL-15 — Rodapé regulatório (texto puro) --- */
+.tpl-legal .body{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 32px;
+}
+.tpl-legal .top{
+  padding-bottom: 32px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.tpl-legal .top .kicker{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+  margin-bottom: 16px;
+}
+.tpl-legal .top h2{
+  font-family: var(--font-display);
+  font-size: 68px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0;
+  text-align: left;
+}
+.tpl-legal .grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px 96px;
+}
+.tpl-legal .grid .block{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--gray-200);
+}
+.tpl-legal .grid .lbl{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--gray-500);
+}
+.tpl-legal .grid p{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: .02em;
+}
+
+/* --- EDITORIAL-05 — Split imagem + texto (texto à esquerda, imagem à direita) --- */
+.tpl-split .grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  flex: 1;
+  margin-top: 40px;
+  align-items: center;
+}
+.tpl-split .col-txt{
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-right: 40px;
+  align-items: flex-start;
+  text-align: left;
+}
+.tpl-split .col-txt .eb{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  /* text-transform removido */
+  /* letter-spacing removido */
+  color: var(--teal);
+}
+.tpl-split .col-img{
+  height: 780px;
+}

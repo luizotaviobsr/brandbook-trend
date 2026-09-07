@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trendscience. — Padrão Apresentação · Lote 01</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo/trendscience-icon.svg">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="sections-visual.css">
+<link rel="stylesheet" href="sections-system.css">
+<link rel="stylesheet" href="section-patterns.css">
+<link rel="stylesheet" href="section-icons.css">
+<link rel="stylesheet" href="deck-templates.css">
+
+<style>
+  /* Página específica */
+  main > section { border-bottom: none; max-width: none; }
+  .pa-wrap { max-width: 1400px; }
+
+  .pa-back{
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 40px;
+    transition: color var(--dur-fast) var(--ease);
+  }
+  .pa-back:hover{ color: var(--teal); }
+
+  /* ============================================================
+     14.3 · Guia de construção de slides
+     Layout editorial denso, tabelas legíveis, blockquotes destacados.
+     ============================================================ */
+  .guide-14-3{ padding-top: clamp(72px, 10vh, 120px); border-top: 1px solid var(--gray-200); background: var(--gray-50); }
+  .guide-14-3 .pa-wrap{ max-width: 900px; }
+
+  /* Bloco de contexto no topo — visualmente diferenciado */
+  .guide-context{
+    margin: 48px 0 72px;
+    padding: 40px clamp(24px, 4vw, 48px);
+    background: var(--white);
+    border-left: 4px solid var(--teal);
+  }
+  .guide-context p{
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--text-body);
+    margin: 0 0 16px;
+    max-width: 68ch;
+  }
+  .guide-context p:last-child{ margin-bottom: 0; }
+  .guide-context ul, .guide-context ol{
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text-body);
+    margin: 0 0 16px;
+    padding-left: 24px;
+    max-width: 68ch;
+  }
+  .guide-context li{ margin-bottom: 8px; }
+  .guide-context b{ font-weight: 600; color: var(--ink); }
+
+  /* Seções numeradas */
+  .guide-section{
+    margin: 64px 0;
+    padding-top: 48px;
+    border-top: 1px solid var(--gray-200);
+    max-width: 780px;
+  }
+  .guide-section:first-of-type{ border-top: none; padding-top: 0; }
+
+  .guide-section .vb-label{
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--teal);
+    margin-bottom: 16px;
+  }
+  .guide-section .vb-title{
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--ink);
+    margin: 0 0 24px;
+  }
+  .guide-section .vb-lead{
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--text-body);
+    margin: 0 0 24px;
+    max-width: 66ch;
+  }
+  .guide-section p{
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--text-body);
+    margin: 0 0 16px;
+    max-width: 68ch;
+  }
+  .guide-section b{ font-weight: 600; color: var(--ink); }
+  .guide-section code{
+    font-family: var(--font-sans);
+    font-size: 0.92em;
+    padding: 2px 6px;
+    background: var(--gray-100);
+    border-radius: 3px;
+    color: var(--ink);
+    font-feature-settings: "tnum" 1;
+  }
+
+  /* Sub-headings dentro de seções */
+  .guide-sub{
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 32px 0 12px;
+    max-width: 62ch;
+  }
+
+  /* Listas do guia */
+  .guide-list{
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text-body);
+    margin: 0 0 20px;
+    padding-left: 24px;
+    max-width: 68ch;
+  }
+  .guide-list li{ margin-bottom: 10px; }
+  .guide-list-no li::marker{ color: var(--error); font-weight: 700; }
+  .guide-list-check{
+    list-style: decimal;
+    counter-reset: check;
+  }
+  .guide-list-check li{
+    padding-left: 8px;
+  }
+
+  /* Tabelas do guia */
+  .guide-table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0 32px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    background: var(--white);
+  }
+  .guide-table thead th{
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--ink);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gray-500);
+  }
+  .guide-table thead th:last-child{ color: var(--teal); }
+  .guide-table tbody td{
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--gray-200);
+    line-height: 1.5;
+    color: var(--text-body);
+    vertical-align: top;
+  }
+  .guide-table tbody tr:last-child td{ border-bottom: none; }
+  .guide-table b{ font-weight: 600; color: var(--ink); }
+
+  /* Blockquote de nota — usada para notas de origem, notas de acréscimo, medição */
+  .guide-note{
+    margin: 24px 0 32px;
+    padding: 20px 24px;
+    background: var(--teal-100);
+    border-left: 3px solid var(--teal);
+    font-family: var(--font-sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ink);
+    max-width: 68ch;
+  }
+  .guide-note b{ font-weight: 700; }
+  .guide-note code{
+    background: var(--white);
+    font-size: 0.9em;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================================================
+     SVG SYMBOLS — extraídos da fonte oficial:
+     · Monograma Trendscience (o ícone-símbolo)
+     · Ícones Lucide (stroke 2, round, currentColor)
+     ================================================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- MONOGRAMA OFICIAL (solid, viewBox 475×594) -->
+    <symbol id="ts-mono" viewBox="0 0 475 594">
+      <path d="M316.439 565.979L158.73 593.762L159.634 336.545C159.91 258.383 232.339 189.761 316.405 187.533L316.446 565.979H316.439Z" fill="currentColor"/>
+      <path d="M158.081 213.992L0.0206922 241.954L0 83.9207L158.109 56.1173L158.081 213.992Z" fill="currentColor"/>
+      <path d="M317.94 185.809C306.201 101.054 360.221 22.7821 443.852 5.66966L475.001 0L474.966 158.192L317.94 185.816V185.809Z" fill="currentColor"/>
+    </symbol>
+
+    <!-- WORDMARK (versão simplificada para header dos slides) -->
+    <symbol id="ts-wordmark" viewBox="0 0 678 114">
+      <path fill="currentColor" d="M60.6596 108.495L30.4277 113.821L30.6009 64.5135C30.6538 49.5305 44.5381 36.376 60.653 35.949L60.6609 108.495H60.6596Z"/>
+      <path fill="currentColor" d="M30.3032 41.0209L0.00396656 46.381L0 16.0871L30.3085 10.7573L30.3032 41.0209Z"/>
+      <path fill="currentColor" d="M60.947 35.6184C58.6967 19.3714 69.0521 4.36719 85.0836 1.08684L91.0546 0L91.048 30.3244L60.947 35.6197V35.6184Z"/>
+      <path fill="currentColor" d="M648.55 91.7863C643.771 91.7863 639.637 90.675 636.148 88.4525C632.658 86.2077 629.958 83.1072 628.047 79.1511C626.157 75.1727 625.213 70.5943 625.213 65.4157C625.213 60.2594 626.157 55.6809 628.047 51.6803C629.958 47.6575 632.592 44.5126 635.948 42.2456C639.326 39.9564 643.227 38.8118 647.65 38.8118C650.428 38.8118 653.106 39.323 655.684 40.3453C658.262 41.3455 660.574 42.8901 662.618 44.9793C664.685 47.0463 666.319 49.6578 667.519 52.8138C668.719 55.9476 669.319 59.6593 669.319 63.9488V66.8826H629.314V61.6485H663.252C663.252 58.3591 662.585 55.4031 661.252 52.7805C659.94 50.1357 658.107 48.0465 655.751 46.5129C653.417 44.9793 650.717 44.2126 647.65 44.2126C644.405 44.2126 641.549 45.0794 639.082 46.813C636.615 48.5465 634.681 50.8358 633.281 53.6806C631.903 56.5255 631.203 59.6371 631.18 63.0154V66.1491C631.18 70.2164 631.881 73.7725 633.281 76.8174C634.703 79.8401 636.715 82.1849 639.315 83.8518C641.915 85.5187 644.994 86.3521 648.55 86.3521C650.972 86.3521 653.095 85.9743 654.917 85.2186C656.762 84.463 658.307 83.4517 659.551 82.1849C660.818 80.8958 661.774 79.4845 662.418 77.9509L668.053 79.7845C667.275 81.9404 665.997 83.9296 664.219 85.7521C662.463 87.5745 660.263 89.0414 657.618 90.1527C654.995 91.2418 651.972 91.7863 648.55 91.7863Z"/>
+      <path fill="currentColor" d="M597.473 91.7863C592.894 91.7863 588.905 90.6417 585.504 88.3524C582.126 86.0632 579.503 82.9294 577.636 78.951C575.769 74.9727 574.836 70.4387 574.836 65.349C574.836 60.2149 575.78 55.6476 577.67 51.647C579.581 47.6464 582.226 44.5126 585.604 42.2456C588.982 39.9564 592.905 38.8118 597.373 38.8118C600.795 38.8118 603.896 39.4785 606.674 40.8121C609.452 42.1234 611.741 43.9792 613.542 46.3796C615.364 48.7577 616.509 51.5359 616.976 54.7141H610.975C610.352 51.8248 608.852 49.3578 606.474 47.313C604.118 45.2461 601.118 44.2126 597.473 44.2126C594.205 44.2126 591.316 45.1016 588.805 46.8796C586.293 48.6354 584.326 51.0914 582.904 54.2474C581.504 57.3812 580.803 61.0151 580.803 65.149C580.803 69.3052 581.492 72.9835 582.87 76.184C584.248 79.3622 586.182 81.8515 588.671 83.6517C591.183 85.452 594.117 86.3521 597.473 86.3521C599.74 86.3521 601.807 85.9299 603.674 85.0853C605.563 84.2185 607.141 82.9961 608.408 81.4181C609.697 79.8401 610.563 77.962 611.008 75.7839H617.009C616.564 78.8733 615.464 81.6292 613.708 84.0518C611.975 86.4522 609.719 88.3413 606.941 89.7193C604.185 91.0973 601.029 91.7863 597.473 91.7863Z"/>
+      <path fill="currentColor" d="M530.913 58.7147V90.7194H524.979V39.5119H530.746V47.5464H531.279C532.48 44.9238 534.347 42.8235 536.88 41.2454C539.436 39.6452 542.592 38.8451 546.348 38.8451C549.793 38.8451 552.816 39.5674 555.416 41.0121C558.039 42.4345 560.073 44.5348 561.517 47.313C562.984 50.0912 563.718 53.5028 563.718 57.5479V90.7194H557.783V57.9146C557.783 53.714 556.605 50.3912 554.25 47.9464C551.916 45.5016 548.782 44.2792 544.848 44.2792C542.159 44.2792 539.77 44.8571 537.68 46.0128C535.591 47.1685 533.935 48.8355 532.713 51.0136C531.513 53.1694 530.913 55.7365 530.913 58.7147Z"/>
+      <path fill="currentColor" d="M493.009 91.7863C488.23 91.7863 484.096 90.675 480.607 88.4525C477.117 86.2077 474.417 83.1072 472.506 79.1511C470.616 75.1727 469.672 70.5943 469.672 65.4157C469.672 60.2594 470.616 55.6809 472.506 51.6803C474.417 47.6575 477.051 44.5126 480.407 42.2456C483.785 39.9564 487.686 38.8118 492.109 38.8118C494.887 38.8118 497.565 39.323 500.143 40.3453C502.721 41.3455 505.033 42.8901 507.077 44.9793C509.144 47.0463 510.778 49.6578 511.978 52.8138C513.178 55.9476 513.778 59.6593 513.778 63.9488V66.8826H473.772V61.6485H507.711C507.711 58.3591 507.044 55.4031 505.711 52.7805C504.399 50.1357 502.566 48.0465 500.21 46.5129C497.876 44.9793 495.176 44.2126 492.109 44.2126C488.864 44.2126 486.008 45.0794 483.541 46.813C481.074 48.5465 479.14 50.8358 477.74 53.6806C476.362 56.5255 475.662 59.6371 475.639 63.0154V66.1491C475.639 70.2164 476.34 73.7725 477.74 76.8174C479.162 79.8401 481.174 82.1849 483.774 83.8518C486.374 85.5187 489.453 86.3521 493.009 86.3521C495.431 86.3521 497.554 85.9743 499.376 85.2186C501.221 84.463 502.766 83.4517 504.01 82.1849C505.277 80.8958 506.233 79.4845 506.877 77.9509L512.512 79.7845C511.734 81.9404 510.456 83.9296 508.678 85.7521C506.922 87.5745 504.722 89.0414 502.077 90.1527C499.454 91.2418 496.431 91.7863 493.009 91.7863Z"/>
+      <path fill="currentColor" d="M452.521 90.7194V39.5118H458.489V90.7194H452.521ZM455.555 30.7105C454.333 30.7105 453.288 30.2993 452.421 29.477C451.554 28.6324 451.121 27.6212 451.121 26.4432C451.121 25.2653 451.554 24.2651 452.421 23.4428C453.288 22.5982 454.333 22.1759 455.555 22.1759C456.777 22.1759 457.822 22.5982 458.689 23.4428C459.556 24.2651 459.989 25.2653 459.989 26.4432C459.989 27.6212 459.556 28.6324 458.689 29.477C457.822 30.2993 456.777 30.7105 455.555 30.7105Z"/>
+      <path fill="currentColor" d="M422.078 91.7863C417.5 91.7863 413.51 90.6417 410.11 88.3524C406.731 86.0632 404.109 82.9294 402.242 78.951C400.375 74.9727 399.441 70.4387 399.441 65.349C399.441 60.2149 400.386 55.6476 402.275 51.647C404.187 47.6464 406.831 44.5126 410.21 42.2456C413.588 39.9564 417.511 38.8118 421.978 38.8118C425.401 38.8118 428.501 39.4785 431.279 40.8121C434.058 42.1234 436.347 43.9792 438.147 46.3796C439.97 48.7577 441.114 51.5359 441.581 54.7141H435.58C434.958 51.8248 433.458 49.3578 431.079 47.313C428.724 45.2461 425.723 44.2126 422.078 44.2126C418.811 44.2126 415.922 45.1016 413.41 46.8796C410.899 48.6354 408.932 51.0914 407.509 54.2474C406.109 57.3812 405.409 61.0151 405.409 65.149C405.409 69.3052 406.098 72.9835 407.476 76.184C408.854 79.3622 410.788 81.8515 413.277 83.6517C415.788 85.452 418.722 86.3521 422.078 86.3521C424.345 86.3521 426.412 85.9299 428.279 85.0853C430.168 84.2185 431.746 82.9961 433.013 81.4181C434.302 79.8401 435.169 77.962 435.613 75.7839H441.614C441.17 78.8733 440.07 81.6292 438.314 84.0518C436.58 86.4522 434.324 88.3413 431.546 89.7193C428.79 91.0973 425.634 91.7863 422.078 91.7863Z"/>
+      <path fill="currentColor" d="M390.228 50.7469L384.793 52.2804C384.26 50.7469 383.504 49.3578 382.526 48.1131C381.549 46.8685 380.271 45.8795 378.693 45.146C377.137 44.4126 375.203 44.0459 372.892 44.0459C369.425 44.0459 366.58 44.8682 364.357 46.5129C362.135 48.1576 361.023 50.2801 361.023 52.8805C361.023 55.0808 361.779 56.87 363.29 58.248C364.824 59.6037 367.18 60.6817 370.358 61.4818L378.092 63.3821C382.382 64.4267 385.594 66.0825 387.727 68.3495C389.883 70.6165 390.961 73.4613 390.961 76.8841C390.961 79.7734 390.161 82.3404 388.561 84.5852C386.96 86.83 384.727 88.5969 381.86 89.886C379.015 91.1529 375.714 91.7863 371.958 91.7863C366.957 91.7863 362.835 90.6639 359.59 88.4191C356.345 86.1521 354.267 82.885 353.355 78.6177L359.056 77.2175C359.79 80.2623 361.223 82.5627 363.357 84.1185C365.513 85.6743 368.347 86.4522 371.858 86.4522C375.792 86.4522 378.937 85.5743 381.293 83.8184C383.649 82.0404 384.827 79.8178 384.827 77.1508C384.827 75.0838 384.138 73.3502 382.76 71.95C381.382 70.5276 379.293 69.483 376.492 68.8162L368.124 66.8159C363.679 65.7491 360.39 64.06 358.256 61.7485C356.123 59.437 355.056 56.57 355.056 53.1472C355.056 50.3246 355.822 47.8464 357.356 45.7128C358.89 43.5569 361.001 41.8678 363.69 40.6454C366.38 39.423 369.447 38.8118 372.892 38.8118C377.581 38.8118 381.326 39.8786 384.127 42.0122C386.949 44.1237 388.983 47.0352 390.228 50.7469Z"/>
+      <path fill="currentColor" d="M314.719 91.5529C310.829 91.5529 307.307 90.5527 304.151 88.5524C301.017 86.5299 298.528 83.5628 296.683 79.6511C294.86 75.7172 293.949 70.8942 293.949 65.1823C293.949 59.3148 294.894 54.4363 296.783 50.5468C298.672 46.6351 301.184 43.7124 304.317 41.7788C307.473 39.823 310.93 38.8451 314.686 38.8451C317.553 38.8451 319.942 39.334 321.853 40.3119C323.787 41.2676 325.343 42.4678 326.521 43.9125C327.721 45.3349 328.632 46.7351 329.254 48.1131H329.688V22.4426H343.857V90.7194H329.855V82.5182H329.254C328.588 83.9406 327.643 85.352 326.421 86.7522C325.221 88.1301 323.654 89.2747 321.72 90.186C319.809 91.0972 317.475 91.5529 314.719 91.5529ZM319.22 80.2512C321.509 80.2512 323.442 79.6289 325.02 78.3843C326.621 77.1174 327.843 75.3505 328.688 73.0835C329.554 70.8165 329.988 68.1605 329.988 65.1156C329.988 62.0707 329.566 59.4259 328.721 57.1811C327.876 54.9363 326.654 53.2027 325.054 51.9803C323.454 50.7579 321.509 50.1467 319.22 50.1467C316.886 50.1467 314.919 50.7802 313.319 52.047C311.719 53.3139 310.507 55.0697 309.685 57.3145C308.863 59.5592 308.451 62.1596 308.451 65.1156C308.451 68.0938 308.863 70.7276 309.685 73.0168C310.529 75.2838 311.741 77.0618 313.319 78.3509C314.919 79.6178 316.886 80.2512 319.22 80.2512Z"/>
+      <path fill="currentColor" d="M253.53 61.1151V90.7194H239.328V39.5119H252.863V48.5465H253.464C254.597 45.5683 256.497 43.2124 259.164 41.4788C261.831 39.723 265.065 38.8451 268.866 38.8451C272.422 38.8451 275.522 39.623 278.167 41.1788C280.812 42.7346 282.868 44.9571 284.335 47.8464C285.802 50.7135 286.535 54.1362 286.535 58.1146V90.7194H272.333V60.6483C272.355 57.5145 271.555 55.0697 269.933 53.3139C268.31 51.5359 266.077 50.6468 263.232 50.6468C261.32 50.6468 259.631 51.058 258.164 51.8804C256.72 52.7027 255.586 53.9029 254.764 55.4809C253.964 57.0367 253.552 58.9147 253.53 61.1151Z"/>
+      <path fill="currentColor" d="M208.431 91.7196C203.164 91.7196 198.63 90.6528 194.829 88.5191C191.051 86.3632 188.139 83.3183 186.094 79.3844C184.05 75.4283 183.027 70.7498 183.027 65.349C183.027 60.0816 184.05 55.4587 186.094 51.4803C188.139 47.5019 191.017 44.4015 194.729 42.1789C198.463 39.9564 202.841 38.8451 207.864 38.8451C211.243 38.8451 214.388 39.3896 217.299 40.4787C220.233 41.5455 222.789 43.1568 224.967 45.3127C227.167 47.4686 228.879 50.1801 230.101 53.4473C231.323 56.6922 231.935 60.4927 231.935 64.8489V68.7495H188.695V59.9482H218.566C218.566 57.9035 218.121 56.0921 217.232 54.5141C216.343 52.9361 215.11 51.7026 213.532 50.8135C211.976 49.9023 210.165 49.4467 208.098 49.4467C205.942 49.4467 204.03 49.9467 202.364 50.9469C200.719 51.9248 199.43 53.2472 198.496 54.9141C197.563 56.5588 197.085 58.3924 197.063 60.415V68.7829C197.063 71.3166 197.529 73.5058 198.463 75.3505C199.419 77.1952 200.763 78.6177 202.497 79.6178C204.23 80.618 206.286 81.118 208.664 81.118C210.242 81.118 211.687 80.8958 212.998 80.4513C214.31 80.0067 215.432 79.34 216.366 78.451C217.299 77.5619 218.01 76.4729 218.499 75.1838L231.635 76.0506C230.968 79.2066 229.601 81.9626 227.534 84.3185C225.489 86.6522 222.844 88.4747 219.599 89.786C216.377 91.0751 212.654 91.7196 208.431 91.7196Z"/>
+      <path fill="currentColor" d="M150.943 90.7195V39.5119H164.712V48.4465H165.245C166.179 45.2683 167.746 42.8679 169.946 41.2455C172.147 39.6008 174.68 38.7784 177.547 38.7784C178.259 38.7784 179.025 38.8229 179.848 38.9118C180.670 39.0007 181.392 39.1229 182.015 39.2785V51.8804C181.348 51.6804 180.426 51.5026 179.248 51.347C178.070 51.1914 176.992 51.1136 176.014 51.1136C173.925 51.1136 172.058 51.5692 170.413 52.4805C168.790 53.3695 167.501 54.6141 166.546 56.2144C165.612 57.8146 165.145 59.6593 165.145 61.7485V90.7195H150.943Z"/>
+      <path fill="currentColor" d="M143.568 39.5118V50.18H112.73V39.5118H143.568ZM119.732 27.2433H133.934V74.9837C133.934 76.295 134.134 77.3174 134.534 78.0508C134.934 78.762 135.489 79.2621 136.201 79.551C136.934 79.84 137.779 79.9844 138.734 79.9844C139.401 79.9844 140.068 79.9289 140.735 79.8177C141.401 79.6844 141.913 79.5844 142.268 79.5177L144.502 90.0859C143.791 90.3082 142.79 90.5638 141.501 90.8527C140.212 91.1639 138.645 91.3528 136.801 91.4195C133.378 91.5528 130.378 91.0972 127.799 90.0526C125.243 89.008 123.254 87.3855 121.832 85.1852C120.409 82.9849 119.709 80.2067 119.732 76.8506V27.2433Z"/>
+    </symbol>
+
+    <!-- ÍCONES LUCIDE OFICIAIS (stroke 2, round) — subset relevante -->
+    <symbol id="ico-stethoscope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></symbol>
+    <symbol id="ico-pill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></symbol>
+    <symbol id="ico-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+    <symbol id="ico-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.5.5 0 0 1-.96 0L9.68 3.18a.5.5 0 0 0-.96 0l-2.35 8.36A2 2 0 0 1 4.44 13H2"/></symbol>
+    <symbol id="ico-heart-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></symbol>
+    <symbol id="ico-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="ico-trending-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></symbol>
+    <symbol id="ico-database" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></symbol>
+    <symbol id="ico-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="ico-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-8 8.5-4.5-1-8-3.5-8-8.5V6l8-3 8 3z"/></symbol>
+    <symbol id="ico-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
+    <symbol id="ico-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="ico-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></symbol>
+    <symbol id="ico-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+    <symbol id="ico-award" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></symbol>
+    <symbol id="ico-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></symbol>
+    <symbol id="ico-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  </defs>
+</svg>
+
+
+<div class="shell">
+
+  <!-- ================================================== -->
+  <!--  SIDEBAR                                            -->
+  <!-- ================================================== -->
+  <aside class="nav" aria-label="Índice do brandbook">
+    <a href="index.html#cover" class="brand" aria-label="Trendscience — início">
+      <svg class="brand-logo" viewBox="0 0 678 114" aria-hidden="true"><use href="#ts-wordmark"/></svg>
+      <div class="sub">Brand Guidelines · v2.0 · 2026</div>
+    </a>
+
+    <div class="group-label">Marca</div>
+    <ul>
+      <li><a href="index.html#a-marca"><span class="n">01</span><span>A Marca</span></a></li>
+      <li><a href="index.html#logo"><span class="n">02</span><span>Logo</span><span class="badge">soon</span></a></li>
+      <li><a href="index.html#monograma"><span class="n">03</span><span>Monograma</span><span class="badge">soon</span></a></li>
+      <li><a href="index.html#tipografia"><span class="n">04</span><span>Tipografia</span><span class="badge">soon</span></a></li>
+      <li><a href="index.html#cores"><span class="n">05</span><span>Cores</span><span class="badge">soon</span></a></li>
+      <li><a href="index.html#icones"><span class="n">06</span><span>Ícones</span><span class="badge">soon</span></a></li>
+      <li><a href="index.html#padroes"><span class="n">07</span><span>Padrões gráficos</span><span class="badge">soon</span></a></li>
+    </ul>
+
+    <div class="group-label">Sistema</div>
+    <ul>
+      <li><a href="index.html#design-system"><span class="n">08</span><span>Design System</span><span class="badge">soon</span></a></li>
+      <li><a href="index.html#website"><span class="n">09</span><span>Website</span><span class="badge">soon</span></a></li>
+      <li><a href="index.html#aplicacoes"><span class="n">10</span><span>Aplicações</span><span class="badge">soon</span></a></li>
+      <li><a href="index.html#redes"><span class="n">11</span><span>Redes Sociais</span><span class="badge">soon</span></a></li>
+      <li><a href="index.html#institucional"><span class="n">12</span><span>Material Institucional</span><span class="badge">soon</span></a></li>
+      <li><a href="index.html#downloads"><span class="n">13</span><span>Downloads</span><span class="badge">soon</span></a></li>
+    </ul>
+
+    <div class="group-label">Materiais</div>
+    <ul>
+      <li><a href="Padrão Apresentação.html" class="active"><span class="n">14</span><span>Padrão Apresentação</span></a></li>
+      <li><a href="Padrão A4.html"><span class="n">15</span><span>Padrão A4</span><span class="badge badge-ext">abrir ↗</span></a></li>
+      <li><a href="Padrão Publicações e Criativos.html"><span class="n">16</span><span>Padrão Publicações e Criativos</span><span class="badge badge-ext">abrir ↗</span></a></li>
+    </ul>
+
+    <div class="foot">
+      <b>Trendscience.</b><br>
+      Brand Guidelines<br>
+      Versão 2.0 · Jul 2026<br>
+      Documento interno confidencial
+    </div>
+  </aside>
+
+  <!-- ================================================== -->
+  <!--  MAIN                                               -->
+  <!-- ================================================== -->
+  <main>
+
+    <section id="padrao-apresentacao" data-screen-label="14 Padrão Apresentação">
+
+      <div class="pa-wrap">
+
+        <a href="index.html" class="pa-back">
+          <span class="arrow">←</span> Voltar ao Brandbook
+        </a>
+
+        <header class="section-head">
+          <div class="eyebrow"><span class="num">14</span>Padrão Apresentação</div>
+          <h2 class="section-title">A marca<br>em apresentação.</h2>
+          <p class="section-lead">
+            Sistema oficial de templates 16:9 (1920 × 1080) da Trendscience, extraído
+            da fonte de identidade visual: <em>Ink #042A2B</em>, <em>Branco</em>,
+            <em>Teal #007A7D</em>, Geist, ícones Lucide e o próprio ícone-símbolo
+            como padrão gráfico. Cada template resolve um contexto específico —
+            <strong>Impacto</strong> (visual, dramático, big numbers) ou
+            <strong>Editorial</strong> (denso, comparativo, tabular) — mantendo
+            proporção de <strong>75% texto+visual e 25% texto puro</strong> ao
+            longo do sistema.
+          </p>
+        </header>
+
+        <!-- Toolbar / auditoria -->
+        <div class="deck-toolbar">
+          <div>
+            <span class="lote-tag">Sistema completo</span>
+            <span> · 45 slides · aguardando aprovação</span>
+          </div>
+          <div class="audit">
+            <span>Texto+Visual · <b>37</b></span>
+            <span>Texto puro · <b>8</b> · <b>17,8%</b></span>
+            <span>Impacto · <b>22</b></span>
+            <span>Editorial · <b>23</b></span>
+          </div>
+        </div>
+
+        <!-- ==================================================
+             GALERIA DE MINIATURAS
+             Cada card é um <button class="deck-tile"> com o slide
+             1920×1080 lá dentro. O JS escala pra caber na thumb
+             e um clique abre o modal fullscreen.
+             ================================================== -->
+        <div class="deck-gallery" id="deck-gallery">
+          <!-- Os slides serão injetados aqui via template inline abaixo -->
+        </div>
+
+      </div><!-- /.pa-wrap -->
+
+    </section>
+
+
+    <!-- ================================================== -->
+    <!--  14.3 · APRESENTAÇÕES — COMO CONSTRUIR OS SLIDES     -->
+    <!--  Guia integral vindo do arquivo                      -->
+    <!--  `trendscience-guia-de-slides.md` (02/09/2026),       -->
+    <!--  escrito a partir da MEDIÇÃO do deck aprovado         -->
+    <!--  `inside-sales-trend` — não estimativa.               -->
+    <!-- ================================================== -->
+    <section id="construcao-slides" data-screen-label="14.3 Construção de slides" class="guide-14-3">
+      <div class="pa-wrap">
+
+        <a href="index.html" class="pa-back"><span>←</span> Voltar ao Brandbook</a>
+
+        <header class="section-head">
+          <div class="eyebrow"><span class="num">14.3</span>Apresentações · como construir os slides</div>
+          <h2 class="section-title">A régua<br>que veio do deck real.</h2>
+          <p class="section-lead">
+            Guia de construção dos decks Trendscience. O que cada slide precisa
+            ter, o que nunca pode ter, em que ordem o deck se monta. Todos os
+            números aqui foram <b>medidos elemento por elemento no deck
+            aprovado</b> (<code>inside-sales-trend</code>, 9 slides, 1920×1080,
+            02/09/2026). Sempre que a régua dá um valor (62 px, 96 px, 380 px,
+            opacidade 0,14), ela está descrevendo o que a marca já faz — não
+            propondo algo novo. A medição completa está em
+            <code>trendscience-MEDICAO-deck-real.md</code> (arquivo irmão).
+          </p>
+        </header>
+
+        <!-- 01 -->
+        <div class="guide-section">
+          <div class="vb-label">01 · A régua que vem antes de todas</div>
+          <h3 class="vb-title">Um slide, uma ideia.</h3>
+          <p class="vb-lead">
+            Um slide carrega <b>uma afirmação</b>, e carrega toda a prova que
+            essa afirmação precisa. Slide denso é o padrão desejado: quem está
+            no fundo da sala tem de ver o argumento inteiro sem depender da
+            narração. <b>Não existe teto de palavras.</b> O que existe é régua
+            de <b>estrutura</b> — densidade organizada em blocos lê, densidade
+            em parágrafo corrido não.
+          </p>
+          <ul class="guide-list">
+            <li><b>Todo texto de conteúdo vive dentro de bloco nomeado:</b>
+            card, coluna, nó de diagrama ou item com ícone. Parágrafo solto
+            ocupando o slide, nunca.</li>
+            <li><b>Cada bloco tem rótulo curto</b> em Metadado (Inter Tight
+            700, 14–15 px) e o texto embaixo.</li>
+            <li><b>Títulos de blocos irmãos nunca repetem cor.</b> Rotação
+            fixa e teto de três na seção 4.</li>
+            <li><b>Máximo de 4 blocos irmãos no mesmo nível.</b> Acima disso,
+            agrupar em dois grupos de dois.</li>
+            <li><b>A densidade acontece dentro da grade:</b> conteúdo começa
+            em 380 px e respeita a margem de 96 px. Nunca invadindo o
+            respiro.</li>
+          </ul>
+          <p>
+            O slide pode ter muito texto. Não pode ter texto sem hierarquia —
+            é essa a diferença entre denso e entupido.
+          </p>
+
+          <h4 class="guide-sub">Título de bloco — cores diferentes, três por slide</h4>
+          <p>
+            Títulos de blocos irmãos nunca repetem cor dentro do slide — é o
+            que faz o olho separar os blocos antes de ler qualquer palavra. A
+            cor não é escolhida por slide: segue a rotação fixa da seção 4,
+            própria de cada fundo, e o teto é <b>três blocos com título
+            colorido</b> — três é o número de cores da paleta que passam
+            contraste de texto em cada fundo.
+          </p>
+          <p>
+            <b>Quatro blocos continuam permitidos</b> — mas aí eles viram
+            grade: todos os títulos em Deep Petrol (ou Branco, em fundo
+            petróleo), e a diferenciação vem do rótulo em Metadado, que é o
+            que o deck de referência já faz nos cards.
+          </p>
+          <p>
+            Consequência prática: <b>um título por slide, e o título é a
+            afirmação.</b> Não "Cobertura nacional", mas "Atendemos 27
+            estados". Título que nomeia o assunto obriga o slide a explicar;
+            título que afirma deixa o slide provar.
+          </p>
+        </div>
+
+        <!-- 02 -->
+        <div class="guide-section">
+          <div class="vb-label">02 · Formato e grade</div>
+          <h3 class="vb-title">1920 × 1080 · 16:9 · margem 96 px.</h3>
+          <ul class="guide-list">
+            <li><b>1920 × 1080 px, 16:9.</b> Sem exceção.</li>
+            <li><b>Margem de segurança:</b> 96 px em todos os lados. Nada de texto fora.</li>
+            <li><b>Grade de 12 colunas</b>, calha de 24 px.</li>
+            <li><b>Recuo interno de card:</b> 32 px (o conteúdo do card começa em 128 px).</li>
+            <li><b>Âncoras verticais do slide de conteúdo</b>, medidas no deck aprovado:
+            eyebrow em 80 px, título em 118 px, frase de apoio em 264 px, conteúdo em 380 px.
+            Usar sempre as mesmas — é o que faz os slides não dançarem.</li>
+            <li><b>Área de imagem sangra:</b> imagem pode e deve ir até a borda do slide.
+            A margem prende o texto, não a imagem.</li>
+          </ul>
+        </div>
+
+        <!-- 03 -->
+        <div class="guide-section">
+          <div class="vb-label">03 · Tipografia</div>
+          <h3 class="vb-title">Usar as 8 funções, não inventar.</h3>
+          <p class="vb-lead">
+            Os slides usam a tabela das 8 funções de 13.3, sem criar tamanho
+            novo. Equivalência para 1920 × 1080:
+          </p>
+
+          <table class="guide-table">
+            <thead>
+              <tr>
+                <th>Função</th>
+                <th>Família / peso</th>
+                <th>Tamanho no slide</th>
+                <th>Onde</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><b>Display / Big Title</b></td><td>Inter Tight 500</td><td>96–104 px</td><td>Título de capa e de divisor (ver seção 12)</td></tr>
+              <tr><td><b>Subtítulo</b></td><td>Inter Tight 500</td><td>56–64 px</td><td>Título de slide de conteúdo</td></tr>
+              <tr><td><b>Big Number</b></td><td>Inter Tight 500</td><td>96–120 px</td><td>KPI, dado único (ver seção 12)</td></tr>
+              <tr><td><b>Eyebrow</b></td><td>Inter Tight 700</td><td>17–19 px, caixa alta, tracking 0.14em</td><td>Rótulo de seção no topo</td></tr>
+              <tr><td><b>Apoio</b></td><td>Inter Tight 300</td><td>28–34 px</td><td>Frase sob o título do slide</td></tr>
+              <tr><td><b>Corpo</b></td><td>Inter Tight 400</td><td>20–23 px</td><td>Texto de card, legenda de diagrama, lista</td></tr>
+              <tr><td><b>Metadado</b></td><td>Inter Tight 700</td><td>14–15 px</td><td>Assinatura de rodapé, rótulo de bloco, fonte do dado</td></tr>
+              <tr><td><b>Frase-conceito</b></td><td>Inter Tight 300</td><td>28–32 px</td><td>Só no slide de fecho</td></tr>
+              <tr><td><b>Ênfase inline</b></td><td>Inter Tight 300</td><td>herda</td><td><code>&lt;em&gt;</code> dentro de Display</td></tr>
+            </tbody>
+          </table>
+
+          <p>
+            <b>Nunca:</b> Display em 700; fonte fora de Inter Tight; mais de
+            dois pesos num mesmo bloco.
+          </p>
+          <p>
+            <b>Sem limite de palavras</b> (ver seção 1). O limite é de
+            estrutura e de legibilidade: nada abaixo do tamanho mínimo de
+            cada função, e nada fora da margem de 96 px.
+          </p>
+        </div>
+
+        <!-- 04 -->
+        <div class="guide-section">
+          <div class="vb-label">04 · Cor</div>
+          <h3 class="vb-title">Muita cor, e ela vem da paleta.</h3>
+          <p class="vb-lead">
+            A paleta oficial é o teto: <b>Deep Petrol #042A2B, Petrol 700
+            #0A4547, Teal #007A7D, Teal Sinal #00D6B4, Teal 100 #D6F2F0</b>,
+            mais os neutros Branco, Corpo #2E3838 e Rótulo #737979. Na linha
+            internacional, Navy #0C1D46, Blue #2C65EC e Blue 300 #8FB4F7.
+          </p>
+
+          <p>Cor abundante se faz <b>alternando fundos de slide, não pintando texto</b>:</p>
+          <ul class="guide-list">
+            <li><b>Fundo Deep Petrol</b> com texto Teal 100 — abertura, divisor, fecho.</li>
+            <li><b>Fundo Branco</b> com texto Corpo e título Deep Petrol — conteúdo denso.</li>
+            <li><b>Fundo Teal 100</b> com texto Deep Petrol — slide de respiro, citação.</li>
+            <li><b>Fundo Petrol 700</b> — comparativos e tabelas.</li>
+            <li><b>Teal Sinal</b> só como destaque pontual: um dado, um traço de diagrama,
+            nunca área grande nem texto de corpo.</li>
+          </ul>
+
+          <p>
+            <b>Cor de texto, em ordem de uso:</b> Deep Petrol para título,
+            Corpo #2E3838 para texto, Teal #007A7D para eyebrow e acento,
+            Branco em fundo escuro, Rótulo #737979 para metadado, Teal Sinal
+            só em destaque pontual. Nada fora dessa lista — o deck de
+            referência tem uma ocorrência de #005457, que não é cor oficial e
+            não deve se repetir.
+          </p>
+          <p>
+            <b>A regra de ferro: uma cor por bloco de texto.</b> Título teal é
+            100% teal. Sem degradê, sem opacidade, sem duas cores dentro da
+            mesma frase. Ênfase dentro de um bloco se faz por peso.
+          </p>
+
+          <h4 class="guide-sub">Título de bloco — rotação de cor, e por que o teto é três</h4>
+          <p>
+            Títulos de blocos irmãos nunca repetem cor dentro do mesmo slide
+            (determinação do Luiz, 02/09). A cor separa os blocos antes de o
+            leitor ler uma palavra.
+          </p>
+          <p>
+            <b>Rotação fixa, nesta ordem, e a rotação é do fundo em uso</b> —
+            não é escolha por slide. Os cinco fundos autorizados caem em três
+            colunas:
+          </p>
+
+          <table class="guide-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Fundo <b>Branco</b></th>
+                <th>Fundo <b>Teal 100</b></th>
+                <th>Fundo <b>escuro</b> (Deep Petrol e Petrol 700)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1º título</td><td><b>Deep Petrol</b> #042A2B</td><td><b>Deep Petrol</b> #042A2B</td><td><b>Teal 100</b> #D6F2F0</td></tr>
+              <tr><td>2º título</td><td><b>Teal</b> #007A7D</td><td><b>Petrol 700</b> #0A4547</td><td><b>Branco</b></td></tr>
+              <tr><td>3º título</td><td><b>Petrol 700</b> #0A4547</td><td><b>Corpo</b> #2E3838</td><td><b>Teal Sinal</b> #00D6B4</td></tr>
+            </tbody>
+          </table>
+
+          <p>
+            <b>Teto: três blocos com título colorido, em qualquer fundo.</b>
+            Não é escolha estética, é o que a paleta permite. Contraste medido
+            contra cada fundo, mínimo de 4.5:1 para texto:
+          </p>
+          <ul class="guide-list">
+            <li><b>Em Branco passam três:</b> Deep Petrol 15,3 · Petrol 700 10,7 · Teal 5,2.
+            <b>Reprovam:</b> Rótulo #737979 em 4,43 (só passaria em corpo grande), Teal Sinal em 1,86, Teal 100 em 1,18.</li>
+            <li><b>Em Teal 100 passam três:</b> Deep Petrol 13,0 · Corpo 10,2 · Petrol 700 9,1.
+            <b>Reprovam:</b> Teal em 4,37 — por treze centésimos, e é o erro mais provável de todos, porque Teal é a família do próprio fundo — Rótulo em 3,76, Teal Sinal em 1,58.</li>
+            <li><b>Em Deep Petrol passam três:</b> Branco 15,3 · Teal 100 13,0 · Teal Sinal 8,2.
+            <b>Reprovam:</b> Rótulo 3,46, Teal 2,98, Petrol 700 1,43.</li>
+            <li><b>Em Petrol 700 passam os mesmos três</b>, mais apertados: Branco 10,7 · Teal 100 9,1 · Teal Sinal 5,8. Por isso os dois fundos escuros compartilham uma coluna.</li>
+          </ul>
+          <p><b>Ritmo:</b> nunca três slides seguidos com o mesmo fundo.</p>
+        </div>
+
+        <!-- 05 -->
+        <div class="guide-section">
+          <div class="vb-label">05 · Divisores de capítulo</div>
+          <h3 class="vb-title">Obrigatórios.</h3>
+          <p class="vb-lead">
+            <b>Entre um tópico e outro entra sempre um divisor em formato de
+            capa.</b> É o batimento do deck: ele avisa que o assunto mudou e
+            dá o respiro que o slide denso não dá.
+          </p>
+
+          <p><b>Anatomia do divisor:</b></p>
+          <ul class="guide-list">
+            <li>Elemento visual sangrando pelo menos por dois lados, sobre
+            Deep Petrol (as três formas aceitas estão na seção 6).</li>
+            <li><b>Eyebrow</b> com o número e o nome do capítulo: <code>02 · PORTFÓLIO</code>.</li>
+            <li><b>Display</b> com a afirmação do capítulo, no canto inferior
+            esquerdo, dentro da margem de 96 px.</li>
+            <li>Nada mais. Sem parágrafo, sem bullet, sem logo grande.</li>
+          </ul>
+          <p>
+            Contraste mínimo de 4.5:1 entre o texto e o elemento visual. Se
+            ele for claro, escurecer com <b>camada ou degradê preto</b>. Nunca
+            escurecer com cor da marca, e nunca trocar o texto para cinza.
+          </p>
+        </div>
+
+        <!-- 06 -->
+        <div class="guide-section">
+          <div class="vb-label">06 · Elemento visual</div>
+          <h3 class="vb-title">Quanto e como.</h3>
+          <p class="vb-lead">
+            <b>A regra é de elemento visual, não de fotografia:</b> no mínimo
+            metade dos slides tem imagem OU diagrama sangrado. Diagrama conta
+            como elemento visual e, na maioria dos slides de conteúdo, é a
+            escolha melhor — é o que o deck de referência faz. Um slide de
+            conteúdo sem nenhum elemento visual está errado. Não é o mesmo
+            que exigir foto em todo lugar.
+          </p>
+
+          <p><b>Quando a escolha é foto:</b></p>
+          <ul class="guide-list">
+            <li>Vem do <b>banco de imagem da marca</b> (a régua do banco vale
+            integralmente: sem luva azul, sem luz vermelha, sem pele plástica,
+            sem marca de terceiro legível).</li>
+            <li><b>Sem moldura, sem sombra, sem canto arredondado.</b></li>
+            <li><b>Sem foto decorativa.</b> Se ela não prova nem situa o que
+            o slide afirma, sai e entra um diagrama.</li>
+          </ul>
+
+          <p>
+            <b>Onde o elemento visual sangrado é obrigatório:</b> capa e
+            divisores de capítulo. O que a regra exige ali é <b>sangria e
+            respiro</b> — não fotografia. Três formas atendem, e o deck de
+            referência usa todas as três:
+          </p>
+          <ol class="guide-list">
+            <li><b>Fotografia</b> do banco da marca, sangrada.</li>
+            <li><b>Padrão do ícone da marca em opacidade</b>, sangrando por
+            dois lados — 0,4 a 0,5 na capa e no divisor, 0,14 no miolo.</li>
+            <li><b>Campo de cor cheio</b> em Deep Petrol, ocupando a área
+            inteira.</li>
+          </ol>
+          <p>No corpo do deck, diagrama substitui foto sem penalidade.</p>
+
+          <p>
+            <b>Marca d'água:</b> o padrão do ícone da marca entra ao fundo em
+            <b>opacidade 0,14</b> nos slides de conteúdo, e 0,4 a 0,5 na capa.
+            É o que dá presença de marca sem competir com o conteúdo.
+          </p>
+        </div>
+
+        <!-- 07 -->
+        <div class="guide-section">
+          <div class="vb-label">07 · Diagrama</div>
+          <h3 class="vb-title">O padrão preferido.</h3>
+          <p class="vb-lead">
+            <b>Diagrama ganha de texto sempre que a relação entre as partes
+            importa.</b> Antes de escrever três frases, pergunte se é fluxo,
+            comparação, camada ou linha de tempo — e desenhe.
+          </p>
+
+          <p><b>Os cinco que cobrem quase tudo:</b></p>
+          <ol class="guide-list">
+            <li><b>Fluxo</b> — etapas em sequência, seta simples entre elas.
+            Do pedido à continuidade do tratamento.</li>
+            <li><b>Camadas</b> — o que sustenta o quê, empilhado.</li>
+            <li><b>Comparativo</b> — duas ou três colunas, mesmo gabarito.</li>
+            <li><b>Linha de tempo</b> — marcos numa régua horizontal.</li>
+            <li><b>Matriz</b> — dois eixos, quatro quadrantes.</li>
+          </ol>
+
+          <p><b>Regras de desenho:</b></p>
+          <ul class="guide-list">
+            <li>Traço de <b>2 px</b>, cor Teal ou Petrol 700. Nunca traço fino demais.</li>
+            <li><b>Rótulo em Eyebrow, descrição em Corpo.</b> Nada de texto dentro do traço.</li>
+            <li>Fundo do bloco em Teal 100 ou Branco; o diagrama não flutua no vazio.</li>
+            <li><b>Máximo 7 nós.</b> Passou de 7, o diagrama é dois.</li>
+          </ul>
+        </div>
+
+        <!-- 08 -->
+        <div class="guide-section">
+          <div class="vb-label">08 · Ícone em todo tópico</div>
+          <h3 class="vb-title">Lista sem marcador visual, nunca.</h3>
+          <p class="vb-lead">
+            <b>Todo tópico, item de lista e card recebe um ícone ou uma
+            imagem.</b> Lista sem marcador visual é o slide de texto que este
+            guia existe para evitar.
+          </p>
+          <ul class="guide-list">
+            <li>Biblioteca <b>Lucide</b>, oficial da marca. Nada de emoji,
+            nada de ícone 3D, nada de outra biblioteca no mesmo deck.</li>
+            <li><b>Traço 1.5 px</b>, tamanho 32–48 px em card, 24 px em item de lista.</li>
+            <li><b>Uma cor só</b>, Teal ou Deep Petrol conforme o fundo.</li>
+            <li>Ícone <b>não substitui o título</b>: ele acompanha.</li>
+            <li>Escolher pelo significado, não pela forma bonita. Ícone genérico
+            repetido em tudo é ruído.</li>
+          </ul>
+        </div>
+
+        <!-- 09 -->
+        <div class="guide-section">
+          <div class="vb-label">09 · Os oito slides que todo deck usa</div>
+          <h3 class="vb-title">Composição de cada peça.</h3>
+
+          <table class="guide-table">
+            <thead>
+              <tr><th>Slide</th><th>Composição</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><b>Capa</b></td><td>Elemento visual sangrado (ver seção 6), Display com a afirmação, Eyebrow com o contexto, ícone da marca pequeno no rodapé</td></tr>
+              <tr><td><b>Sumário</b></td><td>Lista de capítulos, um ícone por linha, numeração em Eyebrow</td></tr>
+              <tr><td><b>Divisor de capítulo</b></td><td>Ver seção 5. Obrigatório entre tópicos</td></tr>
+              <tr><td><b>Afirmação</b></td><td>Fundo Deep Petrol, uma frase em Display, mais nada</td></tr>
+              <tr><td><b>Dado / KPI</b></td><td>Big Number, rótulo em Eyebrow acima, fonte do dado em Metadado abaixo. Um dado por slide; ver seção 12</td></tr>
+              <tr><td><b>Diagrama</b></td><td>Ver seção 7. Título em Subtítulo, diagrama ocupando dois terços</td></tr>
+              <tr><td><b>Conteúdo com imagem</b></td><td>Metade imagem sangrada, metade texto: Subtítulo, apoio, cards em Corpo, ícones nos itens</td></tr>
+              <tr><td><b>Fecho</b></td><td>Fundo Deep Petrol, Frase-conceito, ícone da marca. Sem "obrigado"</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 10 -->
+        <div class="guide-section">
+          <div class="vb-label">10 · Proibido</div>
+          <h3 class="vb-title">O que nunca entra no deck.</h3>
+          <ul class="guide-list guide-list-no">
+            <li>Bullet de texto sem ícone nem imagem.</li>
+            <li>Texto de conteúdo fora de bloco nomeado (card, coluna, nó de
+            diagrama ou item com ícone). Mais de 4 blocos irmãos no mesmo
+            nível.</li>
+            <li>Dois títulos de blocos irmãos na mesma cor; cor de título fora
+            da rotação <b>do fundo em uso</b> (seção 4); quatro títulos
+            coloridos no mesmo slide (com quatro blocos, todos em Deep Petrol
+            / Branco — ver seção 4).</li>
+            <li><b>Título em Teal sobre fundo Teal 100</b> (4,37:1) ou <b>em
+            Rótulo cinza sobre branco</b> (4,43:1). Reprovam contraste por
+            centésimos.</li>
+            <li>Título que nomeia o assunto em vez de afirmar.</li>
+            <li>Dois tópicos diferentes sem divisor entre eles.</li>
+            <li>Foto decorativa, com moldura, com sombra ou com canto arredondado.</li>
+            <li>Slide de conteúdo sem nenhum elemento visual (nem imagem, nem diagrama).</li>
+            <li>Cor fora da paleta; degradê em texto ou em preenchimento de forma; texto em duas cores.</li>
+            <li><b>Degradê com qualquer cor da paleta, inclusive Deep Petrol e
+            Teal.</b> Degradê permitido: só preto, cheio ou com redução de
+            opacidade, e só como camada de legibilidade sobre elemento visual
+            sangrado.</li>
+            <li>Página de conteúdo sem a assinatura de rodapé da seção 11.</li>
+            <li><b>Faixa, tarja ou caixa de fundo diferente na base do slide
+            com o resumo, o recado ou o "take away" da página.</b> Se a
+            mensagem precisa ser dita, ela é o título do slide, que afirma em
+            vez de nomear; se é um dado, é Big Number; se é ressalva, é
+            fonte em Metadado colada ao bloco. Faixa de resumo é sintoma de
+            slide cujo título não afirma nada — a página se resolve no topo
+            e no corpo, não num rodapé explicativo. Isto não é a assinatura
+            da seção 11, que é linha de texto sem fundo e sem conteúdo
+            argumentativo. Assinatura identifica a página; faixa de resumo
+            tenta explicá-la, e é essa que sai.</li>
+            <li>Três slides seguidos com o mesmo fundo, em deck de mais de 10 slides.</li>
+            <li>Fonte fora de Inter Tight; Display em 700.</li>
+            <li>Emoji, clipart, ícone 3D, mistura de bibliotecas de ícone.</li>
+            <li>Gráfico com efeito 3D, sombra ou fundo colorido atrás das barras.</li>
+            <li>Diagrama com mais de 7 nós.</li>
+            <li>Slide final escrito "Obrigado".</li>
+          </ul>
+        </div>
+
+        <!-- 11 -->
+        <div class="guide-section">
+          <div class="vb-label">11 · Assinatura de página</div>
+          <h3 class="vb-title">O que repete em todo slide.</h3>
+          <p class="vb-lead">
+            Toda página de conteúdo carrega a mesma assinatura, nos mesmos
+            lugares. É o que faz o slide solto — printado, exportado, jogado
+            num grupo — continuar reconhecível como material da marca.
+          </p>
+
+          <table class="guide-table">
+            <thead>
+              <tr><th>Posição</th><th>Conteúdo</th><th>Formato</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Topo, left 96 / top 80</td><td><b>Eyebrow de capítulo</b> — diz onde a pessoa está</td><td>Inter Tight 700, 17 px, caixa alta, tracking 0.14em, Teal #007A7D. <code>02 · PORTFÓLIO</code></td></tr>
+              <tr><td>Rodapé esquerdo, left 96</td><td><b>Deck, data e versão</b></td><td>Inter Tight 700, 14 px, Rótulo #737979. <code>INSIDE SALES · SET 2026 · V3</code></td></tr>
+              <tr><td>Rodapé direito</td><td><b>Ícone da marca</b>, altura 20 px</td><td>Teal em fundo claro, Branco sobre Deep Petrol. Só o ícone, sem logotipo escrito</td></tr>
+              <tr><td>Rodapé direito, ao lado do ícone</td><td><b>Número do slide, com o total</b></td><td>Inter Tight 700, 14 px, Rótulo #737979. <code>07/24</code></td></tr>
+            </tbody>
+          </table>
+
+          <p><b>Regras da assinatura:</b></p>
+          <ul class="guide-list">
+            <li><b>Linha de rodapé em 990 px</b> — os mesmos 96 px de respiro até a base do slide de 1080.</li>
+            <li><b>Nunca logotipo escrito no rodapé.</b> O logo cheio aparece na capa e no fecho; no miolo é só o ícone.</li>
+            <li><b>Capa e divisor não levam assinatura</b>, só o ícone. Assinatura em capa é ruído e come o respiro.</li>
+            <li><b>O número traz o total</b>, não só a posição: <code>07/24</code>. Sem o total, quem assiste não sabe quanto falta.</li>
+            <li><b>Fonte do dado não é assinatura.</b> Ela vai em Metadado imediatamente sob o bloco que traz o número, nunca no rodapé — fonte longe do dado não é fonte.</li>
+            <li><b>Confidencialidade entra só quando o material sai da empresa</b>, como <code>USO INTERNO</code> na caixa da esquerda. Sem exigência, fica fora.</li>
+          </ul>
+        </div>
+
+        <!-- 12 -->
+        <div class="guide-section">
+          <div class="vb-label">12 · Big Title e Big Number</div>
+          <h3 class="vb-title">Nomeando o que o deck já fazia.</h3>
+          <p class="vb-lead">
+            As duas peças que dão a escala do deck. Funcionam por
+            <b>contraste de tamanho</b>, então perdem o efeito quando
+            repetidas.
+          </p>
+
+          <h4 class="guide-sub">Big Title — é o Display: Inter Tight 500, 96–104 px.</h4>
+          <ul class="guide-list">
+            <li><b>Exclusivo de capa e divisor.</b> Nunca em slide de conteúdo: lá o título é Subtítulo, 56–64 px.</li>
+            <li><b>Uma afirmação, no máximo 7 palavras, sem ponto final.</b> Se não cabe em duas linhas na largura útil, não é Big Title, é subtítulo.</li>
+            <li>Entrelinha 0,95 a 1,0. Display em entrelinha de corpo parece texto grande, não título.</li>
+            <li>Alinhado à esquerda na margem de 96 px, ancorado no terço inferior quando há elemento visual sangrado.</li>
+            <li><b>Afirma, não nomeia.</b> Big Title que nomeia um assunto gasta a página inteira sem dizer nada.</li>
+            <li>Nunca em caixa alta, nunca em peso 700, nunca centralizado.</li>
+          </ul>
+
+          <h4 class="guide-sub">Big Number — o dado que carrega o slide: Inter Tight 500 em 96–120 px.</h4>
+          <p>Em Deep Petrol sobre fundo claro e Teal Sinal #00D6B4 sobre Deep Petrol.</p>
+          <ul class="guide-list">
+            <li><b>Um por slide.</b> Dois competem e nenhum ganha.</li>
+            <li><b>Sempre com rótulo acima e fonte abaixo.</b> Número sem
+            rótulo e sem fonte é enfeite. O <b>rótulo é Eyebrow</b> — 17–19
+            px, caixa alta, tracking 0.14em, Teal #007A7D em fundo claro,
+            Teal 100 sobre Deep Petrol: ele diz o que o número significa, é
+            leitura de sala e não crédito. A <b>fonte do dado é Metadado</b>,
+            14 px, sob o bloco. Metadado vive em três lugares e só neles:
+            rótulo de bloco, fonte do dado e assinatura de rodapé.</li>
+            <li><b>Unidade e sufixo em 40% do tamanho do número</b>, mesmo peso, alinhados pela base: <code>27</code> grande, <code>estados</code> pequeno na mesma linha.</li>
+            <li><b>Nunca arredondar para cima.</b> <code>27 estados</code>, não <code>quase 30</code>.</li>
+            <li><b>Três indicadores lado a lado não são três Big Numbers</b> — é grade de indicadores, todos no mesmo tamanho, 56–64 px.</li>
+            <li><b>Máximo de um slide de Big Number a cada cinco slides de conteúdo.</b> Big Number funciona por contraste, e o contraste é com os slides em volta, não dentro do slide.</li>
+            <li>Teal Sinal aqui é a única aplicação de área média dessa cor no deck.</li>
+          </ul>
+        </div>
+
+      </div><!-- /.pa-wrap -->
+    </section>
+
+  </main>
+</div>
+
+<!-- ==================================================
+     TEMPLATE POOL — todos os slides do Lote 01
+     Cada slide vive dentro de <template data-code data-fn data-audit>.
+     O script clona pro DOM: uma cópia na galeria, outra no viewer.
+     ================================================== -->
+
+om-p-110" data-om-text-id="txt:Padrão Apresentação.html:134135:134237" data-om-id="7845dc1b:om-p-110" data-om-text-id="txt:Padrão Apresentação.html:126556:126658" data-om-id="8e91d11f:om-p-77" data-om-text-id="txt:Padrão Apresentação.html:85457:85559">A Marca. A Marca — desdobramento estratégico com indicador de sucesso implícito na cena retratada.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="s-foot">
+        <div class="l"><span>EDITORIAL · 16</span><span>·</span><span>A Marca</span></div>
+        <div class="r"><b>Texto + Visual</b></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- ============ EDITORIAL-17 · Trio de imagens verticais + captions ============ -->
+
+
+<!-- ============ IMPACTO-19 · Big number sobre imagem esbatida ============ -->
+<!-- Pool esvaziado em 07/09/2026 — sistema em reconstrução.
+     Novos templates virão em próxima rodada. -->
+
+<!-- ==================================================
+     VIEWER (fullscreen modal)
+     ================================================== -->
+<div class="deck-viewer" id="deck-viewer" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="chrome">
+    <div><span class="code" id="viewer-code">IMPACTO-01</span> · <span id="viewer-fn">Capa principal</span></div>
+    <button class="close" id="viewer-close" aria-label="Fechar">Fechar · ESC</button>
+  </div>
+  <button class="nav-btn prev" id="viewer-prev" aria-label="Slide anterior">‹</button>
+  <div class="stage" id="viewer-stage"></div>
+  <button class="nav-btn next" id="viewer-next" aria-label="Próximo slide">›</button>
+  <div class="counter" id="viewer-counter">01 / 10</div>
+</div>
+
+
+<script>
+/* ============================================================
+   Deck viewer / gallery — vanilla JS
+   ============================================================ */
+(function(){
+  const templates = Array.from(document.querySelectorAll('template.slide-tpl'));
+  const gallery = document.getElementById('deck-gallery');
+  const viewer = document.getElementById('deck-viewer');
+  const stage = document.getElementById('viewer-stage');
+  const codeEl = document.getElementById('viewer-code');
+  const fnEl = document.getElementById('viewer-fn');
+  const counterEl = document.getElementById('viewer-counter');
+  const totalPad = String(templates.length).padStart(2,'0');
+
+  // Placeholder "em reconstrução" quando o pool está vazio
+  if (templates.length === 0 && gallery) {
+    gallery.innerHTML = `
+      <div class="gallery-empty" style="grid-column:1/-1;padding:80px 40px;text-align:center;">
+        <div style="font-family:var(--font-sans);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--teal);margin-bottom:16px;">Em reconstrução</div>
+        <h3 style="font-family:var(--font-sans);font-size:clamp(28px,3vw,40px);font-weight:500;letter-spacing:-0.02em;color:var(--ink);margin:0 0 12px;line-height:1.15;">Novos templates<br>em breve.</h3>
+        <p style="font-family:var(--font-sans);font-size:16px;line-height:1.55;color:var(--gray-500);max-width:52ch;margin:0 auto;">
+          O pool anterior foi retirado em 07/09/2026 para dar espaço a um sistema
+          novo, alinhado à régua editorial da 14.3 e à identidade visual atualizada.
+        </p>
+      </div>
+    `;
+    return; // encerra o script — não há viewer para inicializar
+  }
+
+  // ---------- Populate gallery ----------
+  templates.forEach((tpl, i) => {
+    const code = tpl.dataset.code;
+    const fn = tpl.dataset.fn;
+    const audit = tpl.dataset.audit; // 'txt' | 'viz'
+
+    const tile = document.createElement('button');
+    tile.className = 'deck-tile';
+    tile.type = 'button';
+    tile.dataset.idx = i;
+    tile.innerHTML = `
+      <div class="thumb"></div>
+      <div class="cap">
+        <div class="l">
+          <div class="code">${code}</div>
+          <div class="fn">${fn}</div>
+        </div>
+        <span class="badge ${audit === 'txt' ? 'b-txt' : 'b-viz'}">${audit === 'txt' ? 'Texto puro' : 'Texto + Visual'}</span>
+      </div>
+    `;
+    // clone slide into thumb
+    const slideClone = tpl.content.firstElementChild.cloneNode(true);
+    tile.querySelector('.thumb').appendChild(slideClone);
+    gallery.appendChild(tile);
+
+    tile.addEventListener('click', () => openViewer(i));
+  });
+
+  // ---------- Scale thumbnails to fit ----------
+  function scaleThumbs(){
+    document.querySelectorAll('.deck-tile .thumb').forEach(thumb => {
+      const slide = thumb.querySelector('.slide-1080');
+      if (!slide) return;
+      const w = thumb.getBoundingClientRect().width;
+      const scale = w / 1920;
+      slide.style.transform = `scale(${scale})`;
+    });
+  }
+
+  // ---------- Viewer ----------
+  let currentIdx = 0;
+
+  function openViewer(idx){
+    currentIdx = idx;
+    viewer.classList.add('is-open');
+    viewer.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    // Aguardar 1 frame para o modal ter dimensões computadas antes
+    // de renderizar (que chama scaleViewer com getBoundingClientRect).
+    requestAnimationFrame(() => renderViewer());
+  }
+  function closeViewer(){
+    viewer.classList.remove('is-open');
+    viewer.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+  function renderViewer(){
+    const tpl = templates[currentIdx];
+    codeEl.textContent = tpl.dataset.code;
+    fnEl.textContent = tpl.dataset.fn;
+    counterEl.textContent = String(currentIdx+1).padStart(2,'0') + ' / ' + totalPad;
+    stage.innerHTML = '';
+    const slide = tpl.content.firstElementChild.cloneNode(true);
+    stage.appendChild(slide);
+    scaleViewer();
+  }
+  function scaleViewer(){
+    const slide = stage.querySelector('.slide-1080');
+    if (!slide) return;
+    const w = stage.getBoundingClientRect().width;
+    const scale = w / 1920;
+    slide.style.transform = `scale(${scale})`;
+  }
+  function next(){
+    currentIdx = (currentIdx + 1) % templates.length;
+    renderViewer();
+  }
+  function prev(){
+    currentIdx = (currentIdx - 1 + templates.length) % templates.length;
+    renderViewer();
+  }
+
+  document.getElementById('viewer-close').addEventListener('click', closeViewer);
+  document.getElementById('viewer-next').addEventListener('click', next);
+  document.getElementById('viewer-prev').addEventListener('click', prev);
+  viewer.addEventListener('click', e => {
+    if (e.target === viewer) closeViewer();
+  });
+  document.addEventListener('keydown', e => {
+    if (!viewer.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeViewer();
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+
+  // ---------- Init ----------
+  window.addEventListener('load', () => {
+    scaleThumbs();
+    scaleViewer();
+  });
+  window.addEventListener('resize', () => {
+    scaleThumbs();
+    if (viewer.classList.contains('is-open')) scaleViewer();
+  });
+  scaleThumbs();
+})();
+</script>
+
+</body>
+</html>
