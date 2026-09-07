@@ -1,526 +1,326 @@
-# Handoff: Trendscience Brandbook v3.1 · VIGENTE
-
-> **Versão do conteúdo verbal:** REV 2, publicada em 02/09/2026, revisada em
-> duas rodadas pelo Luiz Otavio B S Rocha. A fonte da verdade textual está
-> em `reference/PROMPT-publicar-texto-final-VIGENTE.md` — respeite esse
-> texto **verbatim** em qualquer reimplementação. O bundle carrega também
-> `reference/trendscience-v3-prompt.md` (rodada anterior), `guia de slides`
-> e `MEDICAO deck real` para contexto histórico.
+# Handoff · Biblioteca de modelos de publicação · Trend Science
 
 ## Overview
 
-Sistema completo de identidade e comunicação da **Trendscience** entregue em **cinco produtos integrados** que compartilham uma única fonte de verdade visual + regras editoriais absolutas:
+Biblioteca de **25 composições** de post 1:1 (1080 × 1080 px) para a Trend Science, organizadas em **13 famílias** distribuídas entre Capas, Miolos, Transições/Sínteses, Fechamentos, Miolos científicos, Miolo regulatório, Miolo de processo, Miolo documental e Referências.
 
-1. **Brandbook institucional v3.1** (`index.html`) — documento estratégico completo. **13 capítulos publicados**: A marca, Para quem, Pilares, O que sustenta a operação, Compromissos com o cliente, Portfólio, Como funciona, Provas, Qualidade e conformidade (com Uso responsável embutido), Como a marca escreve, A marca falando, Design System (12.1 a 12.7), Aplicações e materiais. **Todas as regras editoriais REV 2 aplicadas verbatim**.
-2. **Padrão Apresentação** (`Padrão Apresentação.html`) — shell + galeria de slide 16:9 (1920×1080) em grid navegável com fullscreen modal + a seção **14.3 · Como construir os slides** (guia integral da régua de construção). **Pool de templates esvaziado em 07/09/2026 — sistema em reconstrução.**
-3. **Padrão A4** (`Padrão A4.html`) — shell + galeria A4 retrato 210×297mm (794×1123px @96dpi). **Pool de templates esvaziado em 07/09/2026 — sistema em reconstrução.**
-4. **Padrão Publicações e Criativos** (`Padrão Publicações e Criativos.html`) — shell + galeria de redes sociais em 6 formatos (Feed 4:5, Story/Reels 9:16, Carrossel série 5, LinkedIn horizontal 1200×627, LinkedIn PDF vertical 1080×1350, Highlight 1080×1920). **Pool de templates esvaziado em 07/09/2026 — sistema em reconstrução.**
-5. **Fotografia** (`Fotografia.html`) — biblioteca curada de referências fotográficas por categoria e cenário.
+Cada composição vem com ficha técnica em HTML (fora da área exportável) descrevendo função, elementos fixos, medidas atuais em `cqi` (container query inline) e equivalência em px @1080, faixas recomendadas, limites de conteúdo por linhas/caracteres, regras para conteúdo ausente, condições que exigem uma segunda tela e combinações recomendadas.
 
-Os cinco produtos vivem em uma sidebar unificada com 16 itens agrupados em três blocos: **Verbal** (11), **Visual** (2) e **Materiais** (3+).
-
----
+A biblioteca cobre todos os sete layouts identificados como lacunas nas etapas iniciais.
 
 ## About the Design Files
 
-Os arquivos deste bundle são **referências de design criadas em HTML** — protótipos de alta fidelidade demonstrando a aparência, o conteúdo e o comportamento pretendidos, **não código de produção para copiar diretamente**.
+Os arquivos aqui são **referências de design em HTML** — protótipos que mostram a composição, hierarquia e comportamento pretendidos, **não código de produção para colar direto**. A tarefa do desenvolvedor é **recriar essas composições no ambiente da codebase** (React, Vue, SwiftUI, Flutter, native, ou a stack escolhida se ainda não houver uma) usando padrões e libs já estabelecidos.
 
-A tarefa do dev é **recriar esses designs no ambiente existente do codebase** (React, Vue, Next, Astro, Nuxt, SwiftUI, Flutter, native etc.) usando os padrões e bibliotecas já estabelecidos naquele projeto. Se não houver ambiente pré-existente, escolha o framework mais adequado (recomendação: Next.js + Tailwind ou similar, dado que o design usa muito CSS Grid moderno e web fonts).
+Peculiaridades importantes:
 
-Os design tokens (cores, tipografia, ícones) e as regras editoriais documentadas abaixo **são a fonte de verdade** — sempre use os valores exatos, não a implementação HTML/CSS deste bundle como referência de código.
-
----
+1. **Container Queries são estruturais.** Todo o sistema de tipografia usa unidades `cqi`. O post é `container-type: inline-size` e cada tamanho é fração da largura do post. Isso permite que os posts escalem entre thumb (400 px) e exportação real (1080 px) sem media queries. Se o alvo não suporta CQ nativamente, faça JS de fallback ou fixe o container em largura de referência antes de renderizar.
+2. **Fichas técnicas embutidas.** Existem `<dl class="spec">` como documentação inline fora da área exportável. Quando o design virar componente, o conteúdo dessas fichas vira Storybook doc / README de componente. **Não devem ir para a peça publicada.**
+3. **Área exportável** é exclusivamente o `.post` (quadrado 1:1). Tudo fora dele — `.post-caption`, `.spec`, `.section-heading`, `.doc-block` — é documentação.
 
 ## Fidelity
 
-**High-fidelity (hifi) — pixel-perfect + copy-perfect.** As cinco telas foram construídas com valores absolutos e escala tipográfica calibrada em píxels reais. Toda a copy é final (VIGENTE, aprovada em duas rodadas). O dev deve reproduzir com fidelidade total, incluindo texto literal onde ele estiver escrito.
+**High-fidelity (hifi)** — tipografia, tamanhos, pesos, espaçamentos e cores estão definidos com precisão. Placeholders cinza listrados marcam onde entra foto real; imagens de referência (cromossomos e placa de Petri) estão em `assets/` para reproduzir o overlay preto característico. Textos exibidos são exemplos institucionais adequados à função de cada layout, escritos dentro do léxico da marca. Modelos com conteúdo científico ou regulatório usam placeholders explícitos entre colchetes e são marcados como **estrutura demonstrativa** — nenhum dado real foi inventado.
 
----
+## Estrutura da biblioteca
 
-## 9 pontos verbais que não se alteram em nenhuma revisão futura
+Nomenclatura: `C##` capas, `M##` miolos, `T##` transições/sínteses, `F##` fechamentos. Variantes funcionais de uma mesma família levam sufixo `A`, `B` (ou etapa numerada em séries).
 
-Do prompt VIGENTE (`reference/PROMPT-publicar-texto-final-VIGENTE.md`, seção 3):
+### Capas (6 composições)
 
-1. **O bloco "Uso responsável" não se suaviza.** As três negações em série ("Não fornecemos… não orientamos… não tratamos desempenho como produto de prateleira") são o **conteúdo** da seção, não estilo. Não fundir as frases, não abrandar, e **não trocar a palavra "desempenho"**. O público desse bloco é regulador, jornalista e cético, não cliente.
-2. **A Visão termina em "quando o tratamento não pode parar".** Esse eco é a parte que diz *por que* confiar; sem ele a frase vira confiança genérica. O fecho fica no fim da frase, não no meio.
-3. **"Inteligência sobre o paciente e o protocolo" não é inteligência de mercado.** O que volta ao médico é leitura do caso dele. A frase diz "não como estatística de mercado" de propósito, e essa oração não se corta.
-4. **Em "Curadoria técnica", a decisão clínica é sempre do médico.** A Trendscience responde pela segurança técnica da formulação e atua de forma consultiva. Não escrever nada que sugira participação na conduta clínica.
-5. **A conferência documental dupla é diferencial e precisa continuar nomeada.** Não simplificar para "o laudo fica disponível".
-6. **Nunca travessão ou hífen como pontuação, sempre vírgula.** Se a vírgula não sustenta a frase, dividir em duas frases. Esta é a régua mais ampla da marca, vale em todos os materiais.
-7. **"Medicina integrativa", nunca "medicina integrativa e alta performance".** A expressão foi retirada da categoria da empresa. Ainda vive em material antigo; sem esta linha alguém a reintroduz achando que está restaurando o padrão. A **única ocorrência preservada** no brandbook é dentro do Léxico travado (cap 10), como citação intencional que ensina a não usá-la.
-8. **"Representante Credenciado" sempre em maiúscula.** É termo do léxico da marca, não descrição de cargo.
-9. **O leitor é o sujeito da frase.** "Você prescreve. A gente garante" é a régua. Vocabulário de logística (entregar, viabilizar) descreve a operação, não o que o médico ganha.
-
-## Outras regras editoriais absolutas (aplicam-se a TODOS os sistemas)
-
-### Categoria oficial
-**A Trendscience é um grupo de representação médica especializado em comercialização, distribuição e importação de medicamentos usados na medicina integrativa.** Este é o boilerplate oficial. Deve aparecer literalmente em toda peça institucional.
-
-### Alinhamento
-Todo texto alinhado à esquerda em 100% dos templates. Exceção única: highlights de Instagram com ícone centralizado (`.tpl-highlight-icon`).
-
-### Contraste em fundos escuros
-Sobre fundo Ink ou Teal, títulos são sempre `#FFFFFF` 100%. **Nunca** teal como cor de destaque em fundo escuro.
-
-### Overlays em imagens
-**Preto puro `rgba(0,0,0, α)`.** Nunca Ink `#042A2B` com opacidade.
-
-### Sublinhado nunca é usado
-Destaque via **peso**, não por cor nem por decoração.
-
-### Expressões proibidas em conteúdo publicado
-- `ecossistema` (fora do contexto "ecossistema de tecnologia e inteligência artificial", que é nome da 3ª frente da operação)
-- `interface`
-- `jornada do paciente`
-- `do pedido ao pós`
-- `o que vem depois da prescrição`
-- `indicação terapêutica` / `indicações`
-- `medicina integrativa e alta performance`
-
-**Exceção única** — todas essas expressões aparecem literalmente na coluna "Não escreva" da tabela do capítulo 10 "Como a marca escreve", como citações intencionais que ensinam a não usá-las.
-
-### Frases proibidas
-- `não acreditamos em volume`
-- `resposta rápida não é diferencial de marketing`
-- `não somos plataforma anônima nem call center`
-- `nunca com um "estamos verificando"`
-- `prazo dito é prazo cumprido`
-- `dúvida enviada é dúvida respondida no mesmo turno`
-- `movimentos de prescrição`
-- `comportamento clínico`
-- `mais adesão`
-
-### Tratamento do médico
-Em **texto institucional publicado**, o sujeito é sempre a Trendscience ou o Representante Credenciado. O médico aparece na terceira pessoa. **Nunca "você" endereçando o médico** em texto institucional.
-
-**Exceção única:** nos exemplos de fala do capítulo 11 (A marca falando) o tratamento é **"senhor"** na primeira abordagem, com "você" liberado quando o médico abrir para isso. Além disso, no capítulo 02 (Para quem) as frases-âncora usam "você" porque endereçam o médico diretamente ("Você prescreve. A gente garante…") — essa é a régua 9 do VIGENTE.
-
-### Grafias oficiais
-- **Trendscience** — S minúsculo
-- **Representante Credenciado** — sem acento, sempre com duas iniciais maiúsculas
-- **medicina integrativa** — expressão fixa (nunca mais "medicina integrativa e alta performance")
-- **grupo de representação médica** — categoria oficial
-
-### Placeholder textual literal
-Placeholders textuais nos templates de apresentação, A4 e publicações usam **"A Marca"** como texto de exemplo. É intencional — o sistema é uma biblioteca; conteúdo final é injetado pelo usuário na produção.
-
-### Léxico travado
-Expressões que não variam ao longo do sistema:
-- `continuidade do tratamento` — território da marca
-- `segue sem intervalo` — o que se diz numa mensagem de problema
-- `verificação documental dupla` — a Trendscience confere a documentação mesmo quando a farmácia já conferiu. **Nunca** escrever que a Trendscience confere o produto ou o lote (ela não tem responsabilidade sanitária)
-- `quando o tratamento não pode parar` — permitido só na visão
-
-### Personalidade em uma linha
-A Trendscience fala como quem resolve: **firme, não solene. Direta, não seca. Específica, não técnica. Presente, não insistente.** Não usa arquétipo. Não usa listas de adjetivos avulsos.
-
-### Sem emoji, sem ícone unicode ad-hoc
-A marca não usa emoji em nenhum contexto. Ícones vêm da biblioteca Lucide (stroke 2, round).
-
-### Uso responsável — a exceção da exceção
-Todo material da Trendscience segue a proibição de definição por negação. A única exceção é a **subseção Uso responsável (dentro do cap 09 Qualidade e conformidade)**, onde as três negações são o conteúdo: "não fornecemos para consumo por conta própria, não orientamos uso sem médico e não tratamos desempenho como produto de prateleira". Vale só nessa subseção — regulador precisa ler o limite escrito, não deduzido.
-
----
-
-## Estrutura do Design System
-
-### 1. Paleta oficial
-
-**Cores fundacionais:**
-
-| Nome | Hex | Uso |
+| Código | Nome | Identificador original |
 |---|---|---|
-| **Branco** | `#FFFFFF` | Fundos claros, texto sobre Ink/Teal |
-| **Ink · Deep Petrol** | `#042A2B` | Texto principal, fundos escuros |
-| **Teal** | `#007A7D` | Cor de acento única, exclusivamente sobre fundos claros |
-| **Corpo** | `#2E3838` | Corpo de texto (subtítulo em Teal `#007A7D`) |
+| C01 · A | Capa fotográfica com apoio | 01 |
+| C01 · B | Capa fotográfica com apoio (variante) | 02 |
+| C02 | Capa editorial tipográfica | 05 |
+| C03 | Capa fotográfica de duas escalas | 08 |
+| C04 | Capa com chamada superior | 10 |
+| C05 | Capa de título extenso | 11 |
 
-**Escala Teal:** `#E6F3F3` · `#C2E2E2` · `#8FCBCB` · `#5AB3B4` · `#2E9799` · `#007A7D` (primário) · `#00686B` · `#005457` · `#00393B` · `#042A2B`
+### Miolos gerais (7 composições)
 
-**Escala Neutra:** `#F6F7F6` · `#ECEEEE` · `#DDE1E1` · `#C2C7C7` · `#9EA4A4` · `#737979` · `#565B5B` · `#3E4343` · `#262A2A` · `#0F1414`
+| Código | Nome | Identificador original |
+|---|---|---|
+| M01 | Lista visual detalhada | 03 |
+| M02 | Explicação com nota complementar | 06 |
+| M03 | Explicação inferior | 06b |
+| M04 | Explicação superior | 06c |
+| M05 | Lista visual curta | 07 |
+| M06 | Afirmação com contexto | 09 |
+| M07 | Conjunto de termos | 14 |
 
-**Semânticas:** Success `#12805C` · Warning `#B7791F` · Error `#B03A2E` · Info `#00686B`
+### Transições e sínteses (3 composições)
 
-**Regra Zero:** uma cor por bloco de texto, sempre a 100%. Sem opacidade em texto, sem degradê, sem texto bicolor. Ênfase se faz por **peso**, nunca por cor.
+| Código | Nome | Identificador original |
+|---|---|---|
+| T01 · A | Duas afirmações | 04 |
+| T01 · B | Duas afirmações · fechamento com assinatura | 12 |
+| T02 | Três faixas visuais | 13 |
 
-### 2. Tipografia
+### Fechamentos (2 composições)
 
-**Família:** `Inter Tight`. Uma só. Sem terceira fonte, sem itálico verdadeiro.
+| Código | Nome | Base |
+|---|---|---|
+| F01 · A | Fechamento institucional · sem convite | T01 · B |
+| F01 · B | Fechamento institucional · com convite | F01 · A |
 
-**Pesos oficiais:** 300 (light), 400 (regular), 500 (medium), 600 (semibold), 700 (bold).
+### Miolos científicos (3 composições)
 
-**Uso:**
-- Título de seção e bloco: **Inter Tight 500** (display), com ênfase inline em **300 teal**
-- Corpo: **Inter Tight 400**
-- Eyebrow / tag / caixa alta: **Inter Tight 700** com `letter-spacing: 0.12em`
-- Título em **Deep Petrol #042A2B**, subtítulo em **Teal #007A7D**, corpo em **Corpo #2E3838**
-- Hierarquia vem de **peso + tamanho**, não de família
+| Código | Nome | Base |
+|---|---|---|
+| M08 | Ficha de estudo científico | M01 + M04 |
+| M09 · A | Resultado em contexto · dado principal | C04 |
+| M09 · B | Resultado em contexto · gráfico de barras | M09 · A |
 
-Import:
-```html
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-```
+### Miolo regulatório (1 composição)
 
-### 3. Iconografia Lucide
+| Código | Nome | Base |
+|---|---|---|
+| M10 | Atualização regulatória | M02 |
 
-```css
-svg {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-/* Canvas 24×24, área útil 20×20 */
-```
+### Miolo de processo (3 aplicações da mesma família)
 
-Tamanhos: 16px (compacto), 24px (padrão), 48px (destaque).
+| Código | Nome | Base |
+|---|---|---|
+| M11 · etapa 01 | Etapa numerada com responsabilidade — prescrição | M04 |
+| M11 · etapa 02 | Etapa numerada com responsabilidade — manipulação/importação | M04 |
+| M11 · etapa 03 | Etapa numerada com responsabilidade — verificação documental | M04 |
 
-### 4. Padrão gráfico oficial
+### Miolo documental (2 aplicações)
 
-O único padrão gráfico é o **ícone-símbolo Trendscience** (viewBox `0 0 475 594`, 3 formas), aplicado em escala massiva e cortado por margens do frame. Nunca decompor, rotacionar, espelhar ou deslocar.
+| Código | Nome | Base |
+|---|---|---|
+| M12 · 2 comentários | Documento comentado — laudo de lote | M03 |
+| M12 · 3 comentários | Documento comentado — licença sanitária | M03 |
 
----
+### Referências e notas (2 telas paginadas)
 
-## Screens / Views
+| Código | Nome | Base |
+|---|---|---|
+| M13 · 1/2 | Referências · primeira tela | M05 |
+| M13 · 2/2 | Referências continuadas + notas + como citar | M05 |
 
-### VIEW 1 · Brandbook Institucional v3.1 (`index.html`)
+## Sistema visual (design tokens)
 
-**Purpose:** Documento estratégico de referência da marca, versão VIGENTE · Setembro 2026.
+### Tipografia
 
-**Layout:** Sidebar sticky 268px + main fluido. Sidebar com wordmark + 16 itens em 3 grupos.
+- **Família única:** Inter Tight (Google Fonts), pesos 300 (light) e 400 (regular).
+  - 400 para títulos, headlines, brand e labels.
+  - 300 para textos de apoio, descrições, notas e rodapés.
+- **Fraunces** carregada por compatibilidade histórica, **não usada** em nenhuma composição publicada; pode ser removida do `<link>` do Google Fonts sem impacto visual.
+- Alinhamento de headlines: `text-wrap: balance` (com exceções pontuais para `nowrap` ou `pretty` documentadas por ficha).
+- Letter-spacing padrão: `-0.02em` em headlines, `0.18em` em eyebrows, `0.28em` em rodapés caps, `0.32em` em brand caps.
 
-**Sidebar unificada:**
+### Cores
 
-**Verbal (01–11):**
-1. A marca
-2. Para quem
-3. Pilares
-4. O que sustenta a operação
-5. Compromissos com o cliente
-6. Portfólio
-7. Como funciona
-8. Provas
-9. Qualidade e conformidade *(inclui subseção Uso responsável)*
-10. Como a marca escreve
-11. A marca falando
+| Token | Hex | Uso |
+|---|---|---|
+| Placeholder cinza | `#d9d9d9` | Fundo sem foto |
+| Listra do placeholder | `rgba(0,0,0,0.035)` a 135°, ciclo 22 px | Textura suave |
+| Fundo página | `#f4f4f2` | Fora da área exportável |
+| Fundo branco (posts) | `#ffffff` | C02 · M01 · M05 · M07 · F01 · M08 · M09 · M10 · M11 · M12 · M13 |
+| Overlay preto sobre foto | `rgba(0,0,0,0.42)` | Todos os posts com `has-bg` |
+| Texto sobre foto/escuro | `#ffffff` | — |
+| Texto sobre branco (headline) | `#111111` | — |
+| Texto sobre branco (descrição) | `#333333` · `#555555` | — |
+| Brand secundário | `#8a8a8a` | Brand no topo em posts brancos e rótulos caps |
+| Small/qualificador | `#555555` | Textos auxiliares em fichas de estudo |
+| Destaque seta (listas) | `#c96a2b` | Coluna arrow do `.row` |
+| Destaque colorido sobre foto | `#f5b8b8` | Palavra em destaque no C04 |
+| Destaque colorido sobre branco | `#8a1a1a` | (reserva para C04 sobre fundo branco) |
+| Fundo suave documento | `#faf9f6` | Recorte de documento em M12 |
+| Régua fina | `rgba(0,0,0,0.08)` a `rgba(0,0,0,0.12)` | Separadores em M08, M09, M10, M12, M13, F01 |
+| Etiqueta editorial | `#8a5a1a` | "revisar antes de publicar" em M10 |
+| Verde de status (mapa de lacunas) | `#f4faf4` | Itens entregues |
 
-**Visual (12–13):**
-- 12 Design System (sub-âncoras 12.1–12.7: Logo, Monograma, Tipografia, Cores, Ícones, Padrões gráficos, Design System)
-- 13 Aplicações e materiais
+### Escala tipográfica (em cqi, relativa à largura do post)
 
-**Materiais (14–17):**
-- 14 Padrão Apresentação →
-- 15 Padrão A4 →
-- 16 Padrão Publicações e Criativos →
-- 17 Fotografia →
+| Elemento | Tamanho |
+|---|---|
+| Brand caps | 2.2–2.3cqi |
+| Eyebrow | 2.4cqi |
+| Footer caps | 2.2cqi |
+| Row · name | 2.3cqi |
+| Row · qualificador (small) | 1.8cqi |
+| Row · descrição | 2cqi |
+| Pill | 2.6cqi |
+| Switch card | 2.7cqi (b: 2.5cqi) |
+| Sub-headline | 3–3.8cqi |
+| Descrição M11 | 2.4cqi |
+| Comentário M12 | 2cqi (comentário lateral) · 1.8cqi (texto do documento) |
+| Item de referência M13 | 2cqi |
+| Rótulo de seção M13 · M11 · M12 | 1.7–1.9cqi caps |
+| Headline (varia por modelo) | 4.4–9cqi |
+| Palavra do stack (T02) | 6.5cqi (ajustado) — faixa máx. 9cqi na ficha |
+| Numeração de etapa (M11) | 14cqi |
+| Dado principal (M09 · A) | 16cqi |
+| Seta circular | 9cqi × 9cqi |
 
-### Estrutura de cada capítulo verbal (texto VIGENTE)
+Conversão para 1080 × 1080: `1cqi ≈ 10.8 px`. Uma headline em 6.5cqi ≈ 70 px.
 
-**Capítulo 01 A marca**
-- Categoria (definição literal em 1 linha)
-- Sobre a Trendscience (boilerplate + 3 usos: curto, capa três tempos, versão para release)
-- Propósito (com verbo "viabilizar", não "conseguir")
-- Missão (uma só: "Conectar médicos e clínicas ao que a medicina integrativa usa hoje, e sustentar essa conexão do primeiro pedido à continuidade do tratamento.")
-- Visão ("Ser a empresa em que o médico brasileiro confia para os seus pacientes e protocolos, quando o tratamento não pode parar.")
-- Personalidade em uma linha (4 pares yes)
-- Essência fecha o capítulo ("A ciência de facilitar o trabalho de quem cuida")
+### Espaçamento
 
-**Capítulo 02 Para quem** — 3 blocos:
-- Para o médico: frase-âncora ("Você prescreve. A gente garante que o tratamento aconteça, na sua clínica ou na casa do paciente.") + lista "O que você recebe" (5 itens)
-- Para a clínica: frase-âncora ("Um único fornecedor para diversos protocolos e tratamentos. Previsibilidade para planejar o mês.") + lista "O que a clínica recebe" (4 itens)
-- O paciente: 1 frase ("O médico cuida do paciente. A Trendscience cuida de que nada falte para ele cuidar.")
+- Padding padrão do `.p-inner`: `9cqi` (modelos originais).
+- Modelos novos com grid de metadados: `7cqi` (M08, M09, M10, M11, M12, M13) ou `8cqi` (F01) — reduzido para ganhar largura útil.
+- Gaps internos: 2.4–5cqi.
+- Padding em pills: `1.2cqi 2.4cqi`.
+- Padding em cards: `3.5cqi 4cqi`.
 
-**Capítulo 03 Pilares** — 3 pilares:
-- Relacionamento
-- Segurança regulatória (com primeira frase VIGENTE: "Licença sanitária conferida, documentação de cada lote e rastreabilidade em toda a cadeia. É o trabalho que sustenta a prescrição do médico e que ele não precisa fazer.")
-- Continuidade
+### Border-radius
 
-**Capítulo 04 O que sustenta a operação** — 4 frentes:
-- Inteligência sobre o paciente e o protocolo (com a frase "não como estatística de mercado" preservada literal)
-- Curadoria técnica (com pesquisa e desenvolvimento de fórmulas personalizadas; decisão clínica sempre do médico)
-- Ecossistema de tecnologia e inteligência artificial
-- Educação médica
+- Post: `2px`.
+- Pills: `99px`.
+- Card informativo: `2cqi`.
+- Seta, thumbs e círculos de marcador: `50%`.
+- Área de documento (M12): sem radius, borda fina `rgba(0,0,0,0.12)`.
 
-**Capítulo 05 Compromissos com o cliente** — 4 compromissos em `.comp-grid`:
-- Disponibilidade
-- Resposta (sem "O senhor", em terceira pessoa, com "enquanto ainda dá tempo de decidir" como prova de aviso)
-- Rigor (**sem** "três validações independentes por produto" — essa redação foi removida pelo Luiz em 02/09/2026)
-- Continuidade
+### Shadow
 
-**Capítulo 06 Portfólio** — 9 categorias clínicas em grid + 2 naturezas (Nacionalizados/Importados) em cards. Regra: descrever campo de uso, nunca indicação terapêutica.
+- Post: `0 2px 0 rgba(0,0,0,0.04), 0 30px 60px -30px rgba(0,0,0,0.18)`.
+- Placeholder cinza tem gradiente radial interno `rgba(255,255,255,0.35) → transparent`; desligado quando há imagem (`.has-bg::before { display:none }`).
 
-**Capítulo 07 Como funciona**
-- Lead: "O médico prescreve. Nós fazemos o resto acontecer."
-- Callout do ciclo em uma frase: "Curadoria de fornecedores, credenciamento, manipulação ou importação, documentação e entrega no consultório, na clínica ou na casa do paciente. Um Representante Credenciado responde pelo pedido do início ao fim."
-- 6 passos em grid: Prescrição, Pedido, Curadoria e credenciamento, Manipulação ou importação, Entrega, Continuidade
-- Fecho: "Do primeiro pedido à continuidade do tratamento, o médico fala com uma pessoa só."
+## Léxico da marca aplicado
 
-**Capítulo 08 Provas** — lead "Desde 2023, mais de 4.500 médicos e 8.000 pacientes atendidos nos 27 estados brasileiros e em mais de 110 cidades, com cerca de 50 itens em portfólio." + 4 blocos (Escala e adoção, Estrutura, Pessoa, Sistema) + regras de número + o que falta.
+Termos oficiais usados nos exemplos textuais e nos rótulos das peças:
 
-**Capítulo 09 Qualidade e conformidade** — 5 blocos, inclusive **Uso responsável** como subseção final:
-- Como um produto chega ao médico (3 parágrafos: farmácia credenciada + o que é importado + conferência lote a lote com verificação documental dupla)
-- Cuidado individualizado
-- Se um lote não passa
-- Quem entra na nossa rede
-- Uso responsável (título literal, texto único: "Todo produto que a Trendscience fornece existe para cumprir uma conduta médica. Trabalhamos com prescrição, com registro do que foi entregue e com um profissional responsável em cada etapa. Não fornecemos para consumo por conta própria, não orientamos uso sem médico e não tratamos desempenho como produto de prateleira. Medicina integrativa é medicina, e é assim que a gente opera.")
+- **Trend Science** (duas palavras, iniciais maiúsculas)
+- **Representante Credenciado** (sem acento, iniciais maiúsculas)
+- **Grupo de representação médica** (categoria)
+- **Protocolos clínicos avançados** (sempre plural)
+- **Medicamentos de origem credenciada**
+- **Continuidade do tratamento**
+- **Verificação documental dupla** (conferência documental, nunca do produto)
+- **Segue sem intervalo** (substitui expressões negativas)
 
-**Capítulos 10 e 11** — Como a marca escreve (14 princípios + tabela do/don't + léxico travado + pontuação + registro por público) e A marca falando (7 seções com exemplos de fala, perguntas difíceis, comunicação de problema, mensagens de rotina).
+Assinatura oficial, usada apenas em fechamento (T01 · B, F01 · A, F01 · B): *"A ciência de facilitar o trabalho de quem cuida."*
 
-**Capítulos 12.1–12.7** — capítulos visuais (Logo, Monograma, Tipografia, Cores, Ícones, Padrões gráficos, Design System).
+Responsabilidades em M11 respeitam o brandbook:
 
-**Capítulo 13 Aplicações e materiais** — hub para as 3+ páginas de sistema.
+- Médico → prescrição e conduta clínica.
+- Farmácia parceira → dispensação e manipulação.
+- Time farmacêutico Trend Science → verificação documental dupla.
+- Representante Credenciado → acompanhamento do fornecimento e contato com a clínica.
 
----
+**Prescrição e decisão clínica nunca são atribuídas** à Trend Science ou ao Representante Credenciado.
 
-### VIEW 2 · Padrão Apresentação (`Padrão Apresentação.html`)
-
-Shell de slide 16:9 (canvas 1920×1080) com galeria em grid + modal fullscreen. **Pool esvaziado em 07/09/2026 — galeria exibe placeholder "Em reconstrução · Novos templates em breve"**. A seção **14.3 · Como construir os slides** (guia editorial completo) permanece publicada acima da galeria. O CSS (`deck-templates.css`) e o viewer modal ficam prontos para receber os próximos templates.
-
-### VIEW 3 · Padrão A4 (`Padrão A4.html`)
-
-Shell A4 retrato 794×1123 com galeria em grid + modal fullscreen. **Pool esvaziado em 07/09/2026 — galeria exibe placeholder "Em reconstrução"**. O CSS (`deck-a4.css`) e o viewer permanecem prontos para receber novos templates.
-
-### VIEW 4 · Padrão Publicações e Criativos (`Padrão Publicações e Criativos.html`)
-
-Shell multi-formato com galeria + modal + suporte a carrosséis (dots de navegação interna). **Array `window.__pcTemplates` esvaziado em `templates-publicacoes.js` em 07/09/2026** — galeria exibe placeholder "Novos criativos em breve". CSS (`deck-publicacoes.css`) e helpers (`WORDMARK_SVG`, `HANDLE_MARK`, `HANDLE`) preservados.
-
-### VIEW 5 · Fotografia (`Fotografia.html`)
-
-Biblioteca curada de imagens por categoria e cenário.
-
----
+Termos verificados como ausentes nas peças publicáveis: *tudo, completo, líder, inovador, interface, ecossistema, jornada do paciente, medicina integrativa, consultor, executivo de contas, parceiro comercial* (como nome do Representante). Travessão e hífen como pausa não aparecem — substituídos por vírgula, parênteses ou duas frases.
 
 ## Interactions & Behavior
 
-### Sidebar (todas as views)
-- Sticky, scroll interno
-- Active state via `.active` (fundo `gray-50` + numeral em teal)
-- Hover 200ms ease
-- Links inter-página com badge `abrir ↗` em teal
-- Sub-âncoras 12.1–12.7 rolam para dentro do capítulo 12
+Posts estáticos para publicação. Nenhuma animação obrigatória. Se transformados em componentes web:
 
-### Modal Fullscreen (views 2, 3, 4)
-- Clique em tile abre modal, `body` ganha `overflow: hidden`
-- Escala do stage: `transform: scale(w/nativeW)` dentro de `requestAnimationFrame` após `.is-open` (crítico — sem rAF, `getBoundingClientRect()` retorna 0)
-- Navegação: setas ← →, ESC, botão fechar, clique no backdrop
-- Contador `01 / N` no rodapé
+- **Responsividade automática** via `container-type: inline-size` + `cqi`; sem media queries.
+- **Grid da biblioteca:** `repeat(auto-fill, minmax(420px, 1fr))`, gap `48px 40px`.
+- **Sem estados** (hover, focus, loading) — são peças de saída, não UI interativa.
 
-### Carrossel dentro do modal (view 4)
-- Se template tem `carr: [slide1, slide2, ...]`, o modal ganha dots teal na parte inferior
-- Setas navegam DENTRO do carrossel primeiro, depois pulam para o próximo template
-- Cliques nos dots saltam para slide específico
+## Fichas técnicas
 
-### Miniaturas normalizadas (view 4)
-- Grid com altura fixa 380px
-- Cada canvas escalado por `Math.min(availW/dim.w, availH/dim.h)` para encaixar sem cortar
+Cada modelo carrega uma `<dl class="spec">` inline com:
 
----
+- Função principal e usos secundários.
+- Modelo-base (para os modelos novos).
+- Elementos obrigatórios e opcionais.
+- Elementos fixos.
+- Medidas atuais em cqi (e px @1080).
+- Faixas de conteúdo (linhas por campo, caracteres/linha).
+- Quantidade máxima de blocos, comentários ou itens por tela.
+- Regras para conteúdo ausente (omitir a linha sem espaço residual).
+- Regras de imagem/recorte (M12).
+- Condições que exigem uma segunda tela.
+- Limites testados e limites ainda não validados.
+- Quando não usar (indicando o modelo alternativo).
 
-## State Management
+As fichas ficam abaixo da legenda do post, fora do quadro 1:1 exportável.
 
-Vanilla JS puro. Estado mínimo:
-- **Modal viewer** — `currentIdx`, classe boolean `.is-open`
-- **Carrossel interno** (só view 4) — `currentCarrIdx`, resetado ao abrir novo template
-- **Sidebar active** — no brandbook via IntersectionObserver no scroll; nas galerias, classe estática
+## Guia de combinações de carrossel
 
-Ao portar para React/Vue:
+O HTML traz uma seção "Orientação de carrosséis" com sete tipos e três carrosséis institucionais previstos:
 
-```
-GalleryPage (Apresentação, A4 ou Publicações)
-├── state: currentIdx, isViewerOpen, currentCarrIdx?
-├── data: templates[] (definições estáticas)
-├── ThumbnailGrid
-│   └── ThumbnailTile (onClick → openViewer(idx))
-└── ViewerModal
-    ├── keyboard handler (←, →, Escape)
-    └── CarouselDots (quando template.carr existe)
-```
+1. **Explicativo** — `C01·A → M02 → M04 → M06 → F01·A`
+2. **Processo em etapas** — `C01·B → M11·01 → M11·02 → M11·03 → F01·A`
+3. **Explicação documental** — `C01·A → M04 → M12 → M06 → F01·A`
+4. **Lista comentada** — `C05 → M01 → M03 → M06 → T01·B`
+5. **Editorial fotográfico** — `C02 → M03 → M04 → M03 → T01·A`
+6. **Análise científica** — `C05 → M08 → M09·A → M06 → M13 → F01·A`
+7. **Atualização regulatória** — `C01·B → M10 → M04 → F01·A`
 
----
+Regra inicial de uso: **uma família de capa** e **até dois modelos principais de miolo por carrossel**, para preservar hierarquia e ritmo visual. O uso de M13 não elimina a identificação breve da fonte junto ao dado em M09.
 
-## Design Tokens
+Carrosséis institucionais previstos:
 
-### CSS Custom Properties
+- **O papel da Trend Science** → explicativo · `C02 → M04 → M02 → M07 → T01·B`
+- **Como o fornecimento é acompanhado** → processo em etapas · `C01·B → M11 × 4 etapas → F01·A`
+- **O relacionamento com a clínica** → lista comentada · `C05 → M01 → M03 → M06 → F01·B`
 
-```css
-:root {
-  /* Fundacionais */
-  --white: #FFFFFF;
-  --ink: #042A2B;
-  --teal: #007A7D;
-  --corpo: #2E3838;
+## Mapa de lacunas
 
-  /* Escalas — completas no styles.css */
-  --teal-50 até --teal-900;
-  --gray-50 até --gray-900;
+Todos os sete layouts identificados como lacunas foram entregues:
 
-  /* Semânticas */
-  --success: #12805C;
-  --warning: #B7791F;
-  --error:   #B03A2E;
-  --info:    #00686B;
-
-  /* Tipografia */
-  --font-display: 'Inter Tight', system-ui, sans-serif;
-  --font-sans:    'Inter Tight', system-ui, sans-serif;
-
-  /* Timing */
-  --dur-fast: 200ms;
-  --ease: cubic-bezier(0.4, 0, 0.2, 1);
-}
-```
-
-### Spacing (múltiplos de 4)
-
-Valores absolutos calibrados por contexto: `4, 6, 8, 10, 12, 16, 20, 24, 28, 32, 40, 48, 56, 64, 72, 80, 88, 96, 128, 160`.
-
-Margens por canvas:
-- Slide 1920×1080: 72×96px
-- A4 794×1123: 60px
-- Feed/Carrossel/PDF 1080×1350: 72px
-- Story/Highlight 1080×1920: 96×72px
-- LinkedIn 1200×627: 48×60px
-- Brandbook: `clamp(88px, 12vh, 144px)` × `clamp(40px, 6vw, 96px)`
-
-### Border radius
-
-- `--radius-sm: 3px` (badges)
-- `--radius-md: 6px` (cards e tiles)
-- `50%` (dots, avatares)
-- **Templates de canvas: predominantemente `0` (bordas retas editorial)**
-
-### Escala tipográfica (canvas nativo)
-
-| Nível | Slide | A4 | Feed | Story | LinkedIn |
-|---|---|---|---|---|---|
-| Display/Title | 168 | 108 | 92 | 108 | 60 |
-| H1 | 112 | 72 | – | – | – |
-| H2 | 80 | 52 | 60 | 72 | 42 |
-| H3 | 44 | 28 | 42 | 48 | 28 |
-| Lead | 32 | 20 | 32 | 34 | 22 |
-| Body | 22 | 15 | 26 | 28 | 18 |
-
----
+1. ✓ Fechamento institucional com assinatura (F01 · A / B)
+2. ✓ Etapa numerada com responsabilidade (M11)
+3. ✓ Documento comentado (M12)
+4. ✓ Ficha de estudo científico (M08)
+5. ✓ Resultado com gráfico ou dado contextualizado (M09 · A / B)
+6. ✓ Atualização regulatória (M10)
+7. ✓ Referências e notas (M13)
 
 ## Assets
 
-### OG image
-`assets/images/og-cover.jpg` — 1200×630, gerada a partir de `cover-vidraria.jpg` com wordmark Trendscience branco por cima + vinheta escura à esquerda para legibilidade.
+- `assets/bg-cromossomos.jpg` — micrografia em verde-azulado (~177 KB), usada como fundo em C01·A, M02, M04, M06, C04, T01·B, faixas 1 e 3 de T02
+- `assets/bg-petri.jpg` — placa de Petri com bolhas (~43 KB), usada em C01·B, C03, M03, T01·A, C05, faixa 2 de T02
 
-### Imagens
-Placeholders visuais com hatching 45° + label mono top-left + tag de aspect ratio bottom-right. Implementador substitui pelo asset real. Fotos oficiais da marca em `assets/photography/` (organizadas por cenário: farmacêutico e produto, sinalização, a pessoa que resolve, abstrato de marca).
+Imagens de referência: substituir por fotografia editorial da Trend Science em produção. A licença das imagens de referência não foi verificada, **não redistribuir fora deste bundle**.
 
-### SVG assets (em `assets/logo/`)
-- `trendscience-logo.svg` — wordmark completo
-- `trendscience-icon.svg` — monograma sólido
-- `trendscience-icon-outline.svg` — monograma vazado
-
-### Ícones Lucide
-~25 ícones incorporados como `<symbol>` nos HTMLs. Ao portar, use `lucide-react` / `lucide-vue-next` mantendo `stroke-width={2}` + round.
-
-### Fontes
-**Inter Tight** (fonte única) via Google Fonts.
-
----
+Fontes: Google Fonts — Inter Tight. (Fraunces está no `<link>` mas não é mais usada.)
 
 ## Files
 
-Todos os arquivos-fonte estão dentro desta pasta.
+- `Replicas.html` — arquivo vigente com a biblioteca completa (25 composições), fichas técnicas, guia de carrosséis, mapa de lacunas e bloco de verificação
+- `Replicas_v2.html` — versão preservada após F01, M08, M09 e M10 (antes de M11, M12, M13)
+- `Replicas_v1_original.html` — versão inicial preservada, antes da adaptação Trend Science
+- `assets/bg-cromossomos.jpg`
+- `assets/bg-petri.jpg`
 
-| Arquivo | Descrição |
-|---|---|
-| `README.md` | Este documento |
-| `index.html` | **Brandbook institucional v3.1 VIGENTE** (view 1) |
-| `index v3.0 (pre-vigente).html` | Backup pré-publicação REV 2, referência histórica |
-| `index v2.0 (legacy).html` | Backup v2.0 (rodada anterior) |
-| `Padrão Apresentação.html` | Shell de slide 16:9 + guia 14.3 (pool vazio, aguardando reconstrução) |
-| `Padrão A4.html` | Shell A4 retrato (pool vazio, aguardando reconstrução) |
-| `Padrão Publicações e Criativos.html` | Shell multi-formato de redes sociais (pool vazio, aguardando reconstrução) |
-| `Fotografia.html` | Biblioteca curada (view 5) |
-| `templates-publicacoes.js` | Array `__pcTemplates` (esvaziado em 07/09/2026) + helpers reutilizáveis |
-| `styles.css` | Design tokens globais, shell, sidebar, tipografia base |
-| `sections-visual.css` | Estilos das seções verbais do brandbook |
-| `sections-system.css` | Estilos utilitários do brandbook |
-| `section-patterns.css` | Estilos do capítulo Padrões gráficos |
-| `section-icons.css` | Estilos do capítulo Iconografia |
-| `deck-templates.css` | CSS específico dos 45 slides |
-| `deck-a4.css` | CSS específico dos templates A4 (mantido para reuso) |
-| `deck-publicacoes.css` | CSS específico dos templates de publicações (mantido para reuso) |
-| `inline-svg.js` | Utilitário de inline SVG |
-| `TYPOGRAPHY.md` | Guia tipográfico complementar |
-| `reference/PROMPT-publicar-texto-final-VIGENTE.md` | **Fonte da verdade textual (VIGENTE, 02/09/2026)** — imutável |
-| `reference/trendscience-v3-prompt.md` | Prompt de execução v2→v3 (rodada anterior) |
-| `assets/logo/*.svg` | Logos oficiais |
-| `assets/images/og-cover.jpg` | OG image 1200×630 |
-| `assets/photography/*` | Fotografia oficial da marca |
+## Verificação executada
 
-### Estrutura recomendada no codebase-alvo
+Registrada no bloco final do HTML. Resumo:
 
-```
-src/
-├── styles/
-│   ├── tokens.css
-│   ├── typography.css
-│   └── icons.css
-├── content/
-│   └── brandbook/
-│       ├── 01-a-marca.mdx  ← copy VIGENTE literal
-│       ├── 02-para-quem.mdx
-│       └── … 11-marca-falando.mdx
-├── components/
-│   ├── layout/
-│   │   ├── Sidebar.tsx  ← 16 itens em 3 grupos
-│   │   └── Shell.tsx
-│   ├── brandbook/
-│   ├── deck/         ← templates de slide (a reconstruir)
-│   ├── a4/           ← templates A4 (a reconstruir)
-│   └── publicacoes/  ← templates + CarouselViewer (a reconstruir)
-└── pages/
-    ├── index.tsx
-    ├── apresentacao.tsx
-    ├── a4.tsx
-    └── publicacoes.tsx
-```
+- **Preservação visual:** nenhum estilo ou classe dos modelos anteriores foi alterado em nenhuma etapa. Composições, tipografia, cores, imagens e proporções mantidas.
+- **Novos modelos usam a linguagem visual existente:** Inter Tight pesos 300/400, fundo branco em modelos informativos, réguas finas, rótulos caps espaçados, círculos de marcador com borda fina. Nenhum novo tratamento gráfico foi introduzido.
+- **Léxico:** verificação manual da lista de termos proibidos — nenhum encontrado nas peças publicáveis.
+- **Assinatura oficial:** presente apenas em T01·B, F01·A e F01·B. Nunca forçada em outros modelos.
+- **Conteúdo científico e regulatório:** M08, M09 e M10 apresentados como *estrutura demonstrativa* com placeholders entre colchetes. Nenhum autor, periódico, amostra, resultado, norma ou órgão real inventado.
+- **M11 série demonstrativa:** posições e escalas repetidas entre as três etapas verificadas visualmente. Responsabilidades respeitam o brandbook.
+- **M12:** marcadores no documento em escala reduzida (2cqi) ficam fora da linha de dados a serem lidos. Correspondência clara entre número do documento e comentário lateral (3.4cqi). Estrutura ilustrativa sem simular documento oficial autêntico.
+- **M13:** paginação "n/total" no canto superior direito, numeração contínua entre telas (1–4 na primeira, 5–6 na segunda), distinção entre referência numérica e nota editorial (`a, b, c`).
+- **Fichas técnicas:** fora da área exportável.
+- **Cópias preservadas:** `Replicas_v1_original.html` e `Replicas_v2.html`.
 
----
+Limites ainda não validados visualmente: os máximos de caracteres/linha nas fichas são derivados da largura útil e do tamanho da fonte. Casos específicos (recorte horizontal em M12, referência com 3 linhas em M13, dado com 5+ dígitos em M09·A, texto regulatório longo em M10, convite mais longo em F01·B, descrição M11 com 4+ linhas) estão listados no bloco de verificação do HTML. **Antes de virar produção, textos reais precisam ser validados quadro a quadro.**
 
-## Metadados do site (SEO/OG)
+Quando o conteúdo exceder a capacidade: (1) editar o texto, (2) dividir em duas telas, ou (3) escolher outro modelo. **Nunca reduzir a fonte para caber.**
 
-Aplicar no `<head>` do brandbook publicado:
+## Notas de implementação
 
-```html
-<title>Trendscience · Grupo de representação médica — Brandbook v3.1</title>
-<meta name="description" content="A Trendscience é um grupo de representação médica especializado em comercialização, distribuição e importação de medicamentos usados na medicina integrativa. Atendemos médicos e clínicas nos 27 estados brasileiros.">
-<meta name="theme-color" content="#042A2B">
+1. **Componentização sugerida** — cada família (C01, M02, T01, F01, M08, M09, M10, M11, M12, M13…) vira um componente com props para brand, headline, sub, eyebrow, footer, backgroundImage, hasWhiteBg, campos específicos (numeração, dado, unidade, metadados, marcadores, referências). Fichas técnicas viram Storybook stories.
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Trendscience · Grupo de representação médica">
-<meta property="og:description" content="Comercialização, distribuição e importação de medicamentos usados na medicina integrativa. Brandbook v3.1.">
-<meta property="og:image" content="assets/images/og-cover.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Wordmark Trendscience sobre fundo de vidraria em petróleo.">
-<meta property="og:locale" content="pt_BR">
+2. **Exportação** — o `.post` é a caixa exportável (1:1); tudo fora dela fica de fora. Um pipeline de export (Puppeteer/Playwright) deve targetar `.post` diretamente.
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Trendscience · Grupo de representação médica">
-<meta name="twitter:description" content="Comercialização, distribuição e importação de medicamentos usados na medicina integrativa. Brandbook v3.1.">
-<meta name="twitter:image" content="assets/images/og-cover.jpg">
-```
+3. **Tipografia em `cqi`** — se o alvo não suporta Container Queries, use uma classe alternativa que fixa o container em 1080 px e converte cqi → px direto.
 
----
+4. **`text-wrap: balance`** é usado em headlines; fallback aceitável se não suportado. Alguns modelos novos usam `nowrap` explícito para respeitar quebras `<br>` — documentado por ficha.
 
-## Notas finais para o dev
+5. **Estrutura de camadas nos posts com foto:**
 
-1. **Alinhamento à esquerda é regra da marca** — não interpretar como sugestão.
-2. **Overlays em imagens são pretos puros** — `rgba(0,0,0, α)`, nunca Ink com opacidade.
-3. **Contraste em fundos escuros** — títulos sempre 100% branco.
-4. **Sem sublinhados** — destaque por peso, não por cor.
-5. **Sem emoji.**
-6. **Placeholders são intencionais.** Preserve os `[PLACEHOLDER ...]` labels durante a implementação inicial.
-7. **Copy é final e verbatim.** A publicação REV 2 do VIGENTE encerra a rodada verbal. Não parafrasear.
-8. **Sistema de códigos híbrido em publicações** — o formato `FORMATO-CATEGORIA-NN` (ex: `CARR-CIENT-02`) facilita filtragem futura. Preservar.
-9. **Carrosséis são séries indivisíveis** — cada `CARR-*` tem 5 slides fixos com progresso compartilhado. Modelar como componente único com estado `currentSlide` interno.
-10. **Escala tipográfica é absoluta** — não usar `rem` para os templates de canvas. Os valores em px são para o canvas nativo do formato; o scale visual acontece via `transform` no container, não na tipografia.
-11. **A fonte da verdade textual é `reference/PROMPT-publicar-texto-final-VIGENTE.md`.** Em qualquer conflito entre o README e o prompt VIGENTE, **o VIGENTE prevalece.**
+   ```
+   .post.has-bg
+     ├── <img class="bg-img"> (z-index 0)
+     ├── <div class="bg-overlay"> (rgba(0,0,0,0.42), z-index 0)
+     └── <div class="p-inner"> (z-index 1)
+   ```
+
+6. **Modificadores do wrapper `.post`:** `has-bg` desliga o gradiente radial default; `white-bg` força fundo branco e desliga o placeholder; `.p-inner.dark` inverte cor de texto para preto.
+
+7. **Componentes de marcador e círculo numerado** aparecem em M12 e M13 — vale extrair como átomo reutilizável no design system do desenvolvedor (`<CircleMarker size="sm|md" number="1" />`).
+
+8. **Grid de metadados** aparece em M08, M09, M10, M11, M12, M13 e F01 com variações (2 colunas, `auto 1fr`, `1fr 42%`, `32% 1fr`). Vale como padrão de layout tipográfico documentado.
