@@ -16,6 +16,10 @@
 <link rel="stylesheet" href="section-patterns.css">
 <link rel="stylesheet" href="section-icons.css">
 <link rel="stylesheet" href="deck-publicacoes.css">
+<link rel="stylesheet" href="deck-replicas.css">
+
+<!-- Fraunces: usada pela regra .p-headline (sem .sans) da biblioteca de modelos -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
 
 <style>
   main > section { border-bottom: none; max-width: none; }
@@ -29,6 +33,24 @@
     transition: color var(--dur-fast) var(--ease);
   }
   .pa-back:hover{ color: var(--teal); }
+
+  /* Divisor entre a galeria de templates e a biblioteca de modelos 1:1 */
+  .pa-divider{
+    margin: 96px 0 0;
+    padding-top: 72px;
+    border-top: 1px solid var(--gray-200);
+  }
+  .pa-divider .section-head{ margin-bottom: 40px; }
+  #rep-lib-status{
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--gray-500);
+    padding: 40px;
+    background: var(--gray-50, #f7f8f8);
+    border: 1px solid var(--gray-200);
+    border-radius: 4px;
+  }
 </style>
 </head>
 <body>
@@ -143,31 +165,59 @@
           <div class="eyebrow"><span class="num">16</span>Padrão Publicações e Criativos</div>
           <h2 class="section-title">A marca<br>em social.</h2>
           <p class="section-lead">
-            Sistema oficial de templates para redes sociais e criativos digitais da
-            Trendscience. Cobre <strong>6 formatos</strong> (feed 4:5, story 9:16,
-            carrossel, LinkedIn horizontal e PDF, capa de highlight) em
-            <strong>5 categorias</strong>: científico, técnico, comercial,
-            institucional e capas de destaque. Identidade oficial 100% herdada:
-            <em>Ink #042A2B</em>, <em>Branco</em>, <em>Teal #007A7D</em>, Geist,
-            ícones Lucide, padrão gráfico preservado.
+            Templates para redes sociais e criativos digitais da marca.
           </p>
         </header>
 
-        <div class="deck-toolbar">
-          <div>
-            <span class="lote-tag">Sistema completo</span>
-            <span> · 40 templates · aguardando aprovação</span>
-          </div>
-          <div class="audit">
-            <span>Feed · <b>7</b></span>
-            <span>Story · <b>7</b></span>
-            <span>Carrossel · <b>7</b></span>
-            <span>LinkedIn · <b>13</b></span>
-            <span>Highlight · <b>6</b></span>
-          </div>
-        </div>
-
         <div class="pc-gallery" id="pc-gallery"></div>
+
+        <!-- ==================================================
+             BIBLIOTECA DE MODELOS 1:1 · publicação em carrossel
+             Fonte: pub_padrao/Replicas_v2.html
+             ================================================== -->
+        <div class="pa-divider">
+
+          <header class="section-head">
+            <div class="eyebrow"><span class="num">16.1</span>Biblioteca de modelos 1:1</div>
+            <h2 class="section-title">Modelos<br>de post.</h2>
+            <p class="section-lead">
+              Composições de post 1:1 para publicação em carrossel, organizadas
+              por função: capas de abertura, miolos de desenvolvimento,
+              transições, fechamentos, miolos científicos e miolo regulatório.
+            </p>
+          </header>
+
+          <div class="two-col">
+            <div class="label"><span class="idx">01</span>Régua de conteúdo</div>
+            <div class="body">
+              <h3>O léxico da marca vale na peça.</h3>
+              <p>
+                Os textos exibidos são exemplos institucionais escritos dentro
+                do léxico travado: Trend Science, Representante Credenciado,
+                grupo de representação médica, protocolos clínicos avançados,
+                medicamentos de origem credenciada, continuidade do tratamento,
+                verificação documental dupla, segue sem intervalo.
+              </p>
+              <p>
+                A assinatura <em>"A ciência de facilitar o trabalho de quem
+                cuida."</em> só entra no fechamento, e só nos modelos que a
+                comportam. Prescrição e decisão clínica nunca são atribuídas à
+                Trend Science nem ao Representante Credenciado.
+              </p>
+              <p>
+                Conteúdo científico e regulatório demonstrativo usa placeholders
+                entre colchetes. Nenhum autor, periódico, amostra, resultado,
+                norma ou órgão é inventado: antes de publicar, o dado real
+                precisa ser conferido na fonte.
+              </p>
+            </div>
+          </div>
+
+          <div id="rep-lib" class="rep-lib">
+            <div id="rep-lib-status">Carregando a biblioteca de modelos…</div>
+          </div>
+
+        </div>
 
       </div>
     </section>
@@ -175,6 +225,7 @@
 </div>
 
 <script src="templates-publicacoes.js"></script>
+<script src="js/biblioteca-modelos.js"></script>
 
 <!-- ==================================================
      VIEWER (fullscreen modal)
