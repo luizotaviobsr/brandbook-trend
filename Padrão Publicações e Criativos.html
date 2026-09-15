@@ -16,6 +16,10 @@
 <link rel="stylesheet" href="section-patterns.css">
 <link rel="stylesheet" href="section-icons.css">
 <link rel="stylesheet" href="deck-publicacoes.css">
+<link rel="stylesheet" href="deck-replicas.css">
+
+<!-- Fraunces: usada pela regra .p-headline (sem .sans) da biblioteca de modelos -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
 
 <style>
   main > section { border-bottom: none; max-width: none; }
@@ -29,6 +33,24 @@
     transition: color var(--dur-fast) var(--ease);
   }
   .pa-back:hover{ color: var(--teal); }
+
+  /* Divisor entre a galeria de templates e a biblioteca de modelos 1:1 */
+  .pa-divider{
+    margin: 96px 0 0;
+    padding-top: 72px;
+    border-top: 1px solid var(--gray-200);
+  }
+  .pa-divider .section-head{ margin-bottom: 40px; }
+  #rep-lib-status{
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--gray-500);
+    padding: 40px;
+    background: var(--gray-50, #f7f8f8);
+    border: 1px solid var(--gray-200);
+    border-radius: 4px;
+  }
 </style>
 </head>
 <body>
@@ -169,12 +191,130 @@
 
         <div class="pc-gallery" id="pc-gallery"></div>
 
+        <!-- ==================================================
+             BIBLIOTECA DE MODELOS 1:1 · publicação em carrossel
+             Fonte: pub_padrao/Replicas_v2.html
+             ================================================== -->
+        <div class="pa-divider">
+
+          <header class="section-head">
+            <div class="eyebrow"><span class="num">16.1</span>Biblioteca de modelos 1:1</div>
+            <h2 class="section-title">Modelos de post<br>e diretrizes.</h2>
+            <p class="section-lead">
+              Composições de post 1:1 (1080 × 1080) para publicação em
+              carrossel, organizadas por função: capas de abertura, miolos de
+              desenvolvimento, transições, fechamentos, miolos científicos e
+              miolo regulatório. Cada quadro é uma peça exportável; o código, a
+              ficha técnica e os limites de diagramação ficam fora da área
+              exportável.
+            </p>
+          </header>
+
+          <!-- Diretrizes de uso, antes dos modelos -->
+          <div class="two-col">
+            <div class="label"><span class="idx">01</span>Como usar</div>
+            <div class="body">
+              <h3>A ficha técnica é parte do modelo.</h3>
+              <p>
+                Cada composição carrega uma ficha com função, elementos fixos,
+                medidas em <code>cqi</code> e equivalência em px @1080, faixas
+                de conteúdo por linha, regras para conteúdo ausente e o caso em
+                que o modelo não deve ser usado. A ficha fica abaixo da legenda,
+                fora do quadro 1:1, e não vai para a peça publicada.
+              </p>
+              <ul style="list-style:none;padding:0;margin:16px 0 0;display:flex;flex-direction:column;gap:0;">
+                <li style="padding:16px 0;border-top:1px solid var(--gray-200);">
+                  <b style="color:var(--teal);font-family:var(--font-mono);font-size:12px;letter-spacing: 0.12em;text-transform:uppercase;">Área exportável</b><br>
+                  <span>
+                    Apenas o quadro 1:1. Legenda, ficha técnica, título de grupo
+                    e blocos de documentação são apoio de trabalho.
+                  </span>
+                </li>
+                <li style="padding:16px 0;border-top:1px solid var(--gray-200);">
+                  <b style="color:var(--teal);font-family:var(--font-mono);font-size:12px;letter-spacing: 0.12em;text-transform:uppercase;">Escala tipográfica</b><br>
+                  <span>
+                    Toda a tipografia é medida em <code>cqi</code>, fração da
+                    largura do post, e a peça escala de miniatura a 1080 px sem
+                    ajuste manual. Conversão: 1cqi ≈ 10,8 px em 1080.
+                  </span>
+                </li>
+                <li style="padding:16px 0;border-top:1px solid var(--gray-200);">
+                  <b style="color:var(--teal);font-family:var(--font-mono);font-size:12px;letter-spacing: 0.12em;text-transform:uppercase;">Quando o texto não cabe</b><br>
+                  <span>
+                    Editar o texto, dividir em duas telas, ou escolher outro
+                    modelo. Nunca reduzir a fonte para caber.
+                  </span>
+                </li>
+                <li style="padding:16px 0;border-top:1px solid var(--gray-200);">
+                  <b style="color:var(--teal);font-family:var(--font-mono);font-size:12px;letter-spacing: 0.12em;text-transform:uppercase;">Fundo cinza</b><br>
+                  <span>
+                    O cinza listrado marca onde entra fotografia real. Em
+                    produção, substituir por fotografia editorial da Trend
+                    Science, preservando o overlay que garante a leitura do
+                    texto.
+                  </span>
+                </li>
+                <li style="padding:16px 0;border-top:1px solid var(--gray-200);border-bottom:1px solid var(--gray-200);">
+                  <b style="color:var(--teal);font-family:var(--font-mono);font-size:12px;letter-spacing: 0.12em;text-transform:uppercase;">Conteúdo demonstrativo</b><br>
+                  <span>
+                    Os modelos científicos e o regulatório usam placeholders
+                    entre colchetes. Nenhum autor, periódico, amostra,
+                    resultado, norma ou órgão foi inventado: antes de publicar,
+                    o dado real precisa ser conferido na fonte.
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="label"><span class="idx">02</span>Régua de conteúdo</div>
+            <div class="body">
+              <h3>O léxico da marca vale na peça.</h3>
+              <p>
+                Os textos exibidos são exemplos institucionais escritos dentro
+                do léxico travado: Trend Science, Representante Credenciado,
+                grupo de representação médica, protocolos clínicos avançados,
+                medicamentos de origem credenciada, continuidade do tratamento,
+                verificação documental dupla, segue sem intervalo.
+              </p>
+              <p>
+                A assinatura <em>"A ciência de facilitar o trabalho de quem
+                cuida."</em> só entra no fechamento, e só nos modelos que a
+                comportam. Prescrição e decisão clínica nunca são atribuídas à
+                Trend Science nem ao Representante Credenciado.
+              </p>
+            </div>
+          </div>
+
+          <div class="deck-toolbar">
+            <div>
+              <span class="lote-tag">Biblioteca de modelos</span>
+              <span> · <b id="rep-count-posts">22</b> composições em <b id="rep-count-grupos">6</b> grupos · 1080 × 1080</span>
+            </div>
+            <div class="audit">
+              <span>Capas · <b>6</b></span>
+              <span>Miolos · <b>7</b></span>
+              <span>Transições · <b>3</b></span>
+              <span>Fechamentos · <b>2</b></span>
+              <span>Científicos · <b>3</b></span>
+              <span>Regulatório · <b>1</b></span>
+            </div>
+          </div>
+
+          <div id="rep-lib" class="rep-lib">
+            <div id="rep-lib-status">Carregando a biblioteca de modelos…</div>
+          </div>
+
+        </div>
+
       </div>
     </section>
   </main>
 </div>
 
 <script src="templates-publicacoes.js"></script>
+<script src="js/biblioteca-modelos.js"></script>
 
 <!-- ==================================================
      VIEWER (fullscreen modal)
