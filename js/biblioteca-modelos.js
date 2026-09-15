@@ -53,27 +53,17 @@
         frag.appendChild(document.importNode(el, true));
       });
 
-      host.appendChild(frag);
-      if (status) status.remove();
-
-      // As tabelas de documentação são mais largas que a tela de um
-      // celular. Envolver cada uma num wrapper rolável evita que elas
-      // estourem a largura da página.
-      host.querySelectorAll('.doc-block table').forEach(function (tbl) {
-        if (tbl.parentElement && tbl.parentElement.classList.contains('table-scroll')) return;
-        var box = document.createElement('div');
-        box.className = 'table-scroll';
-        tbl.parentNode.insertBefore(box, tbl);
-        box.appendChild(tbl);
+      // A página mostra só as composições: as fichas técnicas e os
+      // blocos de orientação da origem não são transpostos.
+      frag.querySelectorAll('dl.spec').forEach(function (el) { el.remove(); });
+      frag.querySelectorAll('.doc-block').forEach(function (el) {
+        var prev = el.previousElementSibling;
+        if (prev && prev.classList.contains('section-heading')) prev.remove();
+        el.remove();
       });
 
-      // Métricas reais para a barra de resumo, sem números fixos no HTML.
-      var posts = host.querySelectorAll('.post-wrap').length;
-      var grupos = host.querySelectorAll('.section-heading').length;
-      var elPosts = document.getElementById('rep-count-posts');
-      var elGrupos = document.getElementById('rep-count-grupos');
-      if (elPosts) elPosts.textContent = posts;
-      if (elGrupos) elGrupos.textContent = grupos;
+      host.appendChild(frag);
+      if (status) status.remove();
     })
     .catch(function (err) {
       fail(err && err.message ? err.message : 'erro desconhecido');
